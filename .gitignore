@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# Except these file types
+!.gitignore
+!*.tex
+!*.pdf
+!*.png
+
+# Allow traversal into subdirectories
+!*/
