@@ -149,40 +149,64 @@ minimum width=5.35cm, minimum height=1.9cm, align=center] {
 % =====================================
 \begin{frame}[plain]
 \begin{tikzpicture}[remember picture,overlay]
-  \fill[Cream] (current page.south west) rectangle (current page.north east);
-  \fill[Navy] (current page.north west) rectangle ([yshift=-0.95cm]current page.north east);
-  \fill[SoftBlue] ([xshift=11.7cm,yshift=-0.6cm]current page.north west) circle (0.8cm);
-  \fill[Blue!10] ([xshift=11.8cm,yshift=-6.7cm]current page.north west) circle (1.05cm);
+  %% Full Navy background
+  \fill[Navy] (current page.south west) rectangle (current page.north east);
 
-  \node[rounded corners=18pt, fill=white, draw=SoftBlue, line width=0.9pt,
-        minimum width=4.45cm, minimum height=4.6cm, anchor=north east] at ([xshift=-0.75cm,yshift=-1.25cm]current page.north east) {};
+  %% Large atmospheric circles - right decorative zone
+  \fill[Blue!50] ([xshift=14.3cm,yshift=8.5cm]current page.south west) circle (2.6cm);
+  \fill[Blue!28] ([xshift=15.9cm,yshift=2.8cm]current page.south west) circle (2.4cm);
+  \fill[Blue!17] ([xshift=13.5cm,yshift=5.0cm]current page.south west) circle (4.0cm);
 
-  \begin{scope}[shift={([xshift=-3.02cm,yshift=-3.95cm]current page.north east)}]
-    \draw[rounded corners=4pt, fill=SoftBlue, draw=Blue, line width=1.0pt] (-1.0,-0.5) rectangle (1.0,0.8);
-    \draw[rounded corners=3pt, fill=Blue!15, draw=Blue, line width=1.0pt] (-1.15,0.75) rectangle (1.15,1.25);
-    \draw[Blue, line width=1.4pt] (0,-0.5) -- (0,1.25);
-    \draw[Blue, line width=1.2pt] (-0.15,1.25) .. controls (-0.55,1.65) and (-0.15,2.0) .. (0.0,1.62);
-    \draw[Blue, line width=1.2pt] (0.15,1.25) .. controls (0.55,1.65) and (0.15,2.0) .. (0.0,1.62);
-    \draw[Blue, line width=1.2pt] (-0.08,1.22) .. controls (-0.30,1.55) and (-0.05,1.82) .. (0.0,1.60);
-    \draw[Blue, line width=1.2pt] (0.08,1.22) .. controls (0.30,1.55) and (0.05,1.82) .. (0.0,1.60);
+  %% Gold accent dots (premium touch)
+  \fill[Gold] ([xshift=11.5cm,yshift=7.9cm]current page.south west) circle (0.18cm);
+  \fill[Gold!72] ([xshift=12.2cm,yshift=7.4cm]current page.south west) circle (0.12cm);
+  \fill[Gold!50] ([xshift=10.8cm,yshift=8.2cm]current page.south west) circle (0.09cm);
 
-    \node[circle,fill=white,draw=SoftBlue,minimum size=0.7cm] at (-1.65,1.05) {\scriptsize AI};
-    \node[circle,fill=white,draw=SoftBlue,minimum size=0.78cm] at (1.78,0.35) {\scriptsize RSVP};
-    \node[circle,fill=white,draw=SoftBlue,minimum size=0.75cm] at (1.45,1.65) {\scriptsize Gift};
-    \draw[Blue!65,line width=0.8pt] (-0.55,1.02) -- (-1.28,1.02);
-    \draw[Blue!65,line width=0.8pt] (0.98,0.45) -- (1.38,0.40);
-    \draw[Blue!65,line width=0.8pt] (0.60,1.20) -- (1.08,1.50);
-  \end{scope}
+  %% Subtle white dots
+  \fill[white!16] ([xshift=13.3cm,yshift=6.7cm]current page.south west) circle (0.14cm);
+  \fill[white!11] ([xshift=14.2cm,yshift=5.7cm]current page.south west) circle (0.09cm);
+
+  %% Left accent strip
+  \fill[Blue] (current page.south west)
+               rectangle ([xshift=0.28cm]current page.north west);
+
+  %% Bottom bar
+  \fill[Blue!80] (current page.south west)
+                  rectangle ([yshift=0.40cm]current page.south east);
+
+  %% Floating feature badges (right zone, layered on circles)
+  \node[rounded corners=10pt, fill=Navy!85, draw=SoftBlue!55, line width=0.7pt,
+        text=white!88, font=\scriptsize\bfseries, inner xsep=10pt, inner ysep=5pt]
+    at ([xshift=12.5cm,yshift=7.0cm]current page.south west) {AI};
+  \node[rounded corners=10pt, fill=Navy!85, draw=SoftBlue!55, line width=0.7pt,
+        text=white!88, font=\scriptsize\bfseries, inner xsep=10pt, inner ysep=5pt]
+    at ([xshift=14.5cm,yshift=6.1cm]current page.south west) {RSVP};
+  \node[rounded corners=10pt, fill=Navy!85, draw=SoftBlue!55, line width=0.7pt,
+        text=white!88, font=\scriptsize\bfseries, inner xsep=10pt, inner ysep=5pt]
+    at ([xshift=13.3cm,yshift=3.0cm]current page.south west) {Gifting};
+
+  %% Vertical NechCode label (far right)
+  \node[anchor=center, text=white!22, font=\small\bfseries, rotate=90]
+    at ([xshift=15.5cm,yshift=4.5cm]current page.south west) {NechCode};
 \end{tikzpicture}
 
-\vspace{0.45cm}
-\hspace*{0.8cm}
-\begin{minipage}[t]{7.35cm}
-{\color{white}\small\bfseries PROPOSAL BISNIS DIGITAL}\\[0.65cm]
-{\color{Navy}\fontsize{18}{22}\selectfont\bfseries Ide Bisnis dan Analisa Kelayakan:\\Undangan Nikah Digital dan Gifting Site berbasis AI}\\[0.28cm]
-{\color{TextDark}\normalsize Analisa kelayakan difokuskan pada potensi pasar, diferensiasi produk, dan langkah MVP yang realistis untuk NechCode.}\\[0.32cm]
-\pill{Wedding Tech}\hspace{0.08cm}\pill{AI Template}\hspace{0.08cm}\pill{RSVP Tracking}\hspace{0.08cm}\pill{Gifting Site}\\[0.38cm]
-{\color{Navy}\bfseries Kelompok 12} \hspace{0.2cm} {\color{TextMuted}\small Maret 2026}
+\vspace{1.35cm}
+\hspace*{0.7cm}
+\begin{minipage}[t]{9.2cm}
+{\color{SoftBlue}\scriptsize\bfseries PROPOSAL BISNIS DIGITAL}\\[0.50cm]
+{\color{white}\fontsize{17}{22}\selectfont\bfseries\raggedright
+  Undangan Nikah Digital\\
+  \& Gifting Site Berbasis AI}\\[0.10cm]
+{\color{SoftBlue!80}\normalsize\raggedright untuk NechCode}\\[0.24cm]
+{\color{Gold}\rule{5.0cm}{0.45pt}}\\[0.20cm]
+{\color{white!72}\small\raggedright
+  Analisa kelayakan: potensi pasar, diferensiasi produk,\\
+  dan langkah MVP yang realistis.}\\[0.34cm]
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{Wedding Tech};\hspace{0.06cm}%
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{AI Template};\hspace{0.06cm}%
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{RSVP};\hspace{0.06cm}%
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{Gifting};\\[0.36cm]
+{\color{white}\bfseries Kelompok 12}\hspace{0.25cm}{\color{SoftBlue!75}\small$\cdot$\hspace{0.08cm}Maret 2026}
 \end{minipage}
 \end{frame}
 
