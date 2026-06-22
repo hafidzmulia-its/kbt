@@ -22,7 +22,7 @@
             </div>
         </div>
     </header>
-    <!--  -->
+    
 @else
     <header class="sticky top-0 z-50 w-full border-b border-white/10 bg-[#071b2a]/96 backdrop-blur-xl">
         <div class="grid w-full grid-cols-[1fr_auto] items-center gap-6 px-6 py-5 md:px-10 lg:grid-cols-[1fr_auto_1fr] lg:px-[70px]">
