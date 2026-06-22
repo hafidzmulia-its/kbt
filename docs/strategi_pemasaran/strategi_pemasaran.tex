@@ -1,0 +1,494 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% ==============================
+% NechCode - Strategi Pemasaran
+% ==============================
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,tabularx,array,multirow}
+\usepackage{tikz}
+\usepackage{pifont}
+\usepackage[table]{xcolor}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage{url}
+
+\usetikzlibrary{positioning,calc,shadows.blur,arrows.meta}
+
+% ---------- Colors ----------
+\definecolor{Navy}{HTML}{143D73}
+\definecolor{Blue}{HTML}{2F6ECB}
+\definecolor{SoftBlue}{HTML}{EAF2FF}
+\definecolor{Cream}{HTML}{FAF4EA}
+\definecolor{Sand}{HTML}{E8D8C2}
+\definecolor{TextDark}{HTML}{243447}
+\definecolor{TextMuted}{HTML}{6B7A90}
+\definecolor{Good}{HTML}{57B65F}
+\definecolor{Gold}{HTML}{D3B16A}
+\definecolor{LightGreen}{HTML}{DFF7E7}
+\definecolor{LightYellow}{HTML}{F7F1CC}
+\definecolor{LightBrown}{HTML}{E9DDC7}
+
+% ---------- Global Style ----------
+\setbeamersize{text margin left=0.65cm,text margin right=0.65cm}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\color{Blue}$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{Blue}$\bullet$}
+\setbeamercolor{normal text}{fg=TextDark,bg=white}
+\setbeamercolor{structure}{fg=Navy}
+\setbeamercolor{frametitle}{fg=Navy,bg=Cream}
+\setbeamercolor{title}{fg=Navy}
+\setbeamercolor{subtitle}{fg=Blue}
+\setbeamercolor{block title}{fg=white,bg=Navy}
+\setbeamercolor{block body}{fg=TextDark,bg=SoftBlue}
+\setbeamerfont{title}{size=\LARGE,series=\bfseries}
+\setbeamerfont{subtitle}{size=\large,series=\bfseries}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamerfont{block title}{series=\bfseries}
+
+% ---------- Frame title ----------
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \vspace{0.12cm}
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1cm,dp=0.2cm,leftskip=0.7cm,rightskip=0.25cm]{frametitle}
+    {\usebeamerfont{frametitle}\insertframetitle}
+    \ifx\insertframesubtitle\@empty
+    \else
+      \\[-1pt]{\small\color{TextMuted}\insertframesubtitle}
+    \fi
+  \end{beamercolorbox}
+}
+\makeatother
+
+% ---------- Footer ----------
+\setbeamertemplate{footline}{%
+  \leavevmode
+  \hbox{%
+    \begin{beamercolorbox}[wd=.75\paperwidth,ht=3ex,dp=1.2ex,leftskip=0.55cm]{author in head/foot}%
+      \color{TextMuted}\scriptsize Invitely by NechCode -- Strategi Pemasaran
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.25\paperwidth,ht=3ex,dp=1.2ex,rightskip=0.55cm]{date in head/foot}%
+      \hfill\color{TextMuted}\scriptsize \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+}
+
+% ---------- Helpers ----------
+\newcommand{\pill}[1]{%
+  \tikz[baseline=(X.base)] \node (X) [rounded corners=8pt, fill=SoftBlue, text=Navy, inner xsep=8pt, inner ysep=4pt, font=\scriptsize\bfseries] {#1};%
+}
+
+\newcommand{\statcard}[3]{%
+\begin{tikzpicture}
+\node[rounded corners=12pt, fill=Cream, draw=Sand, line width=0.7pt,
+minimum width=3.25cm, minimum height=1.9cm, align=left, inner sep=8pt] {
+\begin{minipage}{2.6cm}
+{\color{TextMuted}\scriptsize #1}\\[1pt]
+{\color{Navy}\Large\bfseries #2}\\[2pt]
+{\color{TextDark}\scriptsize #3}
+\end{minipage}
+};
+\end{tikzpicture}%
+}
+
+\newcommand{\featurecard}[2]{%
+\begin{tikzpicture}
+\node[rounded corners=12pt, fill=white, draw=SoftBlue, line width=1pt,
+text width=0.88\linewidth, inner sep=9pt, align=left] {
+{\color{Navy}\bfseries #1}\\[2pt]
+{\color{TextDark}\footnotesize #2}
+};
+\end{tikzpicture}%
+}
+
+\newcommand{\riskcard}[3]{%
+\begin{tikzpicture}
+\node[rounded corners=12pt, fill=#1!10, draw=#1!45, line width=0.8pt,
+text width=0.88\linewidth, inner sep=8pt, align=left] {
+{\color{Navy}\bfseries #2}\\[2pt]
+{\color{TextDark}\footnotesize #3}
+};
+\end{tikzpicture}%
+}
+
+\newcommand{\smalllabel}[1]{{\color{TextMuted}\scriptsize\textbf{#1}}}
+
+% ---------- Metadata ----------
+\title{Strategi Pemasaran Invitely by NechCode}
+\subtitle{Undangan Nikah Digital \& Guest Management}
+\author{Kelompok 12}
+\date{Mei 2026}
+
+\begin{document}
+
+% =====================================
+% Title Slide
+% =====================================
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[Navy] (current page.south west) rectangle (current page.north east);
+  \fill[Blue!50] ([xshift=14.3cm,yshift=8.5cm]current page.south west) circle (2.6cm);
+  \fill[Blue!28] ([xshift=15.9cm,yshift=2.8cm]current page.south west) circle (2.4cm);
+  \fill[Blue!17] ([xshift=13.5cm,yshift=5.0cm]current page.south west) circle (4.0cm);
+  \fill[Gold] ([xshift=11.5cm,yshift=7.9cm]current page.south west) circle (0.18cm);
+  \fill[Gold!72] ([xshift=12.2cm,yshift=7.4cm]current page.south west) circle (0.12cm);
+  \fill[Gold!50] ([xshift=10.8cm,yshift=8.2cm]current page.south west) circle (0.09cm);
+  \fill[white!16] ([xshift=13.3cm,yshift=6.7cm]current page.south west) circle (0.14cm);
+  \fill[white!11] ([xshift=14.2cm,yshift=5.7cm]current page.south west) circle (0.09cm);
+  \fill[Blue] (current page.south west) rectangle ([xshift=0.28cm]current page.north west);
+  \fill[Blue!80] (current page.south west) rectangle ([yshift=0.40cm]current page.south east);
+  \node[rounded corners=10pt, fill=Navy!85, draw=SoftBlue!55, line width=0.7pt,
+        text=white!88, font=\scriptsize\bfseries, inner xsep=10pt, inner ysep=5pt]
+    at ([xshift=12.5cm,yshift=7.0cm]current page.south west) {STP};
+  \node[rounded corners=10pt, fill=Navy!85, draw=SoftBlue!55, line width=0.7pt,
+        text=white!88, font=\scriptsize\bfseries, inner xsep=10pt, inner ysep=5pt]
+    at ([xshift=14.5cm,yshift=6.1cm]current page.south west) {WA};
+  \node[rounded corners=10pt, fill=Navy!85, draw=SoftBlue!55, line width=0.7pt,
+        text=white!88, font=\scriptsize\bfseries, inner xsep=10pt, inner ysep=5pt]
+    at ([xshift=13.3cm,yshift=3.0cm]current page.south west) {QRIS};
+  \node[anchor=center, text=white!22, font=\small\bfseries, rotate=90]
+    at ([xshift=15.5cm,yshift=4.5cm]current page.south west) {NechCode};
+\end{tikzpicture}
+
+\vspace{1.35cm}
+\hspace*{0.7cm}
+\begin{minipage}[t]{9.2cm}
+{\color{SoftBlue}\scriptsize\bfseries RENCANA GO-TO-MARKET}\\[0.50cm]
+{\color{white}\fontsize{17}{22}\selectfont\bfseries\raggedright
+  Strategi Pemasaran\\
+  Invitely by NechCode}\\[0.10cm]
+{\color{SoftBlue!80}\normalsize\raggedright produk undangan nikah digital dan guest management}\\[0.24cm]
+{\color{Gold}\rule{5.4cm}{0.45pt}}\\[0.20cm]
+{\color{white!72}\small\raggedright
+  Fokus: bagaimana Invitely dipahami pasar, dijual dengan jelas,\\
+  dan tumbuh realistis di tahap awal.}\\[0.34cm]
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{Wedding Tech};\hspace{0.06cm}%
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{RSVP};\hspace{0.06cm}%
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{Broadcast};\hspace{0.06cm}%
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{Gifting};\\[0.36cm]
+{\color{white}\bfseries Kelompok 12}\hspace{0.25cm}{\color{SoftBlue!75}\small$\cdot$\hspace{0.08cm}Mei 2026}
+\end{minipage}
+\end{frame}
+
+% =====================================
+% Outline
+% =====================================
+\begin{frame}{Gambaran awal}{Apa itu Invitely dan apa yang akan dibahas}
+\featurecard{Apa itu Invitely?}{Invitely by NechCode adalah produk undangan nikah digital yang membantu pasangan membuat undangan, membagikannya lewat WhatsApp, lalu mengelola RSVP, kehadiran, dan gifting dari satu alur yang lebih rapi.}
+
+\vspace{0.10cm}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.48\textwidth}
+\featurecard{1. Nilai produk}{Manfaat nyata yang dirasakan pasangan saat memakai Invitely.}\\[0.10cm]
+\featurecard{2. STP}{Siapa pasar yang dibidik dan kenapa mereka paling cocok.}
+
+\column{0.48\textwidth}
+\featurecard{3. Positioning}{Posisi Invitely di antara template murah dan jasa custom.}\\[0.10cm]
+\featurecard{4. Marketing mix}{Cara menjual produk ini dengan langkah yang realistis untuk tim kecil.}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Marketing/value
+% =====================================
+\begin{frame}{Dasar marketing untuk Invitely}{Bahasa sederhananya: bagaimana produk ini memberi nilai}
+\begin{block}{Kalau dijelaskan sederhana, marketing produk ini berarti}
+\small
+\begin{itemize}
+  \item \textbf{Membuat nilai:} Invitely membantu pasangan punya undangan digital yang cantik, personal, dan langsung siap dipakai untuk RSVP, check-in, dan gifting.
+  \item \textbf{Menjelaskan nilai:} paket standar dan add-on harus diterangkan dengan bahasa yang mudah dipahami, supaya calon pelanggan cepat mengerti bedanya.
+  \item \textbf{Menukar nilai:} orang membayar bukan hanya untuk desain, tetapi untuk acara yang lebih rapi, lebih hemat waktu, dan lebih mudah dikelola.
+  \item \textbf{Menjaga hubungan:} komunikasi ringan via WhatsApp, revisi yang jelas, dan pengalaman baik setelah acara bisa mendorong repeat order atau referral.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Cara menjual pesan Invitely}{Supaya orang awam langsung paham manfaatnya}
+\footnotesize
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.52\textwidth}
+\riskcard{Good}{Masalah yang benar-benar dibantu}{Pasangan tidak perlu lagi memecah proses antara desain undangan, pengiriman WhatsApp, pencatatan RSVP, validasi kehadiran, dan gifting.}\\[0.12cm]
+\riskcard{Gold}{Alasan orang tertarik membeli}{Produk ini bukan sekadar template, tetapi alat bantu acara yang menghemat waktu dan mengurangi kekacauan saat hari-H.}
+
+\column{0.44\textwidth}
+\riskcard{Blue}{Arah komunikasinya}{Materi pemasaran harus menonjolkan hasil akhir yang didapat pasangan: undangan lebih rapi, tamu lebih mudah diatur, dan acara terasa lebih tenang.}\\[0.12cm]
+\featurecard{Kalimat yang lebih mudah diterima}{Jual Invitely sebagai solusi yang membantu pasangan mengurus tamu dengan lebih praktis, bukan sebagai daftar fitur teknis.}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Market opportunity
+% =====================================
+\begin{frame}{Pasar dan peluang}{Indikator digital yang mendukung model bisnis}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.32\textwidth}\centering
+\statcard{Internet Indonesia}{230 juta}{Basis pengguna internet yang sudah cukup matang untuk distribusi digital.}
+\column{0.32\textwidth}\centering
+\statcard{Platform utama}{91,7\%}{WhatsApp tetap menjadi kanal paling natural untuk share undangan dan reminder.}
+\column{0.32\textwidth}\centering
+\statcard{QRIS user}{57 juta}{Adopsi pembayaran digital membuat gifting online semakin masuk akal.}
+\end{columns}
+
+\vspace{0.20cm}
+\featurecard{Makna bisnis}{Pasar sasaran sudah terbiasa dengan internet, WhatsApp, dan pembayaran digital. Jadi alur Invitely terasa natural, bukan kebiasaan baru yang berat.}
+\end{frame}
+
+\begin{frame}{Pasar dan peluang (lanjutan)}{Sinyal permintaan yang relevan untuk wedding tech}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.48\textwidth}
+\featurecard{Sinyal permintaan}{BPS yang dikutip Databoks mencatat sekitar 1,48 juta pernikahan di Indonesia sepanjang 2024. Volumenya tetap besar dan terus menciptakan kebutuhan undangan, distribusi tamu, dan koordinasi acara.}
+
+\column{0.48\textwidth}
+\featurecard{Sinyal perilaku digital}{APJII 2024 menunjukkan penetrasi internet 79,5\% dan dominasi wilayah urban. Ini cocok dengan distribusi NechCode yang bertumpu pada link, WhatsApp, dashboard, dan pembayaran digital.}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Segmentation
+% =====================================
+\begin{frame}[shrink=8]{Segmentasi pasar}{Dasar segmentasi yang relevan untuk NechCode}
+\small
+\rowcolors{2}{white}{SoftBlue}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.5cm}X}
+\rowcolor{Navy!12}
+\textbf{Dasar} & \textbf{Segmentasi NechCode} \\
+Geografis & Fokus awal kota besar dan kota satelit di Pulau Jawa: Jakarta, Bogor, Depok, Tangerang, Bekasi, Bandung, Semarang, Yogyakarta, Surabaya, Malang. Alasannya: penetrasi internet tinggi, budaya berbagi link kuat, dan ekosistem vendor pernikahan lebih aktif. \\
+Demografis & Pasangan usia 23--35 tahun, kelas menengah, sedang menyiapkan pernikahan 1--6 bulan ke depan, jumlah tamu sekitar 100--500 orang, nyaman menggunakan pembayaran digital. \\
+Psikografis & Praktis, sensitif pada estetika, ingin acara terlihat rapi, tidak ingin repot mengelola RSVP manual, dan cenderung mencari solusi yang modern tetapi tetap hemat. \\
+Manfaat produk & Mencari kombinasi: desain elegan, personalisasi nama tamu, RSVP tracking, check-in, gifting, dan broadcast WhatsApp. \\
+Jumlah pemakaian & Segmen ringan hanya butuh undangan dasar; segmen menengah butuh RSVP dan dashboard; segmen intensif butuh broadcast, check-in, dan gifting karena daftar tamu lebih besar atau koordinasi acara lebih kompleks. \\
+\end{tabularx}
+\end{frame}
+
+% =====================================
+% Targeting
+% =====================================
+\begin{frame}{Targeting}{Segmen mana yang paling layak difokuskan lebih dulu}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.49\textwidth}
+\begin{block}{Segmen utama lebih dulu}
+\footnotesize
+\textbf{Pasangan menikah yang nyaman dengan digital}\\[2pt]
+\begin{itemize}
+  \item Usia 23--35 tahun
+  \item Aktif di WhatsApp dan Instagram
+  \item Ingin undangan cepat jadi, tetap enak dilihat, dan mudah dibagikan
+\end{itemize}
+\end{block}
+
+\column{0.49\textwidth}
+\begin{block}{Segmen berikutnya}
+\footnotesize
+\textbf{Pasangan dengan tamu lebih banyak}\\[2pt]
+\begin{itemize}
+  \item Tamu 250+ orang
+  \item Butuh RSVP, check-in, dan gifting
+  \item Cenderung lebih siap membeli add-on yang membantu acara
+\end{itemize}
+\end{block}
+\end{columns}
+
+\vspace{0.10cm}
+\featurecard{Kenapa dua segmen ini dipilih?}{Segmen pertama paling cepat paham value Invitely. Segmen kedua memberi peluang upsell karena kebutuhan koordinasi tamunya lebih kompleks.}
+\end{frame}
+
+% =====================================
+% Positioning
+% =====================================
+\begin{frame}[shrink=9]{Positioning}{Posisi Invitely yang ingin ditanamkan di benak pasar}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.54\textwidth}
+\begin{block}{Positioning statement}
+\small
+\textit{Untuk pasangan yang ingin undangan pernikahan digital yang elegan dan praktis, Invitely by NechCode adalah platform undangan nikah digital dan guest management yang membantu membuat undangan personal, mengirimkannya lewat WhatsApp, serta memantau RSVP, kehadiran, dan gifting dalam satu alur sederhana.}
+\end{block}
+
+\featurecard{Posisi pasar}{Invitely berada di tengah antara \textbf{template gratis yang generik} dan \textbf{jasa custom yang lebih mahal atau lambat}. Pembeda utamanya adalah operasional tamu yang lebih rapi tanpa membuat flow user terasa berat.}
+
+\column{0.42\textwidth}
+\riskcard{Good}{Asosiasi merek yang diinginkan}{Praktis, elegan, personal, dan rapi untuk mengelola tamu.}\\[0.10cm]
+\riskcard{Gold}{Proof of value}{Personal link per tamu, dashboard RSVP, broadcast WhatsApp, check-in, dan gifting memberi alasan rasional di samping nilai estetika.}\\[0.10cm]
+\riskcard{Blue}{Kalimat singkat pemasaran}{Undangan digital premium yang tidak hanya indah, tapi juga membantu Anda mengelola tamu.}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Competitor and niche
+% =====================================
+\begin{frame}[shrink=8]{Analisa kompetitor dan niche}{Ruang yang paling realistis untuk Invitely}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.31\textwidth}
+\featurecard{Template tools}{Murah dan cepat, tetapi biasanya generik, tidak terlalu personal, dan operasional tamunya masih banyak manual.}
+
+\column{0.31\textwidth}
+\featurecard{Wedding platform existing}{Sudah punya template dan RSVP, tetapi tidak semuanya kuat di AI assist, gifting, atau bundling pengalaman tamu.}
+
+\column{0.31\textwidth}
+\featurecard{Jasa custom designer}{Visual bisa sangat eksklusif, tetapi proses lebih lambat, biaya lebih tinggi, dan revisi sering tergantung vendor.}
+\end{columns}
+
+\vspace{0.16cm}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.56\textwidth}
+\begin{block}{Niche yang dipilih}
+\footnotesize
+\textbf{Invitely menarget pasangan urban Indonesia yang ingin undangan digital premium, tetapi tetap ringan secara operasional.}\\[4pt]
+Produk difokuskan pada \textbf{WhatsApp-first distribution}, \textbf{personal route per tamu}, \textbf{RSVP + attendance + gifting dalam satu flow}, dan \textbf{AI-assisted copy} agar pengalaman terasa personal tanpa biaya custom penuh.
+\end{block}
+
+\column{0.40\textwidth}
+\riskcard{Good}{Kenapa niche ini masuk akal?}{Ada gap jelas di antara template murah yang generik dan jasa custom yang mahal. Invitely masuk sebagai produk premium-ringan yang lebih terstruktur untuk hari-H.}
+\end{columns}
+\end{frame}
+
+% =====================================
+% 4P
+% =====================================
+\begin{frame}[shrink=8]{Bauran pemasaran (4P)}{Produk, harga, distribusi, promosi}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.48\textwidth}
+\featurecard{Product}{Paket standar berisi template premium, halaman undangan, musik, album, maps, dan personal link. Add-on mengikuti PRD: RSVP + gifting on-site Rp75 ribu, automation kirim undangan Rp50 ribu, custom template/design Rp150 ribu.}\\[0.10cm]
+\featurecard{Price}{Harga masuk sebaiknya ditambatkan pada \textbf{Rp249 ribu} untuk paket standar agar tetap berada di rentang PRD. Bundling dipakai untuk menaikkan average order value, misalnya paket lengkap Rp374 ribu plus opsi custom.}
+
+\column{0.48\textwidth}
+\featurecard{Place}{Kanal utama adalah website resmi, DM Instagram, WhatsApp consult, dan partner referral dari vendor pernikahan kecil. Distribusi sepenuhnya digital sehingga biaya awal tetap efisien.}\\[0.10cm]
+\featurecard{Promotion}{Konten utama: demo template, before-after alur RSVP, video singkat check-in hari-H, testimonial, dan penawaran bundling. Promosi organik dan semi-manual lebih realistis daripada paid ads besar di tahap awal.}
+\end{columns}
+\end{frame}
+
+% =====================================
+% 3P
+% =====================================
+\begin{frame}[shrink=9]{Bauran pemasaran lanjutan (3P)}{People, process, physical evidence}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.32\textwidth}
+\featurecard{People}{Tim kecil fokus pada respons cepat dan onboarding ringan. Partner potensial: WO kecil, fotografer, MUA, dekor, dan admin venue.}
+
+\column{0.32\textwidth}
+\featurecard{Process}{Alur harus ringkas: pilih paket $\rightarrow$ isi data acara $\rightarrow$ pilih template $\rightarrow$ revisi minor $\rightarrow$ live. Semakin sedikit gesekan, semakin tinggi konversi.}
+
+\column{0.32\textwidth}
+\featurecard{Physical evidence}{Demo website, contoh personal invitation, screenshot dashboard RSVP, bukti check-in, dan testimoni pasangan menjadi bukti kualitas yang paling mudah dipahami calon pembeli.}
+\end{columns}
+
+\vspace{0.18cm}
+\featurecard{Prinsip eksekusi}{Pada tahap awal, kualitas pengalaman dan kecepatan respons lebih penting daripada volume promosi. Produk yang rapi dan jelas manfaatnya lebih mudah dijual lewat referensi.}
+\end{frame}
+
+% =====================================
+% Launch
+% =====================================
+\begin{frame}{Strategi eksekusi 90 hari}{Paling efisien dan realistis untuk tahap awal}
+\small
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.33\textwidth}
+\begin{block}{Bulan 1}
+\begin{itemize}
+  \item Finalkan 1--2 template unggulan
+  \item Siapkan landing page, demo, dan katalog paket
+  \item Kumpulkan 3--5 portfolio awal
+\end{itemize}
+\end{block}
+
+\column{0.33\textwidth}
+\begin{block}{Bulan 2}
+\begin{itemize}
+  \item Push konten Instagram dan TikTok
+  \item Buka promo bundling early adopters
+  \item Jalankan referral untuk pasangan dan vendor
+\end{itemize}
+\end{block}
+
+\column{0.33\textwidth}
+\begin{block}{Bulan 3}
+\begin{itemize}
+  \item Evaluasi paket yang paling laku
+  \item Naikkan fokus pada add-on dengan margin lebih baik
+  \item Dokumentasikan testimoni dan studi kasus
+\end{itemize}
+\end{block}
+\end{columns}
+
+\vspace{0.18cm}
+\featurecard{KPI minimum}{Leads masuk per minggu, conversion rate konsultasi ke order, paket rata-rata terjual, persentase pembelian add-on, waktu respons admin, dan referral rate pasca acara.}
+\end{frame}
+
+% =====================================
+% Conclusion
+% =====================================
+\begin{frame}{Kesimpulan}{Arah strategi pemasaran yang disarankan}
+\begin{itemize}
+  \item Strategi paling aman adalah \textbf{fokus wedding lebih dulu}, khususnya pasangan urban yang aktif di WhatsApp dan sensitif pada kombinasi estetika + kemudahan operasional.
+  \item Positioning NechCode harus menonjolkan \textbf{undangan digital premium yang membantu mengelola tamu}, bukan sekadar template website.
+  \item Bauran pemasaran terbaik untuk tahap awal adalah \textbf{produk yang jelas, harga mudah dipahami, distribusi digital langsung, dan promosi berbasis demo serta referral}.
+  \item Pertumbuhan paling realistis datang dari \textbf{portfolio awal, social proof, dan upsell add-on} daripada iklan besar yang mahal.
+\end{itemize}
+
+\vspace{0.18cm}
+\featurecard{Kalimat penutup}{Jika dijalankan disiplin, Invitely by NechCode berpeluang menjadi pilihan bagi pasangan yang ingin undangan digital yang indah sekaligus membantu koordinasi tamu secara nyata.}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[Cream] (current page.south west) rectangle (current page.north east);
+  \fill[Navy] (current page.south west) rectangle ([yshift=1.15cm]current page.south east);
+  \fill[SoftBlue] ([xshift=1.0cm,yshift=-1.0cm]current page.north west) circle (0.85cm);
+\end{tikzpicture}
+
+\vspace{0.9cm}
+\begin{center}
+{\color{Navy}\fontsize{24}{28}\selectfont\bfseries Terima Kasih}\\[0.2cm]
+{\color{TextDark}\large Invitely by NechCode -- Strategi Pemasaran}\\[0.35cm]
+\pill{Kelompok 12}
+\end{center}
+
+\vspace{0.4cm}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.48\textwidth}
+\begin{block}{Anggota}
+\small
+Louis Cristian S. L -- 5002221004\\
+Hafidz Mulia -- 5002221022\\
+Nabeel Farvez F. -- 5002221139
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{Anggota}
+\small
+M. Rajwa Dzaki D. -- 5002221143\\
+Stanadyne Tolanda -- 5046231038
+\end{block}
+\end{columns}
+
+\vfill
+
+\end{frame}
+% =====================================
+% Sources
+% =====================================
+\begin{frame}[shrink=12]{Sumber data}{Dokumen internal dan referensi internet}
+\small
+\begin{itemize}
+  \item Dokumen internal: \texttt{docs/ide/ide.tex}, \texttt{docs/analisa\_kelayakan/kelayakan.tex}, \texttt{docs/mvp2/mvp2.tex}, dan PRD NechCode.
+  \item APJII, 7 Februari 2024: penetrasi internet Indonesia 79,5\%, 221,56 juta pengguna.
+  \item DataReportal Digital 2026 Indonesia: 230 juta pengguna internet dan 180 juta identitas pengguna media sosial di akhir 2025.
+  \item DataReportal Digital 2025 Indonesia: WhatsApp dipakai 91,7\% pengguna internet usia 16+ per Februari 2025.
+  \item Bank Indonesia, pembaruan 19 Januari 2026: hingga Juni 2025 ada 57 juta pengguna QRIS dan 39,3 juta merchant.
+  \item Databoks, 14 Maret 2025, mengutip BPS: sekitar 1,48 juta pernikahan tercatat di Indonesia sepanjang 2024.
+\end{itemize}
+
+\vspace{0.10cm}
+{\scriptsize\color{TextMuted}
+\url{https://apjii.or.id/berita/d/apjii-jumlah-pengguna-internet-indonesia-tembus-221-juta-orang}\\
+\url{https://datareportal.com/reports/digital-2026-indonesia}\\
+\url{https://wearesocial.com/wp-content/uploads/2025/02/Digital_2025_Indonesia_v02.pdf}\\
+\url{https://www.bi.go.id/id/publikasi/ruang-media/cerita-bi/Pages/cara-membuat-qris.aspx}\\
+\url{https://databoks.katadata.co.id/demografi/statistik/67d40e07c63fb/tren-pernikahan-di-indonesia-turun-lagi-pada-2024}
+}
+\end{frame}
+
+\end{document}

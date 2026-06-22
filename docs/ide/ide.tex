@@ -1,0 +1,336 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% ==============================
+%   NECHCODE - USULAN IDE BISNIS
+%   Blue + Cream Beamer Template
+% ==============================
+
+% ---------- Packages ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[indonesian,english]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{ragged2e}
+\usepackage{xcolor}
+
+% ---------- Remove default navigation ----------
+\setbeamertemplate{navigation symbols}{}
+
+% ---------- Color Palette ----------
+\definecolor{BrandBlue}{HTML}{1F5AA6}
+\definecolor{BrandBlueDark}{HTML}{153E75}
+\definecolor{BrandBlueSoft}{HTML}{DCEBFA}
+\definecolor{BrandCream}{HTML}{F7F1E6}
+\definecolor{BrandSand}{HTML}{E8DCC8}
+\definecolor{BrandText}{HTML}{243447}
+\definecolor{BrandMuted}{HTML}{6B7A8C}
+\definecolor{BrandAccent}{HTML}{5C8FDB}
+\definecolor{BrandWhite}{HTML}{FFFDFC}
+
+% ---------- Theme colors ----------
+\setbeamercolor{normal text}{fg=BrandText,bg=BrandWhite}
+\setbeamercolor{structure}{fg=BrandBlue}
+\setbeamercolor{frametitle}{fg=BrandBlueDark,bg=BrandCream}
+\setbeamercolor{title}{fg=BrandWhite}
+\setbeamercolor{subtitle}{fg=BrandBlueSoft}
+\setbeamercolor{author}{fg=BrandWhite}
+\setbeamercolor{date}{fg=BrandBlueSoft}
+\setbeamercolor{block title}{fg=BrandWhite,bg=BrandBlue}
+\setbeamercolor{block body}{fg=BrandText,bg=BrandCream}
+\setbeamercolor{itemize item}{fg=BrandBlue}
+\setbeamercolor{itemize subitem}{fg=BrandAccent}
+\setbeamercolor{section in toc}{fg=BrandBlueDark}
+
+% ---------- Typography ----------
+\setbeamerfont{title}{series=\bfseries,size=\LARGE}
+\setbeamerfont{subtitle}{size=\large}
+\setbeamerfont{frametitle}{series=\bfseries,size=\Large}
+\setbeamerfont{block title}{series=\bfseries}
+
+% ---------- Frame title styling ----------
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \vspace{0.25cm}
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1cm,dp=0.25cm,leftskip=0.7cm,rightskip=0.3cm]{frametitle}
+    {\usebeamerfont{frametitle}\insertframetitle}
+    \ifx\insertframesubtitle\@empty
+    \else
+      \\ \vspace{1pt}{\small\color{BrandMuted}\insertframesubtitle}
+    \fi
+  \end{beamercolorbox}
+}
+\makeatother
+
+% ---------- Footer ----------
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.72\paperwidth,ht=3.2ex,dp=1.4ex,leftskip=0.5cm]{author in head/foot}%
+      \color{BrandMuted}\scriptsize NechCode - Usulan Ide Bisnis
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.28\paperwidth,ht=3.2ex,dp=1.4ex,rightskip=0.5cm]{date in head/foot}%
+      \hfill\color{BrandMuted}\scriptsize\insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+}
+
+% ---------- Helpers ----------
+\newcommand{\pill}[1]{%
+  \tikz[baseline=(X.base)] \node (X) [rounded corners=7pt, fill=BrandBlueSoft, text=BrandBlueDark, inner xsep=8pt, inner ysep=3pt, font=\scriptsize\bfseries] {#1};%
+}
+
+\newcommand{\statcard}[3]{%
+  \begin{tikzpicture}
+    \node[rounded corners=12pt, fill=BrandCream, draw=BrandSand, line width=0.6pt,
+          minimum width=0.29\linewidth, minimum height=2.15cm, align=left, inner sep=10pt] {
+      \begin{minipage}{0.25\linewidth}
+      {\color{BrandMuted}\scriptsize #1}\\[2pt]
+      {\color{BrandBlueDark}\LARGE\bfseries #2}\\[2pt]
+      {\color{BrandText}\scriptsize #3}
+      \end{minipage}
+    };
+  \end{tikzpicture}%
+}
+
+\newcommand{\featurebox}[2]{%
+  \begin{tikzpicture}
+    \node[rounded corners=10pt, fill=BrandWhite, draw=BrandBlueSoft, line width=0.7pt,
+          inner sep=10pt, text width=0.9\linewidth, align=left] {
+      {\color{BrandBlueDark}\bfseries #1}\\[3pt]
+      {\color{BrandText}\small #2}
+    };
+  \end{tikzpicture}%
+}
+
+% ---------- Presentation Info ----------
+\title{NechCode}
+\subtitle{Usulan ide bisnis: Undangan Nikah Digital dan Gifting Site berbasis AI}
+\author{Kelompok 12}
+\date{Maret 2026}
+
+\begin{document}
+
+% ---------- Title ----------
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[BrandBlue] (current page.south west) rectangle (current page.north east);
+  \fill[BrandCream] (0,0) rectangle (3.8,7.2);
+  \fill[BrandBlueSoft, opacity=0.65] (9.6,4.6) circle (2.1);
+  \fill[BrandAccent, opacity=0.20] (11.8,1.1) circle (1.6);
+  \draw[BrandWhite, line width=1pt, rounded corners=10pt] (4.4,1.2) rectangle (12.5,5.7);
+\end{tikzpicture}
+
+\vspace{1.15cm}
+\hspace{4.8cm}
+\begin{minipage}{0.54\paperwidth}
+  {\usebeamerfont{title}\color{BrandWhite}\inserttitle\\[0.25cm]}
+  {\usebeamerfont{subtitle}\color{BrandBlueSoft}\insertsubtitle\\[0.55cm]}
+  {\color{BrandWhite}\small Startup digital tahap awal yang mempermudah pembuatan undangan momen spesial secara cepat, personal, dan terukur.\\[0.45cm]}
+  \pill{Wedding Tech}\hspace{0.15cm}\pill{AI Template}\hspace{0.15cm}\pill{RSVP Tracking}\\[0.8cm]
+  {\color{BrandWhite}\small \insertauthor}\qquad{\color{BrandBlueSoft}\small \insertdate}
+\end{minipage}
+\end{frame}
+
+% ---------- Agenda ----------
+\begin{frame}{Agenda}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.52\textwidth}
+\begin{itemize}
+  \item Latar belakang dan masalah
+  \item Konsep solusi NechCode
+  \item Target pengguna dan use case
+  \item Model bisnis awal
+  \item Nilai pembeda dan langkah lanjut
+\end{itemize}
+
+\column{0.42\textwidth}
+\begin{block}{Tujuan deck}
+Deck ini berfungsi sebagai arsip usulan ide bisnis sebelum masuk ke analisa kelayakan yang lebih lengkap.
+\end{block}
+\end{columns}
+\end{frame}
+
+% ---------- Problem ----------
+\begin{frame}{Latar Belakang Masalah}{Mengapa ide ini relevan}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.58\textwidth}
+\begin{itemize}
+  \item Banyak pasangan ingin undangan nikah digital yang \textbf{praktis}, tetapi tetap \textbf{terlihat personal dan elegan}.
+  \item Banyak pengguna ingin membuat halaman spesial untuk hadiah, ulang tahun, wisuda, atau anniversary tanpa skill desain dan web.
+  \item Solusi yang ada sering terpecah: ada yang kuat di template, ada yang kuat di tracking, tetapi belum sederhana bagi pengguna awam.
+  \item Proses undang tamu masih sering manual dan sulit dipantau.
+\end{itemize}
+
+\column{0.38\textwidth}
+\featurebox{Pain Point 1}{Sulit membuat undangan yang cepat namun tetap personal.}\\[0.18cm]
+\featurebox{Pain Point 2}{Data tamu, RSVP, dan kehadiran sering tidak terkelola rapi.}\\[0.18cm]
+\featurebox{Pain Point 3}{Gifting page yang menarik biasanya butuh effort desain tambahan.}
+\end{columns}
+\end{frame}
+
+% ---------- Solution ----------
+\begin{frame}{Konsep Solusi}{Undangan digital dan gifting site berbasis AI}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.55\textwidth}
+\begin{block}{Core value proposition}
+NechCode membantu pengguna membuat undangan nikah digital dan gifting site berbasis template-AI dengan alur singkat: isi data, pilih template, hasil siap dibagikan, lalu RSVP dan kehadiran bisa dipantau.
+\end{block}
+
+\vspace{0.2cm}
+\begin{itemize}
+  \item Template visual dibantu AI
+  \item Personalisasi nama tamu dan pesan
+  \item Link undangan siap kirim ke WhatsApp
+  \item RSVP tracking dan status hadir/tidak hadir
+\end{itemize}
+
+\column{0.40\textwidth}
+\begin{tikzpicture}
+  \node[rounded corners=12pt, fill=BrandCream, draw=BrandSand, text width=0.95\linewidth, inner sep=10pt] {
+    \textbf{Simple promise}\\[4pt]
+    \small \textit{Bikin undangan spesial tanpa ribet, lalu pantau tamu dengan lebih rapi.}
+  };
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+% ---------- Flow ----------
+\begin{frame}{Cara Kerja}{Alur pengguna sederhana}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \node[rounded corners=10pt, fill=BrandCream, draw=BrandSand, minimum width=2.5cm, minimum height=2.15cm, align=center] at (1.5,0) {\textbf{Isi Data}\\[4pt]\scriptsize Nama mempelai, acara, kontak};
+  \node[rounded corners=10pt, fill=BrandCream, draw=BrandSand, minimum width=2.5cm, minimum height=2.15cm, align=center] at (5.0,0) {\textbf{Pilih Template}\\[4pt]\scriptsize Desain AI-ready sesuai tema};
+  \node[rounded corners=10pt, fill=BrandCream, draw=BrandSand, minimum width=2.5cm, minimum height=2.15cm, align=center] at (8.5,0) {\textbf{Bagikan}\\[4pt]\scriptsize Kirim link personal ke tamu};
+  \node[rounded corners=10pt, fill=BrandCream, draw=BrandSand, minimum width=2.5cm, minimum height=2.15cm, align=center] at (12.0,0) {\textbf{Pantau}\\[4pt]\scriptsize Lihat RSVP dan status hadir};
+  \draw[-latex, thick, BrandAccent] (2.85,0) -- (3.65,0);
+  \draw[-latex, thick, BrandAccent] (6.35,0) -- (7.15,0);
+  \draw[-latex, thick, BrandAccent] (9.85,0) -- (10.65,0);
+\end{tikzpicture}
+
+\vspace{0.55cm}
+\pill{Template AI}\hspace{0.12cm}
+\pill{Nama tamu personal}\hspace{0.12cm}
+\pill{RSVP tracking}\hspace{0.12cm}
+\pill{WhatsApp sharing}
+\end{frame}
+
+% ---------- Offerings ----------
+\begin{frame}{Layanan Utama}{Dua penawaran inti}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.48\textwidth}
+\begin{block}{Undangan Nikah Digital}
+\begin{itemize}
+  \item template undangan website
+  \item nama tamu dan kontak personal
+  \item RSVP dan konfirmasi kehadiran
+  \item galeri, maps, countdown, hadiah
+\end{itemize}
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{Gifting Site}
+\begin{itemize}
+  \item ulang tahun dan anniversary
+  \item wisuda dan appreciation page
+  \item pesan personal dan hadiah digital
+  \item halaman mini-site siap kirim
+\end{itemize}
+\end{block}
+\end{columns}
+
+\vspace{0.35cm}
+\begin{center}
+\statcard{Core Offer}{Wedding Invite}{Fokus utama MVP}\\
+\hspace{0.2cm}
+\statcard{Support Offer}{Gifting Site}{Ekspansi personal use}\\
+\hspace{0.2cm}
+\statcard{Model}{B2C First}{Startup kecil dan realistis}
+\end{center}
+\end{frame}
+
+% ---------- Target ----------
+\begin{frame}{Target Pengguna}{Entry market paling realistis}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.33\textwidth}
+\featurebox{Pasangan muda}{Butuh undangan nikah digital yang hemat, praktis, dan tetap rapi.}
+
+\column{0.33\textwidth}
+\featurebox{Mahasiswa dan anak muda}{Butuh gifting page untuk ulang tahun, wisuda, atau anniversary.}
+
+\column{0.33\textwidth}
+\featurebox{Komunitas kecil}{Butuh halaman event yang mudah dibagikan dan dikelola.}
+\end{columns}
+
+\vspace{0.45cm}
+\begin{block}{Positioning}
+NechCode berada di tengah antara template gratis yang serba umum dan jasa custom yang lebih lambat serta lebih mahal.
+\end{block}
+\end{frame}
+
+% ---------- Business model ----------
+\begin{frame}{Model Bisnis Awal}{Pendapatan yang paling realistis}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.52\textwidth}
+\begin{itemize}
+  \item Paket gratis untuk trial dan awareness
+  \item Paket sekali beli untuk acara
+  \item Premium template dan add-on
+  \item Bundling undangan + gifting site
+\end{itemize}
+
+\column{0.44\textwidth}
+\begin{block}{Growth levers}
+\begin{itemize}
+  \item referral pengguna
+  \item konten demo di media sosial
+  \item kerja sama vendor kecil
+  \item template tematik musiman
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+% ---------- Differentiators ----------
+\begin{frame}{Nilai Pembeda}{Mengapa ide ini menarik diuji}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item Alur lebih sederhana untuk pengguna awam
+  \item Personalisasi nama tamu tanpa setup rumit
+  \item Ada tracking RSVP dan kehadiran
+  \item Gifting site menambah nilai di luar use case wedding
+\end{itemize}
+
+\column{0.48\textwidth}
+\begin{tikzpicture}
+  \node[rounded corners=12pt, fill=BrandBlue, inner sep=12pt, text width=0.92\linewidth] {
+    \color{BrandWhite}\textbf{Arah MVP}\\[4pt]
+    \color{BrandBlueSoft}\small Fokus dulu pada wedding invitation template-AI dengan RSVP tracking, lalu perluas ke gifting site.
+  };
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+% ---------- CTA ----------
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[BrandCream] (current page.south west) rectangle (current page.north east);
+  \fill[BrandBlue] (0,0) rectangle (13.33,1.6);
+  \fill[BrandBlueSoft, opacity=0.5] (10.9,5.8) circle (1.7);
+\end{tikzpicture}
+
+\vspace{1.35cm}
+\begin{center}
+  {\color{BrandBlueDark}\fontsize{24}{28}\selectfont\bfseries Terima Kasih}\\[0.28cm]
+  {\color{BrandText}\large NechCode diusulkan sebagai ide bisnis digital yang sederhana, kuat, dan layak diuji lebih lanjut.}\\[0.75cm]
+  \pill{Wedding Invite}\hspace{0.15cm}\pill{Gifting Site}\hspace{0.15cm}\pill{AI Template}
+\end{center}
+\end{frame}
+
+\end{document}

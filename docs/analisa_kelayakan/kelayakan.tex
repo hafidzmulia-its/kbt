@@ -1,0 +1,708 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% ==============================
+% NechCode - Analisa Ide Kelayakan
+% Wedding Invitation + Gifting Site berbasis AI
+% ==============================
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,tabularx,array,multirow}
+\usepackage{tikz}
+\usepackage{pifont}
+\usepackage[table]{xcolor}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+
+\usetikzlibrary{positioning,calc,shadows.blur,arrows.meta}
+
+% ---------- Colors ----------
+\definecolor{Navy}{HTML}{143D73}
+\definecolor{Blue}{HTML}{2F6ECB}
+\definecolor{SoftBlue}{HTML}{EAF2FF}
+\definecolor{Cream}{HTML}{FAF4EA}
+\definecolor{Sand}{HTML}{E8D8C2}
+\definecolor{TextDark}{HTML}{243447}
+\definecolor{TextMuted}{HTML}{6B7A90}
+\definecolor{Good}{HTML}{57B65F}
+\definecolor{Bad}{HTML}{E76666}
+\definecolor{Gold}{HTML}{D3B16A}
+\definecolor{LightGreen}{HTML}{DFF7E7}
+\definecolor{LightYellow}{HTML}{F7F1CC}
+\definecolor{LightBrown}{HTML}{E9DDC7}
+
+% ---------- Global Style ----------
+\setbeamersize{text margin left=0.65cm,text margin right=0.65cm}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\color{Blue}$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{Blue}$\bullet$}
+\setbeamercolor{normal text}{fg=TextDark,bg=white}
+\setbeamercolor{structure}{fg=Navy}
+\setbeamercolor{frametitle}{fg=Navy,bg=Cream}
+\setbeamercolor{title}{fg=Navy}
+\setbeamercolor{subtitle}{fg=Blue}
+\setbeamercolor{block title}{fg=white,bg=Navy}
+\setbeamercolor{block body}{fg=TextDark,bg=SoftBlue}
+\setbeamerfont{title}{size=\LARGE,series=\bfseries}
+\setbeamerfont{subtitle}{size=\large,series=\bfseries}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamerfont{block title}{series=\bfseries}
+
+% ---------- Frame title ----------
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \vspace{0.12cm}
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1cm,dp=0.2cm,leftskip=0.7cm,rightskip=0.25cm]{frametitle}
+    {\usebeamerfont{frametitle}\insertframetitle}
+    \ifx\insertframesubtitle\@empty
+    \else
+      \\[-1pt]{\small\color{TextMuted}\insertframesubtitle}
+    \fi
+  \end{beamercolorbox}
+}
+\makeatother
+
+% ---------- Footer ----------
+\setbeamertemplate{footline}{%
+  \leavevmode
+  \hbox{%
+    \begin{beamercolorbox}[wd=.75\paperwidth,ht=3ex,dp=1.2ex,leftskip=0.55cm]{author in head/foot}%
+      \color{TextMuted}\scriptsize NechCode -- Ide Bisnis dan Analisa Kelayakan
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.25\paperwidth,ht=3ex,dp=1.2ex,rightskip=0.55cm]{date in head/foot}%
+      \hfill\color{TextMuted}\scriptsize \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+}
+
+% ---------- Helpers ----------
+\newcommand{\pill}[1]{%
+  \tikz[baseline=(X.base)] \node (X) [rounded corners=8pt, fill=SoftBlue, text=Navy, inner xsep=8pt, inner ysep=4pt, font=\scriptsize\bfseries] {#1};%
+}
+
+\newcommand{\yesicon}{%
+  \tikz[baseline=-0.5ex]\node[circle,fill=Good,inner sep=1.2pt]{\color{white}\scriptsize\ding{51}};
+}
+\newcommand{\noicon}{%
+  \tikz[baseline=-0.5ex]\node[circle,fill=Bad,inner sep=1.3pt]{\color{white}\scriptsize\ding{55}};
+}
+\newcommand{\midicon}{%
+  \tikz[baseline=-0.5ex]\node[circle,fill=Gold,inner sep=1.3pt]{\color{white}\scriptsize\textbf{!}};
+}
+
+\newcommand{\statcard}[3]{%
+\begin{tikzpicture}
+\node[rounded corners=12pt, fill=Cream, draw=Sand, line width=0.7pt,
+minimum width=3.1cm, minimum height=1.8cm, align=left, inner sep=8pt] {
+\begin{minipage}{2.45cm}
+{\color{TextMuted}\scriptsize #1}\\[1pt]
+{\color{Navy}\Large\bfseries #2}\\[2pt]
+{\color{TextDark}\scriptsize #3}
+\end{minipage}
+};
+\end{tikzpicture}%
+}
+
+\newcommand{\featurecard}[2]{%
+\begin{tikzpicture}
+\node[rounded corners=12pt, fill=white, draw=SoftBlue, line width=1pt,
+text width=0.92\linewidth, inner sep=10pt, align=left] {
+{\color{Navy}\bfseries #1}\\[2pt]
+{\color{TextDark}\small #2}
+};
+\end{tikzpicture}%
+}
+
+\newcommand{\riskcard}[3]{%
+\begin{tikzpicture}
+\node[rounded corners=12pt, fill=#1!10, draw=#1!45, line width=0.8pt,
+text width=0.92\linewidth, inner sep=9pt, align=left] {
+{\color{Navy}\bfseries #2}\\[2pt]
+{\color{TextDark}\small #3}
+};
+\end{tikzpicture}%
+}
+
+\newcommand{\outlinebox}[3]{%
+\begin{tikzpicture}
+\node[rounded corners=4pt, fill=#1, draw=black!35, line width=0.7pt,
+minimum width=5.35cm, minimum height=1.9cm, align=center] {
+{\color{black}\bfseries\itshape #2}\\[1pt]
+{\color{black}\bfseries\itshape #3}
+};
+\end{tikzpicture}%
+}
+
+% ---------- Metadata ----------
+\title{Ide Bisnis dan Analisa Kelayakan: \\ Undangan Nikah Digital dan Gifting Site berbasis AI}
+\subtitle{Fokus khusus: analisa ide kelayakan NechCode}
+\author{Kelompok 12}
+\date{Maret 2026}
+
+\begin{document}
+
+% =====================================
+% Title Slide
+% =====================================
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+  %% Full Navy background
+  \fill[Navy] (current page.south west) rectangle (current page.north east);
+
+  %% Large atmospheric circles - right decorative zone
+  \fill[Blue!50] ([xshift=14.3cm,yshift=8.5cm]current page.south west) circle (2.6cm);
+  \fill[Blue!28] ([xshift=15.9cm,yshift=2.8cm]current page.south west) circle (2.4cm);
+  \fill[Blue!17] ([xshift=13.5cm,yshift=5.0cm]current page.south west) circle (4.0cm);
+
+  %% Gold accent dots (premium touch)
+  \fill[Gold] ([xshift=11.5cm,yshift=7.9cm]current page.south west) circle (0.18cm);
+  \fill[Gold!72] ([xshift=12.2cm,yshift=7.4cm]current page.south west) circle (0.12cm);
+  \fill[Gold!50] ([xshift=10.8cm,yshift=8.2cm]current page.south west) circle (0.09cm);
+
+  %% Subtle white dots
+  \fill[white!16] ([xshift=13.3cm,yshift=6.7cm]current page.south west) circle (0.14cm);
+  \fill[white!11] ([xshift=14.2cm,yshift=5.7cm]current page.south west) circle (0.09cm);
+
+  %% Left accent strip
+  \fill[Blue] (current page.south west)
+               rectangle ([xshift=0.28cm]current page.north west);
+
+  %% Bottom bar
+  \fill[Blue!80] (current page.south west)
+                  rectangle ([yshift=0.40cm]current page.south east);
+
+  %% Floating feature badges (right zone, layered on circles)
+  \node[rounded corners=10pt, fill=Navy!85, draw=SoftBlue!55, line width=0.7pt,
+        text=white!88, font=\scriptsize\bfseries, inner xsep=10pt, inner ysep=5pt]
+    at ([xshift=12.5cm,yshift=7.0cm]current page.south west) {AI};
+  \node[rounded corners=10pt, fill=Navy!85, draw=SoftBlue!55, line width=0.7pt,
+        text=white!88, font=\scriptsize\bfseries, inner xsep=10pt, inner ysep=5pt]
+    at ([xshift=14.5cm,yshift=6.1cm]current page.south west) {RSVP};
+  \node[rounded corners=10pt, fill=Navy!85, draw=SoftBlue!55, line width=0.7pt,
+        text=white!88, font=\scriptsize\bfseries, inner xsep=10pt, inner ysep=5pt]
+    at ([xshift=13.3cm,yshift=3.0cm]current page.south west) {Gifting};
+
+  %% Vertical NechCode label (far right)
+  \node[anchor=center, text=white!22, font=\small\bfseries, rotate=90]
+    at ([xshift=15.5cm,yshift=4.5cm]current page.south west) {NechCode};
+\end{tikzpicture}
+
+\vspace{1.35cm}
+\hspace*{0.7cm}
+\begin{minipage}[t]{9.2cm}
+{\color{SoftBlue}\scriptsize\bfseries PROPOSAL BISNIS DIGITAL}\\[0.50cm]
+{\color{white}\fontsize{17}{22}\selectfont\bfseries\raggedright
+  Undangan Nikah Digital\\
+  \& Gifting Site Berbasis AI}\\[0.10cm]
+{\color{SoftBlue!80}\normalsize\raggedright untuk NechCode}\\[0.24cm]
+{\color{Gold}\rule{5.0cm}{0.45pt}}\\[0.20cm]
+{\color{white!72}\small\raggedright
+  Analisa kelayakan: potensi pasar, diferensiasi produk,\\
+  dan langkah MVP yang realistis.}\\[0.34cm]
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{Wedding Tech};\hspace{0.06cm}%
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{AI Template};\hspace{0.06cm}%
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{RSVP};\hspace{0.06cm}%
+\tikz[baseline=(X.base)]\node(X)[rounded corners=7pt,fill=Blue!65,text=white,inner xsep=8pt,inner ysep=4pt,font=\scriptsize\bfseries]{Gifting};\\[0.36cm]
+{\color{white}\bfseries Kelompok 12}\hspace{0.25cm}{\color{SoftBlue!75}\small$\cdot$\hspace{0.08cm}Maret 2026}
+\end{minipage}
+\end{frame}
+
+% =====================================
+% Ringkasan bisnis
+% =====================================
+\begin{frame}[shrink=12]{Ringkasan Bisnis}{Konsep singkat NechCode}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.56\textwidth}
+\small
+\begin{block}{One-line concept}
+NechCode adalah layanan digital yang membantu pengguna membuat undangan nikah digital dan gifting site berbasis AI-template, lalu memantau RSVP dan status hadir tamu dengan lebih praktis.
+\end{block}
+
+\vspace{0.08cm}
+\footnotesize
+\begin{itemize}
+  \item \textbf{Fokus layanan utama:} undangan nikah digital
+  \item \textbf{Layanan pendukung:} gifting site untuk ulang tahun, wisuda, anniversary, dan appreciation
+  \item \textbf{Target awal:} pasangan muda dan pengguna personal digital-native
+  \item \textbf{Model singkat:} paket sekali beli, template premium, add-on RSVP dan gifting
+\end{itemize}
+
+\column{0.40\textwidth}
+\featurecard{Nilai utama}{Cepat dibuat, lebih personal, mudah dibagikan, dan lebih rapi untuk memantau RSVP dibanding undangan manual.}\\[0.10cm]
+\featurecard{Arah MVP}{User cukup isi nama, kontak, detail acara, pilih template, lalu sistem generate undangan personal dan dashboard tamu sederhana.}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Bentuk analisa kelayakan
+% =====================================
+\begin{frame}{Bentuk Analisa Kelayakan}
+\vspace{0.25cm}
+\begin{center}
+\begin{tikzpicture}
+\node at (0,0) {};
+\node[anchor=north west] (a) at (-5.7,1.7) {\outlinebox{LightYellow}{Product/Service Feasibility}{}};
+\node[anchor=north west] (b) at (0.2,1.7) {\outlinebox{LightYellow}{Industry/Target Market}{Feasibility}};
+\node[anchor=north west] (c) at (-5.7,-0.6) {\outlinebox{LightYellow}{Organizational Feasibility}{}};
+\node[anchor=north west] (d) at (0.2,-0.6) {\outlinebox{LightYellow}{Financial Feasibility}{}};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.3cm}
+\begin{center}
+\pill{Sesuai outline kelas}\hspace{0.15cm}
+\pill{Dipakai sebagai kerangka analisa deck ini}
+\end{center}
+\end{frame}
+
+% =====================================
+% Outline komprehensif
+% =====================================
+\begin{frame}{Outline Analisa Kelayakan (1/2)}{Kerangka yang digunakan}
+\small
+\renewcommand{\arraystretch}{1.28}
+\setlength{\tabcolsep}{5pt}
+\begin{center}
+\begin{tabularx}{\textwidth}{|>{\RaggedRight\arraybackslash}p{5.2cm}|X|}
+\hline
+\rowcolor{yellow!70}
+\textbf{Product/Service Feasibility\newline (Kelayakan Produk/Jasa)} &
+A. Keinginan atas produk/jasa\\
+& B. Permintaan atas produk/jasa\\
+\hline
+\rowcolor{blue!10}
+\textbf{Industry/Target Market Feasibility\newline (Kelayakan Industri/Target Pasar)} &
+A. Kemenarikan industri\\
+& B. Kemenarikan target pasar\\
+\hline
+\rowcolor{green!25}
+\textbf{Organizational Feasibility\newline (Kelayakan Organisasi)} &
+A. Kecakapan organisasi\\
+& B. Kecukupan sumberdaya\\
+\hline
+\end{tabularx}
+\end{center}
+\end{frame}
+
+\begin{frame}{Outline Analisa Kelayakan (2/2)}{Kerangka yang digunakan}
+\small
+\renewcommand{\arraystretch}{1.28}
+\setlength{\tabcolsep}{5pt}
+\begin{center}
+\begin{tabularx}{\textwidth}{|>{\RaggedRight\arraybackslash}p{5.2cm}|X|}
+\hline
+\rowcolor{LightYellow}
+\textbf{Financial Feasibility\newline (Kelayakan Finansial)} &
+A. Sejumlah uang yang dibutuhkan untuk memulai bisnis\\
+& B. Performa finansial bisnis yang sejenis\\
+& C. Keseluruhan kemenarikan finansial dari bisnis yang diusulkan\\
+\hline
+\rowcolor{LightBrown}
+\textbf{Overall Assessment\newline (Penilaian Keseluruhan)} & Ringkasan penilaian akhir ide bisnis\\
+\hline
+\end{tabularx}
+\end{center}
+
+\vspace{0.35cm}
+\begin{center}
+\pill{Sesuai outline kelas}\hspace{0.15cm}
+\pill{Dipakai sebagai kerangka analisa deck ini}
+\end{center}
+\end{frame}
+
+% =====================================
+% Observing Trend
+% =====================================
+\begin{frame}{Observing Trend}{Mengapa ide ini layak diamati}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.59\textwidth}
+\small
+\begin{itemize}
+  \item Pengguna digital Indonesia semakin terbiasa menerima link acara, RSVP online, dan berbagi momen lewat WhatsApp atau media sosial.
+  \item Pasangan muda cenderung mencari solusi undangan yang praktis, cepat, dan hemat dibanding undangan cetak penuh.
+  \item AI makin relevan untuk mempercepat penulisan copy, personalisasi, dan rekomendasi desain.
+  \item Gifting digital juga makin masuk akal karena orang ingin memberi pengalaman spesial yang bisa dibagikan secara online.
+\end{itemize}
+
+\column{0.39\textwidth}
+\begin{tikzpicture}
+  \node[rounded corners=10pt, fill=Cream, draw=Sand, line width=0.7pt,
+    text width=2.05cm, inner sep=7pt, align=left] (sa) at (0,0) {
+    {\color{TextMuted}\scriptsize Digital Sharing}\\[1pt]
+    {\color{Navy}\large\bfseries Kuat}\\[2pt]
+    {\color{TextDark}\scriptsize Cocok untuk produk berbasis link.}
+  };
+  \node[rounded corners=10pt, fill=Cream, draw=Sand, line width=0.7pt,
+    text width=2.05cm, inner sep=7pt, align=left, right=0.18cm of sa] {
+    {\color{TextMuted}\scriptsize Mobile First}\\[1pt]
+    {\color{Navy}\large\bfseries Tinggi}\\[2pt]
+    {\color{TextDark}\scriptsize Undangan mudah dikirim lewat WhatsApp.}
+  };
+\end{tikzpicture}
+
+\vspace{0.16cm}
+\featurecard{Kenapa menarik?}{Saat personalisasi, distribusi digital, dan AI bertemu dalam satu produk, diferensiasi NechCode menjadi lebih jelas.}
+\end{columns}
+
+\vspace{0.14cm}
+\featurecard{Makna untuk NechCode}{Produk bukan hanya menjual template undangan, tetapi pengalaman digital untuk momen spesial yang lebih praktis, personal, dan mudah dipantau.}
+\end{frame}
+
+% =====================================
+% Solving problem
+% =====================================
+\begin{frame}{Solving Problem (1/2)}{Pain point yang ingin diselesaikan}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.49\textwidth}
+\begin{block}{Pain point undangan nikah digital}
+\small
+\begin{itemize}
+  \item Sulit membuat undangan yang cepat tapi tetap estetik.
+  \item Data tamu dan RSVP masih sering diatur manual.
+  \item Personalisasi nama tamu biasanya butuh kerja tambahan.
+  \item Banyak solusi terasa generik atau terlalu rumit.
+\end{itemize}
+\end{block}
+
+\column{0.49\textwidth}
+\begin{block}{Pain point gifting site}
+\small
+\begin{itemize}
+  \item Pengguna ingin halaman hadiah yang spesial, bukan sekadar chat biasa.
+  \item Tidak semua orang bisa desain mini-site sendiri.
+  \item Sulit menggabungkan ucapan, gift request, dan halaman acara dalam satu alur.
+  \item Pengalaman gifting sering belum terintegrasi dengan momen event.
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Solving Problem (2/2)}{Nilai yang ditawarkan NechCode}
+\vspace{0.4cm}
+\featurecard{Nilai praktis untuk pelanggan}{NechCode membantu user membuat undangan atau gifting page yang cepat jadi, lebih personal, dan lebih mudah dipantau daripada proses manual.}
+
+\vspace{0.3cm}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.33\textwidth}
+\begin{tikzpicture}
+\node[rounded corners=12pt, fill=Good!12, draw=Good!40, line width=0.8pt,
+text width=0.92\linewidth, inner sep=10pt, align=left] {
+{\color{Navy}\bfseries Undangan}\\[3pt]
+{\color{TextDark}\small Cepat dibuat, estetik, tamu bisa RSVP langsung dari link.}
+};
+\end{tikzpicture}
+
+\column{0.33\textwidth}
+\begin{tikzpicture}
+\node[rounded corners=12pt, fill=Blue!8, draw=Blue!30, line width=0.8pt,
+text width=0.92\linewidth, inner sep=10pt, align=left] {
+{\color{Navy}\bfseries Gifting}\\[3pt]
+{\color{TextDark}\small Halaman gift yang spesial, mudah dibagikan dan dikelola.}
+};
+\end{tikzpicture}
+
+\column{0.33\textwidth}
+\begin{tikzpicture}
+\node[rounded corners=12pt, fill=Gold!12, draw=Gold!40, line width=0.8pt,
+text width=0.92\linewidth, inner sep=10pt, align=left] {
+{\color{Navy}\bfseries AI Assist}\\[3pt]
+{\color{TextDark}\small Copy, wording, dan desain dibantu AI agar lebih personal.}
+};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Gap pasar
+% =====================================
+\begin{frame}{Gap Pasar}{Celah yang ingin dimasuki NechCode}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.54\textwidth}
+\begin{itemize}
+  \item Template umum memang banyak, tetapi user masih harus merancang isi, style, dan alur tamu sendiri.
+  \item Jasa custom lebih personal, namun lebih mahal dan lebih lama.
+  \item Platform undangan existing kuat di wedding, tetapi belum semuanya punya integrasi gifting yang menarik.
+  \item Ada ruang untuk solusi yang lebih ringan daripada jasa custom, namun lebih terarah daripada tool desain umum.
+\end{itemize}
+
+\column{0.40\textwidth}
+\begin{tikzpicture}
+  \node[rounded corners=12pt, fill=Navy, inner sep=12pt, text width=0.92\linewidth] {
+    \color{white}\textbf{Gap terkuat}\\[4pt]
+    \color{SoftBlue}\small Kombinasi template AI, personalisasi tamu, RSVP tracking, dan gifting page dalam satu alur sederhana.
+  };
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Competitor matrix
+% =====================================
+\begin{frame}{Analisa Kompetitor}{Matriks perbandingan fitur}
+\footnotesize
+\renewcommand{\arraystretch}{1.05}
+\setlength{\tabcolsep}{5.2pt}
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\RaggedRight\arraybackslash}X >{\centering\arraybackslash}m{1.75cm} >{\centering\arraybackslash}m{1.6cm} >{\centering\arraybackslash}m{1.6cm} >{\centering\arraybackslash}m{1.75cm}}
+\rowcolor{Cream}
+\textbf{Perbandingan Fitur} & \textbf{Wevitation} & \textbf{Wedew} & \textbf{Invitanku} & \textbf{NechCode} \\
+\midrule
+Template undangan digital & \yesicon & \yesicon & \yesicon & \yesicon \\
+RSVP tracking & \yesicon & \yesicon & \yesicon & \yesicon \\
+Share mudah ke WhatsApp & \yesicon & \yesicon & \yesicon & \yesicon \\
+AI bantu copy / desain & \noicon & \noicon & \midicon & \yesicon \\
+Integrasi gifting site & \midicon & \noicon & \noicon & \yesicon \\
+Personalisasi bahasa lokal & \midicon & \midicon & \yesicon & \yesicon \\
+Dashboard sederhana dan ringan & \yesicon & \midicon & \yesicon & \yesicon \\
+Potensi bundling wedding + hadiah & \midicon & \noicon & \noicon & \yesicon \\
+Diferensiasi produk yang jelas & \midicon & \midicon & \midicon & \yesicon \\
+\end{tabularx}
+\end{center}
+
+\vspace{0.15cm}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.66\textwidth}
+\featurecard{Insight utama}{Ruang diferensiasi NechCode paling kuat ada pada kombinasi \textbf{AI assistance}, \textbf{gifting integration}, dan pengalaman pengguna yang tetap ringan serta mudah dipahami.}
+
+\column{0.32\textwidth}
+{\scriptsize
+\yesicon~Tersedia\\[2pt]
+\midicon~Sebagian / belum kuat\\[2pt]
+\noicon~Belum menjadi fokus
+}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Product/service feasibility
+% =====================================
+\begin{frame}{Product/Service Feasibility}{Kelayakan produk/jasa}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.49\textwidth}
+\begin{block}{A. Keinginan atas produk/jasa}
+\begin{itemize}
+  \item Produk ini menarik karena menyederhanakan pembuatan undangan digital.
+  \item Fitur RSVP dan personalisasi tamu memberi manfaat nyata.
+  \item Gifting page menambah nilai emosional untuk momen spesial.
+  \item Cocok dengan perilaku user yang ingin praktis namun tetap estetik.
+\end{itemize}
+\end{block}
+
+\column{0.49\textwidth}
+\begin{block}{B. Permintaan atas produk/jasa}
+\begin{itemize}
+  \item Permintaan awal paling kuat ada pada use case wedding invitation.
+  \item Gifting site lebih cocok sebagai cross-sell atau pengembangan tahap berikutnya.
+  \item Willingness to pay akan dipengaruhi desain, kemudahan, dan tracking tamu.
+  \item Produk ini lebih mudah diuji bila dimulai dari fitur inti dulu.
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Industry/Target market feasibility
+% =====================================
+\begin{frame}{Industry/Target Market Feasibility}{Kelayakan industri dan target pasar}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.49\textwidth}
+\begin{block}{A. Kemenarikan industri}
+\begin{itemize}
+  \item Industri layanan digital event cukup menarik karena biaya awal relatif ringan.
+  \item Distribusi produk berbasis web/link memudahkan scale.
+  \item Hambatan masuk tidak terlalu tinggi, sehingga diferensiasi jadi faktor penting.
+  \item Kompetisi cukup padat, tetapi pasar sudah teredukasi.
+\end{itemize}
+\end{block}
+
+\column{0.49\textwidth}
+\begin{block}{B. Kemenarikan target pasar}
+\begin{itemize}
+  \item Pasangan muda adalah entry market paling realistis.
+  \item Mereka punya kebutuhan yang jelas, event-driven, dan willingness to pay lebih kuat.
+  \item Segmen gifting personal dapat menyusul setelah wedding traction awal.
+  \item Pasar cukup spesifik untuk MVP dan tidak terlalu luas.
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Organizational feasibility
+% =====================================
+\begin{frame}{Organizational Feasibility}{Kelayakan organisasi}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.49\textwidth}
+\begin{block}{A. Kecakapan organisasi}
+\begin{itemize}
+  \item Bisnis ini cocok dijalankan tim kecil.
+  \item Skill inti: web development, UI design, product thinking, support, dan digital marketing.
+  \item MVP tidak membutuhkan organisasi besar jika ruang lingkup dijaga sempit.
+  \item Kompleksitas utama ada pada menjaga pengalaman pengguna tetap sederhana.
+\end{itemize}
+\end{block}
+
+\column{0.49\textwidth}
+\begin{block}{B. Kecukupan sumberdaya}
+\begin{itemize}
+  \item Yang wajib ada sejak awal: web app dasar, template awal, RSVP dashboard, landing page.
+  \item Yang bisa menyusul: custom domain, AI layer lebih dalam, analytics, dan gift integration yang lebih kompleks.
+  \item Resource ini relatif realistis untuk startup tahap awal.
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Financial feasibility
+% =====================================
+\begin{frame}[shrink=10]{Financial Feasibility (1/2)}{A \& B -- Biaya dan perbandingan bisnis sejenis}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.49\textwidth}
+\begin{block}{A. Uang yang dibutuhkan untuk memulai}
+\begin{itemize}
+  \item Domain dan hosting
+  \item Development MVP
+  \item Desain template awal
+  \item Tools AI dan operasional dasar
+  \item Marketing awal dan support sederhana
+\end{itemize}
+\end{block}
+
+\column{0.49\textwidth}
+\begin{block}{B. Performa finansial bisnis sejenis}
+\begin{itemize}
+  \item Model umum: freemium, paket sekali beli, premium template, add-on.
+  \item Produk digital punya potensi margin baik jika custom work dijaga rendah.
+\end{itemize}
+\end{block}
+\end{columns}
+
+\vspace{0.22cm}
+\begin{center}
+\statcard{Model Awal}{One-time}{Paket per acara}\hspace{0.4cm}
+\statcard{Upsell}{Add-on}{Gift, gallery, premium theme}\hspace{0.4cm}
+\statcard{Risiko}{Harga}{Pasar sensitif harga}
+\end{center}
+\end{frame}
+
+\begin{frame}{Financial Feasibility (2/2)}{C -- Kemenarikan finansial keseluruhan}
+\begin{block}{C. Keseluruhan kemenarikan finansial}
+\begin{itemize}
+  \item Menarik karena biaya awal tidak terlalu berat.
+  \item Pendapatan paling realistis: paket acara sekali beli.
+  \item Gifting site dapat memperbesar average order value.
+  \item Risiko utama ada pada harga dan tekanan kompetisi.
+\end{itemize}
+\end{block}
+
+\vspace{0.22cm}
+\featurecard{Kesimpulan finansial}{Produk ini realistis dibangun dengan anggaran terbatas. Fokus pada paket undangan inti dulu, lalu optimalkan average order value lewat add-on gifting dan premium template.}
+\end{frame}
+
+% =====================================
+% Overall Assessment
+% =====================================
+\begin{frame}[shrink=5]{Overall Assessment}{Penilaian keseluruhan ide bisnis}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.33\textwidth}
+\riskcard{Good}{Kekuatan utama}{Pasar sudah teredukasi, use case nyata, dan distribusi digital sangat cocok untuk produk berbasis undangan dan gifting.}\\[0.09cm]
+\riskcard{Bad}{Ancaman terbesar}{Kompetitor existing, template gratis, dan switching cost pengguna yang rendah.}
+
+\column{0.33\textwidth}
+\riskcard{Gold}{Kelemahan utama}{Jika terlalu luas antara wedding, gifting, dan AI, positioning bisa kabur dan eksekusi tim kecil menjadi berat.}\\[0.09cm]
+\riskcard{Gold}{Kesimpulan awal}{Ide ini \textbf{layak diuji lebih lanjut} bila MVP difokuskan dulu pada undangan nikah digital dengan RSVP tracking.}
+
+\column{0.33\textwidth}
+\riskcard{Good}{Peluang terbesar}{Menjadi solusi yang lebih simpel dari platform wedding kompleks dan lebih terarah dari tool desain umum.}\\[0.09cm]
+\riskcard{Good}{Rekomendasi}{Bangun bertahap: mulai dari invitation core, lalu AI assistance, lalu gifting integration.}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Go to market
+% =====================================
+\begin{frame}{Strategi Masuk Pasar}{Urutan eksekusi yang lebih aman}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.33\textwidth}
+\featurecard{Tahap 1 -- MVP}{Undangan digital, RSVP, galeri foto, dan share link yang mudah. Fokus pada pengalaman dasar yang stabil dan estetik.}
+
+\column{0.33\textwidth}
+\featurecard{Tahap 2 -- AI Layer}{Tambahkan generator copy, rekomendasi wording, dan bantuan personalisasi desain agar produk lebih menonjol.}
+
+\column{0.33\textwidth}
+\featurecard{Tahap 3 -- Gifting}{Masukkan gift catalog atau gift request sederhana untuk memperluas monetisasi dan diferensiasi.}
+\end{columns}
+
+\vspace{0.28cm}
+\begin{block}{Kenapa urutan ini penting?}
+Dengan pendekatan bertahap, tim bisa memvalidasi minat pasar lebih dulu tanpa langsung terbebani kompleksitas operasional gifting.
+\end{block}
+\end{frame}
+
+% =====================================
+% Conclusion
+% =====================================
+\begin{frame}{Kesimpulan Analisa Kelayakan}{Ringkas, jelas, dan mudah dipahami audiens}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.58\textwidth}
+\begin{itemize}
+  \item Ide ini \textbf{layak dikembangkan} karena kebutuhan pasar nyata, distribusi digital kuat, dan ada ruang diferensiasi.
+  \item Keunikan NechCode ada pada \textbf{gabungan invitation platform + AI assistance + gifting experience}.
+  \item Strategi paling aman adalah membuat MVP yang ringan dulu, lalu menambah AI dan gifting secara bertahap.
+  \item Jika positioning dipertajam, produk ini berpotensi lebih menonjol dibanding layanan undangan digital yang hanya bermain di template.
+\end{itemize}
+
+\column{0.38\textwidth}
+\begin{tikzpicture}
+\node[rounded corners=16pt, fill=Navy, inner sep=12pt, text width=0.92\linewidth] {
+\color{white}\bfseries Verdict\\[4pt]
+\color{SoftBlue}\small \textbf{Layak untuk diuji sebagai MVP}, terutama bila NechCode fokus pada kemudahan penggunaan, personalisasi, dan diferensiasi gifting berbasis AI.
+};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+% =====================================
+% Team
+% =====================================
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[Cream] (current page.south west) rectangle (current page.north east);
+  \fill[Navy] (current page.south west) rectangle ([yshift=1.15cm]current page.south east);
+  \fill[SoftBlue] ([xshift=1.0cm,yshift=-1.0cm]current page.north west) circle (0.85cm);
+\end{tikzpicture}
+
+\vspace{0.9cm}
+\begin{center}
+{\color{Navy}\fontsize{24}{28}\selectfont\bfseries Terima Kasih}\\[0.2cm]
+{\color{TextDark}\large NechCode -- Ide Bisnis dan Analisa Kelayakan}\\[0.35cm]
+\pill{Kelompok 12}
+\end{center}
+
+\vspace{0.4cm}
+\begin{columns}[T,totalwidth=\textwidth]
+\column{0.48\textwidth}
+\begin{block}{Anggota}
+\small
+Louis Cristian S. L -- 5002221004\\
+Hafidz Mulia -- 5002221022\\
+Nabeel Farvez F. -- 5002221139
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{Anggota}
+\small
+M. Rajwa Dzaki D. -- 5002221143\\
+Stanadyne Tolanda -- 5046231038
+\end{block}
+\end{columns}
+
+\vfill
+
+\end{frame}
+
+\end{document}

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valley of Blue Invitation</title>
+  <meta
+    name="description"
+    content="A refined blue-toned digital invitation template for weddings and special celebrations."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="opening-screen" id="opening-screen" aria-hidden="false">
+    <div class="opening-screen__backdrop"></div>
+    <div class="opening-card">
+      <p class="eyebrow">The Wedding Invitation</p>
+      <h1>Raka<br>&amp;<br>Nadya</h1>
+      <p class="opening-card__guest">Dear <span id="guest-name">Our Dear Guest</span></p>
+      <p class="opening-card__copy">
+        We invite you to witness a celebration wrapped in moonlight, soft florals,
+        and the calm spirit of a valley painted in blue.
+      </p>
+      <button class="button button--primary" id="open-invitation" type="button">
+        Open Invitation
+      </button>
+    </div>
+  </div>
+
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="#home">Valley of Blue</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#couple">Couple</a>
+        <a href="#event">Event</a>
+        <a href="#story">Story</a>
+        <a href="#rsvp">RSVP</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero__mist hero__mist--one"></div>
+        <div class="hero__mist hero__mist--two"></div>
+        <div class="hero__mountains" aria-hidden="true">
+          <span class="mountain mountain--back"></span>
+          <span class="mountain mountain--mid"></span>
+          <span class="mountain mountain--front"></span>
+        </div>
+        <div class="hero__content">
+          <p class="eyebrow">Saturday, 28 September 2026</p>
+          <h1>Raka &amp; Nadya</h1>
+          <p class="hero__lead">
+            A digital invitation shaped around quiet elegance, soft blue light,
+            and a celebration meant to feel intimate from the first scroll.
+          </p>
+          <div class="hero__actions">
+            <a class="button button--primary" href="#event">See Event Details</a>
+            <a class="button button--ghost" href="#rsvp">Confirm Attendance</a>
+          </div>
+        </div>
+        <aside class="hero-card">
+          <p class="hero-card__label">Save the Date</p>
+          <p class="hero-card__date">28.09.26</p>
+          <p class="hero-card__place">Jakarta, Indonesia</p>
+        </aside>
+      </section>
+
+      <section class="section intro-strip" id="couple">
+        <div class="section-heading">
+          <p class="eyebrow">The Couple</p>
+          <h2>Two stories, one horizon.</h2>
+        </div>
+        <div class="couple-grid">
+          <article class="profile-card">
+            <div class="profile-card__portrait profile-card__portrait--groom" aria-hidden="true"></div>
+            <p class="profile-card__role">The Groom</p>
+            <h3>Raka Adiputra</h3>
+            <p>
+              Son of Mr. Budi Adiputra &amp; Mrs. Larasati. Calm in presence,
+              deliberate in love, and always certain that good things deserve patience.
+            </p>
+          </article>
+          <article class="profile-card">
+            <div class="profile-card__portrait profile-card__portrait--bride" aria-hidden="true"></div>
+            <p class="profile-card__role">The Bride</p>
+            <h3>Nadya Paramitha</h3>
+            <p>
+              Daughter of Mr. Rahmat Paramitha &amp; Mrs. Amalia. Soft-spoken,
+              luminous, and the person who made every ordinary day feel composed.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section schedule-section" id="event">
+        <div class="section-heading section-heading--center">
+          <p class="eyebrow">Event Details</p>
+          <h2>Join us in a ceremony filled with stillness, warmth, and celebration.</h2>
+        </div>
+
+        <div class="countdown-panel">
+          <div class="countdown-panel__copy">
+            <p class="eyebrow">Countdown</p>
+            <h3>Until the valley blooms for us</h3>
+          </div>
+          <div class="countdown" id="countdown" aria-label="Countdown to the event">
+            <div class="countdown__item">
+              <span id="days">00</span>
+              <small>Days</small>
+            </div>
+            <div class="countdown__item">
+              <span id="hours">00</span>
+              <small>Hours</small>
+            </div>
+            <div class="countdown__item">
+              <span id="minutes">00</span>
+              <small>Minutes</small>
+            </div>
+            <div class="countdown__item">
+              <span id="seconds">00</span>
+              <small>Seconds</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-grid">
+          <article class="event-card">
+            <p class="eyebrow">Akad Nikah</p>
+            <h3>09.00 WIB</h3>
+            <p class="event-card__date">Saturday, 28 September 2026</p>
+            <p>Masjid Raya Al-Ihsan</p>
+            <p>Jl. Kemang Timur 18, Jakarta Selatan</p>
+            <a class="text-link" href="https://maps.google.com" target="_blank" rel="noreferrer">
+              Open Location
+            </a>
+          </article>
+          <article class="event-card">
+            <p class="eyebrow">Reception</p>
+            <h3>18.30 WIB</h3>
+            <p class="event-card__date">Saturday, 28 September 2026</p>
+            <p>The Blue Valley Hall</p>
+            <p>Jl. Dharmawangsa 27, Jakarta Selatan</p>
+            <a class="text-link" href="https://maps.google.com" target="_blank" rel="noreferrer">
+              Open Location
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section quote-section">
+        <div class="quote-card">
+          <p class="eyebrow">A Note on Love</p>
+          <blockquote>
+            "Love, like water in a quiet valley, does not need to rush to become deep."
+          </blockquote>
+        </div>
+      </section>
+
+      <section class="section story-section" id="story">
+        <div class="section-heading">
+          <p class="eyebrow">Our Story</p>
+          <h2>The kind of story that became clear slowly, then all at once.</h2>
+        </div>
+        <div class="story-grid">
+          <article class="story-card">
+            <span>01</span>
+            <h3>First Meeting</h3>
+            <p>
+              We met in a crowded room and somehow noticed the silence around each other first.
+            </p>
+          </article>
+          <article class="story-card">
+            <span>02</span>
+            <h3>Growing Closer</h3>
+            <p>
+              Coffee turned into long walks, then into the ease of being understood without effort.
+            </p>
+          </article>
+          <article class="story-card">
+            <span>03</span>
+            <h3>The Promise</h3>
+            <p>
+              On a calm evening, with no grand audience, we chose the rest of our lives.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section gallery-section">
+        <div class="section-heading section-heading--center">
+          <p class="eyebrow">Moments</p>
+          <h2>A gallery framed like moonlight on water.</h2>
+        </div>
+        <div class="gallery-grid" aria-label="Gallery preview">
+          <div class="gallery-tile gallery-tile--tall"></div>
+          <div class="gallery-tile gallery-tile--wide"></div>
+          <div class="gallery-tile"></div>
+          <div class="gallery-tile"></div>
+          <div class="gallery-tile gallery-tile--wide"></div>
+        </div>
+      </section>
+
+      <section class="section gift-section">
+        <div class="section-heading">
+          <p class="eyebrow">Wedding Gift</p>
+          <h2>Your presence is the finest gift. If you wish, a token can be sent here.</h2>
+        </div>
+        <div class="gift-grid">
+          <article class="gift-card">
+            <p class="gift-card__bank">BCA</p>
+            <h3>1234567890</h3>
+            <p>A/N Raka Adiputra</p>
+          </article>
+          <article class="gift-card">
+            <p class="gift-card__bank">Mandiri</p>
+            <h3>0987654321</h3>
+            <p>A/N Nadya Paramitha</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section rsvp-section" id="rsvp">
+        <div class="rsvp-shell">
+          <div class="rsvp-copy">
+            <p class="eyebrow">RSVP</p>
+            <h2>Let us prepare a place for you.</h2>
+            <p>
+              Please let us know whether you will attend. This version is styled as a
+              functional prototype, so you can later connect it to WhatsApp, Google Sheets,
+              Supabase, or your preferred backend.
+            </p>
+          </div>
+          <form class="rsvp-form" id="rsvp-form">
+            <label>
+              Full Name
+              <input type="text" name="name" placeholder="Your name" required>
+            </label>
+            <label>
+              Attendance
+              <select name="attendance" required>
+                <option value="">Select one</option>
+                <option value="yes">Will attend</option>
+                <option value="maybe">Still confirming</option>
+                <option value="no">Unable to attend</option>
+              </select>
+            </label>
+            <label>
+              Message
+              <textarea name="message" rows="4" placeholder="Write your wish for the couple"></textarea>
+            </label>
+            <button class="button button--primary" type="submit">Send RSVP</button>
+            <p class="form-note" id="form-note" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Crafted as an original invitation concept inspired by a premium blue wedding aesthetic.</p>
+    </footer>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

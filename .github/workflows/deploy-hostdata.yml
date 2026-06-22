@@ -1,0 +1,208 @@
+name: Deploy Invitely to Hostdata
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'bootstrap/**'
+      - 'config/**'
+      - 'database/**'
+      - 'public/**'
+      - 'resources/**'
+      - 'routes/**'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config.js'
+      - '.github/workflows/deploy-hostdata.yml'
+
+concurrency:
+  group: hostdata-invitely-production
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+      HOSTDATA_HOST: ${{ secrets.HOSTDATA_HOST }}
+      HOSTDATA_USER: ${{ secrets.HOSTDATA_USER }}
+      HOSTDATA_SSH_KEY: ${{ secrets.HOSTDATA_SSH_KEY }}
+      HOSTDATA_PORT: ${{ vars.HOSTDATA_PORT || '22' }}
+      HOSTDATA_APP_PATH: ${{ vars.HOSTDATA_APP_PATH }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          lfs: false
+
+      - name: Validate deployment configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${HOSTDATA_HOST}" || { echo "Missing secret HOSTDATA_HOST"; exit 1; }
+          test -n "${HOSTDATA_USER}" || { echo "Missing secret HOSTDATA_USER"; exit 1; }
+          test -n "${HOSTDATA_SSH_KEY}" || { echo "Missing secret HOSTDATA_SSH_KEY"; exit 1; }
+          test -n "${HOSTDATA_APP_PATH}" || { echo "Missing repository variable HOSTDATA_APP_PATH"; exit 1; }
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@2.37.0
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: composer:v2
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+
+      - name: Build frontend assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Configure SSH key
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          KEY_CONTENT="$(printf '%s' "${HOSTDATA_SSH_KEY}" | tr -d '\r')"
+
+          if printf '%s' "${KEY_CONTENT}" | grep -q "BEGIN OPENSSH PRIVATE KEY"; then
+            printf '%s' "${KEY_CONTENT}" > ~/.ssh/hostdata
+          else
+            printf '%s' "${KEY_CONTENT}" | base64 -d > ~/.ssh/hostdata 2>/dev/null || {
+              echo "HOSTDATA_SSH_KEY is neither a raw OpenSSH private key nor valid base64 text."
+              exit 1
+            }
+          fi
+
+          chmod 600 ~/.ssh/hostdata
+          ssh-keygen -y -f ~/.ssh/hostdata >/dev/null 2>&1 || {
+            echo "HOSTDATA_SSH_KEY is not a valid unencrypted OpenSSH private key."
+            exit 1
+          }
+          ssh-keyscan -p "${HOSTDATA_PORT}" "${HOSTDATA_HOST}" >> ~/.ssh/known_hosts
+
+      - name: Ensure remote app path exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          REMOTE_APP_PATH="${HOSTDATA_APP_PATH#/}"
+          ssh -i ~/.ssh/hostdata -o IdentitiesOnly=yes -p "${HOSTDATA_PORT}" "${HOSTDATA_USER}@${HOSTDATA_HOST}" \
+            "mkdir -p '${REMOTE_APP_PATH}'"
+
+      - name: Sync application files to Hostdata
+        shell: bash
+        run: |
+          set -euo pipefail
+          REMOTE_APP_PATH="${HOSTDATA_APP_PATH#/}"
+          rsync -az --delete \
+            --exclude='.env' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='docs' \
+            --exclude='storage/' \
+            --exclude='public/storage' \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='tmp' \
+            -e "ssh -i ~/.ssh/hostdata -o IdentitiesOnly=yes -p ${HOSTDATA_PORT}" \
+            ./ "${HOSTDATA_USER}@${HOSTDATA_HOST}:${REMOTE_APP_PATH}/"
+
+      - name: Finalize Laravel deployment on Hostdata
+        shell: bash
+        run: |
+          set -euo pipefail
+          REMOTE_APP_PATH="${HOSTDATA_APP_PATH#/}"
+          ssh -i ~/.ssh/hostdata -o IdentitiesOnly=yes -p "${HOSTDATA_PORT}" "${HOSTDATA_USER}@${HOSTDATA_HOST}" <<EOF
+          set -e
+          cd "${REMOTE_APP_PATH}"
+
+          resolve_php() {
+            for candidate in \
+              php84 \
+              php8.4 \
+              /opt/alt/php84/usr/bin/php \
+              /usr/local/bin/php84 \
+              /usr/local/lsws/lsphp84/bin/php \
+              /opt/cpanel/ea-php84/root/usr/bin/php \
+              php83 \
+              php8.3 \
+              /opt/alt/php83/usr/bin/php \
+              /usr/local/bin/php83 \
+              /usr/local/lsws/lsphp83/bin/php \
+              /opt/cpanel/ea-php83/root/usr/bin/php \
+              php
+            do
+              if command -v "\$candidate" >/dev/null 2>&1; then
+                bin="\$(command -v "\$candidate")"
+              elif [ -x "\$candidate" ]; then
+                bin="\$candidate"
+              else
+                continue
+              fi
+
+              version="\$("\$bin" -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null || true)"
+              has_pdo="\$("\$bin" -r 'echo extension_loaded("pdo") ? "yes" : "no";' 2>/dev/null || true)"
+              has_pdo_mysql="\$("\$bin" -r 'echo extension_loaded("pdo_mysql") ? "yes" : "no";' 2>/dev/null || true)"
+              case "\$version" in
+                8.3|8.4|8.5)
+                  if [ "\$has_pdo" = "yes" ] && [ "\$has_pdo_mysql" = "yes" ]; then
+                    echo "\$bin"
+                    return 0
+                  fi
+                  ;;
+              esac
+            done
+
+            return 1
+          }
+
+          PHP_BIN="\$(resolve_php)" || {
+            echo "No usable PHP 8.3+ CLI binary with PDO and pdo_mysql found on the remote server."
+            exit 1
+          }
+
+          echo "Using remote PHP binary: \$PHP_BIN"
+          "\$PHP_BIN" -v
+
+          test -f .env || {
+            echo "Missing production .env at ${REMOTE_APP_PATH}/.env"
+            exit 1
+          }
+
+          mkdir -p storage/app/public
+          mkdir -p storage/framework/cache
+          mkdir -p storage/framework/sessions
+          mkdir -p storage/framework/views
+          mkdir -p storage/logs
+          mkdir -p bootstrap/cache
+
+          "\$PHP_BIN" artisan migrate --force
+          "\$PHP_BIN" artisan optimize:clear
+          "\$PHP_BIN" artisan config:cache
+          "\$PHP_BIN" artisan route:cache
+          "\$PHP_BIN" artisan view:cache
+
+          if [ ! -L public/storage ]; then
+            "\$PHP_BIN" artisan storage:link || true
+          fi
+          EOF

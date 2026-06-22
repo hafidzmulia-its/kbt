@@ -1,0 +1,16 @@
+<svg width="1200" height="750" viewBox="0 0 1200 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="750" fill="#FDF6F0"/>
+  <rect x="72" y="60" width="1056" height="630" rx="40" fill="#2D1B2E"/>
+  <circle cx="980" cy="160" r="240" fill="rgba(232,115,90,0.10)"/>
+  <circle cx="190" cy="590" r="180" fill="rgba(201,174,195,0.18)"/>
+  <text x="140" y="230" fill="#E8735A" font-family="Georgia, serif" font-size="36" letter-spacing="8">ROMANTIC EDITORIAL THEME</text>
+  <text x="140" y="340" fill="#FFFFFF" font-family="Georgia, serif" font-size="106" font-style="italic">Playfair</text>
+  <text x="140" y="430" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="82" font-weight="300">Blush</text>
+  <rect x="140" y="484" width="406" height="118" rx="24" fill="rgba(255,255,255,0.08)" stroke="rgba(232,115,90,0.18)"/>
+  <rect x="582" y="484" width="240" height="118" rx="24" fill="#FFFFFF"/>
+  <rect x="850" y="484" width="208" height="118" rx="24" fill="#F2D9D0"/>
+  <rect x="170" y="524" width="220" height="16" rx="8" fill="#E8735A"/>
+  <rect x="170" y="560" width="300" height="12" rx="6" fill="rgba(255,255,255,0.22)"/>
+  <rect x="615" y="518" width="150" height="18" rx="9" fill="#2D1B2E"/>
+  <rect x="882" y="518" width="120" height="18" rx="9" fill="#C4503A"/>
+</svg>
