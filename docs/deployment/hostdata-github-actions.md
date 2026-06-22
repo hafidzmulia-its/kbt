@@ -5,6 +5,7 @@ Dokumen ini fokus ke **deploy production saja** untuk aplikasi Laravel `Invitely
 Workflow yang dipakai ada di:
 
 - [deploy-hostdata.yml](/D:/Downloads/KBT/.github/workflows/deploy-hostdata.yml)
+- [hostdata-cicd-known-good.md](/D:/Downloads/KBT/docs/deployment/hostdata-cicd-known-good.md)
 
 Deploy modelnya:
 
@@ -171,6 +172,11 @@ Isi `HOSTDATA_SSH_KEY`:
 - bukan `.pub`
 - tanpa passphrase
 
+Rekomendasi resmi untuk repo ini:
+
+- **pakai base64 dari file private key**
+- jangan mengandalkan raw multiline kecuali kamu benar-benar yakin paste-nya bersih
+
 Format raw yang benar harus diawali:
 
 ```text
@@ -194,6 +200,8 @@ Untuk buat base64 di PowerShell:
 [Convert]::ToBase64String([IO.File]::ReadAllBytes("$env:USERPROFILE\.ssh\invitely_production_ed25519"))
 ```
 
+Ini adalah format secret yang paling direkomendasikan karena paling tahan terhadap masalah line break saat copy-paste di GitHub.
+
 ### Variables
 
 Tambahkan repository variables:
@@ -207,6 +215,12 @@ Contoh:
 HOSTDATA_APP_PATH=domains/example.com/public_html/invitely
 HOSTDATA_PORT=22
 ```
+
+Penting:
+
+- `HOSTDATA_APP_PATH` harus satu baris plain text
+- jangan pakai leading slash
+- jangan ada tab atau enter tersembunyi
 
 ## 7. Push ke branch `main`
 
@@ -275,6 +289,11 @@ Cek:
 - format key benar
 - public key yang cocok ada di `authorized_keys`
 - `HOSTDATA_HOST` adalah host SSH / IP server, bukan URL aplikasi
+
+Catatan penting dari implementasi yang sudah lolos:
+
+- kalau raw multiline terasa benar tapi tetap gagal, pindah ke **base64 private key**
+- itu adalah jalur yang paling stabil untuk `HOSTDATA_SSH_KEY`
 
 ### Jika deploy sukses tapi web error
 

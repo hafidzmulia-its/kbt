@@ -71,6 +71,7 @@ php artisan queue:work
 Panduan deploy production via GitHub Actions + Hostdata-style SSH ada di:
 
 - [docs/deployment/hostdata-github-actions.md](/D:/Downloads/KBT/docs/deployment/hostdata-github-actions.md)
+- [docs/deployment/hostdata-cicd-known-good.md](/D:/Downloads/KBT/docs/deployment/hostdata-cicd-known-good.md)
 
 ## Core Modules
 
