@@ -7,7 +7,7 @@
                 <p class="section-kicker !text-[#9fe8ff]">Event Registry</p>
                 <h1 class="mt-3 text-5xl text-white md:text-6xl">Kelola seluruh invitation workspace dalam satu daftar rapi.</h1>
                 <p class="mt-5 max-w-3xl text-base leading-8 text-white/76">
-                    Setiap event sekarang memakai sistem wizard, preview draft, personal invitation, dan publication flow yang sama. Halaman ini jadi titik kontrol utama untuk client.
+                    Setiap event sekarang memakai alur setup, preview draft, personal invitation, dan publication flow yang sama. Halaman ini jadi titik kontrol utama untuk client.
                 </p>
             </div>
             <div class="flex flex-wrap gap-3">
@@ -23,7 +23,7 @@
                 <p class="section-kicker">Event List</p>
                 <h2 class="mt-3 text-[2.1rem] text-primary">Semua event yang sudah masuk ke sistem.</h2>
             </div>
-            <p class="section-copy max-w-xl">Pilih workspace untuk operasional, wizard untuk revisi konten, preview draft untuk review internal, dan public link saat event siap dipublikasikan.</p>
+            <p class="section-copy max-w-xl">Pilih workspace untuk operasional, halaman setup untuk revisi konten, preview draft untuk review internal, dan public link saat event siap dipublikasikan.</p>
         </div>
 
         <div class="mt-6 grid gap-4">
@@ -44,7 +44,7 @@
                         </div>
                         <div class="flex flex-wrap gap-2 xl:max-w-sm xl:justify-end">
                             <a href="{{ route('dashboard.events.workspace', $event) }}" class="btn-secondary">Workspace</a>
-                            <a href="{{ route('dashboard.events.edit', $event) }}" class="btn-secondary">Wizard</a>
+                            <a href="{{ route('dashboard.events.edit', $event) }}" class="btn-secondary">Setup</a>
                             <a href="{{ route('dashboard.events.preview', $event) }}" class="btn-secondary">Preview draft</a>
                             @if ($event->status === 'published')
                                 <a href="{{ route('public.invitation.general', $event) }}" class="btn-primary">Public link</a>

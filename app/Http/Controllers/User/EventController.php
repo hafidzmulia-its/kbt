@@ -16,6 +16,7 @@ use App\Services\EventWorkflowService;
 use App\Services\TokenService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Throwable;
 
 class EventController extends Controller
 {
@@ -54,18 +55,28 @@ class EventController extends Controller
 
     public function store(EventRequest $request): RedirectResponse
     {
-        $event = $this->eventManagementService->create(
-            $request->user(),
-            $this->eventData($request),
-            $this->eventContentData($request),
-            $this->eventSchedulesData($request),
-            $this->eventGiftData($request),
-            $request->file('album_photos', [])
-        );
+        try {
+            $event = $this->eventManagementService->create(
+                $request->user(),
+                $this->eventData($request),
+                $this->eventContentData($request),
+                $this->eventSchedulesData($request),
+                $this->eventGiftData($request),
+                $request->file('album_photos', [])
+            );
 
-        $this->auditLogService->log('user', $request->user()->id, $event, 'event.created', Event::class, $event->id);
+            $this->auditLogService->log('user', $request->user()->id, $event, 'event.created', Event::class, $event->id);
 
-        return redirect()->route('dashboard.events.edit', $event)->with('status', 'Event berhasil dibuat.');
+            return redirect()->route('dashboard.events.edit', $event)->with('status', 'Event berhasil dibuat.');
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'event' => 'Event belum berhasil disimpan. Cek konfigurasi server atau lihat laravel.log untuk detail error production.',
+                ]);
+        }
     }
 
     public function show(Event $event): RedirectResponse
@@ -125,18 +136,28 @@ class EventController extends Controller
     {
         $this->authorizeEventUpdate($event);
 
-        $this->eventManagementService->update(
-            $event,
-            $this->eventData($request, $event),
-            $this->eventContentData($request),
-            $this->eventSchedulesData($request),
-            $this->eventGiftData($request),
-            $request->file('album_photos', [])
-        );
+        try {
+            $this->eventManagementService->update(
+                $event,
+                $this->eventData($request, $event),
+                $this->eventContentData($request),
+                $this->eventSchedulesData($request),
+                $this->eventGiftData($request),
+                $request->file('album_photos', [])
+            );
 
-        $this->auditLogService->log('user', $request->user()->id, $event, 'event.updated', Event::class, $event->id);
+            $this->auditLogService->log('user', $request->user()->id, $event, 'event.updated', Event::class, $event->id);
 
-        return back()->with('status', 'Event berhasil diperbarui.');
+            return back()->with('status', 'Event berhasil diperbarui.');
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'event' => 'Event belum berhasil diperbarui. Cek konfigurasi server atau lihat laravel.log untuk detail error production.',
+                ]);
+        }
     }
 
     public function destroy(Event $event): RedirectResponse

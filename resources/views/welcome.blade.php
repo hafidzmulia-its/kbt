@@ -155,7 +155,7 @@
                             <h2 class="section-heading-title !mt-3 !max-w-[16ch]">Lihat arah visual template sebelum masuk ke detail produk.</h2>
                         </div>
                         <p class="max-w-xl text-[0.95rem] leading-7 text-on-surface-variant">
-                            Dua jalur preview ini berjalan terus untuk menunjukkan range template yang sudah bisa dipilih langsung dari wizard event.
+                            Dua jalur preview ini berjalan terus untuk menunjukkan range template yang sudah bisa dipilih langsung dari halaman setup event.
                         </p>
                     </div>
                 </div>

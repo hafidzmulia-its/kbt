@@ -8,7 +8,7 @@
             'title' => 'Buat event baru',
             'copy' => 'Mulai kalau Anda belum punya event yang aktif.',
             'route' => route('dashboard.events.create'),
-            'label' => 'Mulai wizard event',
+            'label' => 'Mulai setup event',
             'is_primary' => $events->isEmpty(),
         ],
         [
@@ -126,11 +126,11 @@
                             </div>
                             <h3 class="mt-4 text-3xl text-primary">{{ $event->couple_name_display }}</h3>
                             <p class="mt-2 text-base font-medium text-on-surface">{{ $event->title }}</p>
-                            <p class="mt-3 section-copy">Masuk ke workspace jika Anda ingin tahu langkah berikutnya. Gunakan wizard hanya saat isi event masih perlu dirapikan.</p>
+                            <p class="mt-3 section-copy">Masuk ke workspace jika Anda ingin tahu langkah berikutnya. Gunakan halaman setup saat isi event masih perlu dirapikan.</p>
                         </div>
                         <div class="flex flex-wrap gap-2">
                             <a href="{{ route('dashboard.events.workspace', $event) }}" class="btn-primary">Lanjutkan event</a>
-                            <a href="{{ route('dashboard.events.edit', $event) }}" class="btn-secondary">Edit wizard</a>
+                            <a href="{{ route('dashboard.events.edit', $event) }}" class="btn-secondary">Edit setup</a>
                             <a href="{{ route('dashboard.events.preview', $event) }}" class="btn-secondary">Preview draft</a>
                             @if ($event->status === 'published')
                                 <a href="{{ route('public.invitation.general', $event) }}" class="btn-secondary">Preview publik</a>

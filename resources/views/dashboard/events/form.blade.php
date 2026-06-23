@@ -36,6 +36,7 @@
     $stepOrder = collect($builderSteps)->pluck('key')->all();
     $completionCount = collect($builderSteps)->where('is_complete', true)->count();
     $initialWizardStep = old('wizard_step', 'start');
+    $hasStaticQrisPreview = file_exists(public_path('qris.jpeg'));
 @endphp
 
 @section('content')
@@ -76,12 +77,12 @@
             <div class="relative z-10">
                 <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                     <div class="max-w-4xl">
-                        <p class="section-kicker !text-[#9fe8ff]">Invitation Setup Wizard</p>
+                        <p class="section-kicker !text-[#9fe8ff]">Setup Event</p>
                         <h1 class="mt-3 text-5xl text-white md:text-6xl">
-                            {{ $event->exists ? 'Perbarui invitation system tanpa bikin user tenggelam di form panjang.' : 'Buat invitation system dengan wizard yang ringkas dan tetap lengkap.' }}
+                            {{ $event->exists ? 'Perbarui invitation system tanpa bikin user tenggelam di form panjang.' : 'Buat invitation system yang ringkas dan tetap lengkap.' }}
                         </h1>
                         <p class="mt-5 max-w-3xl text-base leading-8 text-white/76">
-                            Flow ini mengambil kejelasan dari wizard kompetitor, tetapi dibuat lebih tenang, lebih premium, dan lebih sesuai dengan struktur Invitely yang sudah kamu bangun.
+                            Alur ini dibuat supaya isi event, tamu, publikasi, dan operasional bisa disusun bertahap dengan rasa yang lebih tenang, lebih premium, dan tetap mudah dipahami.
                         </p>
                     </div>
                     <div class="flex flex-wrap gap-3">
@@ -121,7 +122,7 @@
                 <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <div>
                         <p class="section-kicker">Progress</p>
-                        <h2 class="mt-3 text-3xl text-primary">Invitation setup wizard</h2>
+                        <h2 class="mt-3 text-3xl text-primary">Progress setup event</h2>
                     </div>
                     <p class="text-sm font-semibold text-on-surface-variant">{{ $completionCount }} / {{ count($builderSteps) }} langkah terisi</p>
                 </div>
@@ -308,9 +309,20 @@
                             <input class="field" name="account_number" value="{{ old('account_number', $event->giftSetting?->account_number) }}" placeholder="Nomor rekening">
                             <input class="field" name="account_holder" value="{{ old('account_holder', $event->giftSetting?->account_holder) }}" placeholder="Atas nama">
                         </div>
-                        <div class="rounded-[1.2rem] border border-[#1D5A8D]/12 bg-[#F8FBFE] px-4 py-4 text-sm leading-7 text-on-surface-variant">
-                            QRIS preview publik otomatis memakai file <code>public/qris.jpeg</code> jika tersedia. Jadi user tidak perlu upload ulang per event.
-                        </div>
+                        @if ($hasStaticQrisPreview)
+                            <div class="overflow-hidden rounded-[1.4rem] border border-[#1D5A8D]/12 bg-[#F8FBFE]">
+                                <div class="flex items-center justify-between gap-3 border-b border-[#1D5A8D]/10 px-4 py-3">
+                                    <div>
+                                        <p class="text-sm font-semibold text-primary">Preview QR pembayaran</p>
+                                        <p class="mt-1 text-xs leading-6 text-on-surface-variant">QR ini langsung dipakai di halaman gift tanpa perlu upload ulang.</p>
+                                    </div>
+                                    <span class="dashboard-chip">QRIS</span>
+                                </div>
+                                <div class="bg-white p-4">
+                                    <img src="{{ asset('qris.jpeg') }}" alt="QR pembayaran" class="mx-auto w-full max-w-sm rounded-[1.2rem] border border-outline-variant/18 object-cover shadow-[0_18px_44px_rgba(13,27,42,0.08)]">
+                                </div>
+                            </div>
+                        @endif
                         <textarea class="field min-h-24" name="gift_instructions" placeholder="Instruksi gifting">{{ old('gift_instructions', $event->giftSetting?->instructions) }}</textarea>
                         <textarea class="field min-h-24" name="no_gift_message" placeholder="Copy no-gift">{{ old('no_gift_message', $event->content?->no_gift_message) }}</textarea>
                     </div>
@@ -354,6 +366,20 @@
                             <span class="text-sm font-semibold text-on-surface">{{ $pricing['addons']['custom_design']['label'] }} (+Rp{{ number_format($pricing['addons']['custom_design']['price'], 0, ',', '.') }})</span>
                         </label>
                         <textarea class="field min-h-32" name="broadcast_message_template_seed" placeholder="Template broadcast WhatsApp hasil AI atau versi final">{{ $broadcastSeed }}</textarea>
+                        @if ($hasStaticQrisPreview)
+                            <div class="overflow-hidden rounded-[1.4rem] border border-[#1D5A8D]/12 bg-[linear-gradient(180deg,#F8FBFE_0%,#FFFFFF_100%)]">
+                                <div class="flex items-center justify-between gap-3 border-b border-[#1D5A8D]/10 px-4 py-3">
+                                    <div>
+                                        <p class="text-sm font-semibold text-primary">QR pembayaran siap tampil</p>
+                                        <p class="mt-1 text-xs leading-6 text-on-surface-variant">Begitu event disimpan, halaman gift akan memakai QR berikut ini.</p>
+                                    </div>
+                                    <span class="dashboard-chip">Live asset</span>
+                                </div>
+                                <div class="p-4">
+                                    <img src="{{ asset('qris.jpeg') }}" alt="QR pembayaran siap tampil" class="mx-auto w-full max-w-xs rounded-[1.2rem] border border-outline-variant/18 bg-white object-cover shadow-[0_18px_44px_rgba(13,27,42,0.08)]">
+                                </div>
+                            </div>
+                        @endif
                     </div>
 
                     <div class="mt-8">
@@ -372,7 +398,7 @@
                 <section class="surface-panel wizard-footer-panel">
                     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                         <div>
-                            <p class="text-sm font-semibold text-primary" data-wizard-step-indicator>Step 1 dari {{ count($builderSteps) }}</p>
+                            <p class="text-sm font-semibold text-primary" data-wizard-step-indicator>Langkah 1 dari {{ count($builderSteps) }}</p>
                             <p class="mt-2 text-sm text-on-surface-variant">Lanjutkan langkah berikutnya sampai selesai. Tombol simpan hanya muncul saat semua bagian inti sudah selesai ditinjau.</p>
                         </div>
                         <div class="flex flex-col-reverse gap-3 sm:flex-row">

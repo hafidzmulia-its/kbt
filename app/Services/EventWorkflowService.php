@@ -120,7 +120,7 @@ class EventWorkflowService
                 'title' => 'Rapikan builder',
                 'copy' => 'Pastikan identitas pasangan, sesi acara, tema, dan copy publik sudah kuat sebelum invitation dibuka ke tamu.',
                 'route' => route('dashboard.events.edit', $event),
-                'route_label' => 'Buka wizard',
+                'route_label' => 'Buka setup',
                 'is_locked' => false,
             ],
             [
