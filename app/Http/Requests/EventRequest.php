@@ -34,6 +34,7 @@ class EventRequest extends FormRequest
             'wants_broadcast_addon' => ['sometimes', 'boolean'],
             'wants_custom_design_addon' => ['sometimes', 'boolean'],
             'bundle_offer_enabled' => ['sometimes', 'boolean'],
+            'occasion_type' => ['nullable', Rule::in(array_keys(config('nechcode.occasion_types', [])))],
             'language_variant' => ['nullable', Rule::in(array_keys(config('invitation_languages.variants', [])))],
             'ai_style_brief' => ['nullable', 'string'],
             'broadcast_message_template_seed' => ['nullable', 'string'],

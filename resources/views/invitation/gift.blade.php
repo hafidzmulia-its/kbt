@@ -26,7 +26,7 @@
                     @if (file_exists(public_path('qris.jpeg')))
                         <div class="dashboard-table-card">
                             <p class="text-sm uppercase tracking-[0.18em] text-on-surface-variant">QRIS Preview</p>
-                            <img src="{{ asset('qris.jpeg') }}" alt="QRIS pembayaran" class="mt-4 w-full rounded-[1.15rem] border border-outline-variant/18 object-cover">
+                            <img src="{{ asset('qris.jpeg') }}" alt="QRIS pembayaran" class="mx-auto mt-4 w-full max-w-[220px] rounded-[1.15rem] border border-outline-variant/18 object-cover">
                         </div>
                     @endif
                 </div>

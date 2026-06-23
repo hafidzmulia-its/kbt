@@ -21,6 +21,7 @@ class EventFormOptions
         return [
             'musicAssets' => MusicAsset::query()->where('status', 'active')->orderBy('title')->get(),
             'templates' => Template::query()->where('status', 'active')->orderBy('name')->get(),
+            'occasionTypes' => config('nechcode.occasion_types', []),
         ];
     }
 }

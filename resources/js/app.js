@@ -286,16 +286,183 @@ const initializeLeafletMaps = () => {
     });
 };
 
+const initializeOccasionFields = () => {
+    const form = document.querySelector('[data-event-wizard]');
+    const select = form?.querySelector('[data-occasion-select]');
+
+    if (! form || ! select) {
+        return;
+    }
+
+    let meta = {};
+
+    try {
+        meta = JSON.parse(form.dataset.occasionMeta || '{}');
+    } catch {
+        meta = {};
+    }
+
+    const displayLabel = form.querySelector('[data-occasion-display-label]');
+    const displayInput = form.querySelector('[data-occasion-display-input]');
+    const primaryLabel = form.querySelector('[data-occasion-primary-label]');
+    const primaryInput = form.querySelector('[data-occasion-primary-input]');
+    const secondaryLabel = form.querySelector('[data-occasion-secondary-label]');
+    const secondaryInput = form.querySelector('[data-occasion-secondary-input]');
+
+    const sync = () => {
+        const selected = meta[select.value] || meta.wedding || {};
+
+        if (displayLabel) {
+            displayLabel.textContent = 'Judul utama undangan';
+        }
+
+        if (displayInput && selected.display_name_placeholder) {
+            displayInput.placeholder = selected.display_name_placeholder;
+        }
+
+        if (primaryLabel && selected.form_primary_label) {
+            primaryLabel.textContent = selected.form_primary_label;
+        }
+
+        if (primaryInput && selected.form_primary_label) {
+            primaryInput.placeholder = selected.form_primary_label;
+        }
+
+        if (secondaryLabel && selected.form_secondary_label) {
+            secondaryLabel.textContent = selected.form_secondary_label;
+        }
+
+        if (secondaryInput && selected.form_secondary_label) {
+            secondaryInput.placeholder = selected.form_secondary_label;
+        }
+    };
+
+    select.addEventListener('change', sync);
+    sync();
+};
+
+const initializeAlbumUploadPreview = () => {
+    const input = document.querySelector('[data-album-upload-input]');
+    const previewList = document.querySelector('[data-album-preview-list]');
+
+    if (! input || ! previewList || typeof window.DataTransfer === 'undefined') {
+        return;
+    }
+
+    const maxDimension = 1800;
+    const jpegQuality = 0.82;
+    const outputMime = 'image/jpeg';
+
+    const createPreviewCard = (file, dataUrl) => {
+        const card = document.createElement('article');
+        card.className = 'overflow-hidden rounded-[1.2rem] border border-outline-variant/18 bg-white shadow-[0_10px_26px_rgba(13,27,42,0.06)]';
+        card.innerHTML = `
+            <img src="${dataUrl}" alt="${file.name}" class="h-40 w-full object-cover">
+            <div class="space-y-1 px-4 py-3">
+                <p class="truncate text-sm font-semibold text-primary">${file.name}</p>
+                <p class="text-xs text-on-surface-variant">${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+            </div>
+        `;
+
+        return card;
+    };
+
+    const loadImage = (file) => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const image = new Image();
+            image.onload = () => resolve(image);
+            image.onerror = reject;
+            image.src = reader.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+
+    const canvasToFile = (canvas, originalName) => new Promise((resolve) => {
+        canvas.toBlob((blob) => {
+            if (! blob) {
+                resolve(null);
+                return;
+            }
+
+            const outputName = originalName.replace(/\.(png|jpe?g|webp)$/i, '.jpg');
+            resolve(new File([blob], outputName, { type: outputMime, lastModified: Date.now() }));
+        }, outputMime, jpegQuality);
+    });
+
+    const compressImage = async (file) => {
+        if (! file.type.startsWith('image/')) {
+            return file;
+        }
+
+        const image = await loadImage(file);
+        const ratio = Math.min(1, maxDimension / Math.max(image.width, image.height));
+        const width = Math.max(1, Math.round(image.width * ratio));
+        const height = Math.max(1, Math.round(image.height * ratio));
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+
+        if (! context) {
+            return file;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        context.drawImage(image, 0, 0, width, height);
+
+        const compressed = await canvasToFile(canvas, file.name);
+
+        return compressed || file;
+    };
+
+    input.addEventListener('change', async () => {
+        const files = Array.from(input.files || []);
+
+        if (! files.length) {
+            previewList.classList.add('hidden');
+            previewList.innerHTML = '';
+            return;
+        }
+
+        previewList.classList.remove('hidden');
+        previewList.innerHTML = '';
+
+        const processedFiles = [];
+
+        for (const file of files) {
+            const processed = await compressImage(file);
+            processedFiles.push(processed);
+            const dataUrl = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(processed);
+            });
+
+            previewList.appendChild(createPreviewCard(processed, dataUrl));
+        }
+
+        const transfer = new window.DataTransfer();
+        processedFiles.forEach((file) => transfer.items.add(file));
+        input.files = transfer.files;
+    });
+};
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         markPageReady();
         initializeEventWizard();
+        initializeOccasionFields();
+        initializeAlbumUploadPreview();
         initializeInvitationAudio();
         initializeLeafletMaps();
     }, { once: true });
 } else {
     markPageReady();
     initializeEventWizard();
+    initializeOccasionFields();
+    initializeAlbumUploadPreview();
     initializeInvitationAudio();
     initializeLeafletMaps();
 }

@@ -30,6 +30,8 @@
     $pricing = config('nechcode.pricing');
     $experience = old('experience', $event->settings_json['experience'] ?? []);
     $selectedLanguage = old('language_variant', $experience['language_variant'] ?? 'id_formal');
+    $selectedOccasionType = old('occasion_type', $experience['occasion_type'] ?? 'wedding');
+    $selectedOccasionMeta = $occasionTypes[$selectedOccasionType] ?? ($occasionTypes['wedding'] ?? null);
     $bundleEnabled = old('bundle_offer_enabled', $experience['bundle_offer_enabled'] ?? false);
     $styleBrief = old('ai_style_brief', session('assistant_style_brief', $experience['ai_style_brief'] ?? ''));
     $broadcastSeed = old('broadcast_message_template_seed', $experience['broadcast_message_template_seed'] ?? '');
@@ -66,6 +68,7 @@
         data-event-wizard
         data-step-order='@json($stepOrder)'
         data-initial-step="{{ $initialWizardStep }}"
+        data-occasion-meta='@json($occasionTypes)'
     >
         @csrf
         @if ($event->exists)
@@ -139,15 +142,29 @@
                     <p class="mt-4 section-copy">Step ini harus langsung membuat event terasa nyata: nama pasangan, judul acara, alamat invitation, dan status dasar.</p>
 
                     <div class="mt-6 grid gap-4">
+                        <select class="field" name="occasion_type" data-occasion-select>
+                            @foreach ($occasionTypes as $typeKey => $typeMeta)
+                                <option value="{{ $typeKey }}" @selected($selectedOccasionType === $typeKey)>{{ $typeMeta['label'] }}</option>
+                            @endforeach
+                        </select>
                         <input class="field" id="event_title" name="title" value="{{ old('title', $event->title) }}" placeholder="Judul event" required data-slug-source>
                         <div class="space-y-2">
                             <input class="field" id="event_slug" name="slug" value="{{ old('slug', $event->slug) }}" placeholder="Slug event / subalamat invitation" required data-slug-target>
                             <p class="text-xs text-on-surface-variant">Slug akan diisi otomatis dari judul event, tetapi tetap bisa Anda ubah manual.</p>
                         </div>
-                        <input class="field" name="couple_name_display" value="{{ old('couple_name_display', $event->couple_name_display) }}" placeholder="Nama pasangan yang tampil di invitation" required>
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-primary" data-occasion-display-label>Judul utama undangan</label>
+                            <input class="field" name="couple_name_display" value="{{ old('couple_name_display', $event->couple_name_display) }}" placeholder="{{ $selectedOccasionMeta['display_name_placeholder'] ?? 'Nama utama yang tampil di undangan' }}" data-occasion-display-input required>
+                        </div>
                         <div class="grid gap-4 md:grid-cols-2">
-                            <input class="field" name="bride_name" value="{{ old('bride_name', $event->bride_name) }}" placeholder="Nama mempelai wanita" required>
-                            <input class="field" name="groom_name" value="{{ old('groom_name', $event->groom_name) }}" placeholder="Nama mempelai pria" required>
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-primary" data-occasion-primary-label>{{ $selectedOccasionMeta['form_primary_label'] ?? 'Nama tokoh utama 1' }}</label>
+                                <input class="field" name="bride_name" value="{{ old('bride_name', $event->bride_name) }}" placeholder="{{ $selectedOccasionMeta['form_primary_label'] ?? 'Nama tokoh utama 1' }}" data-occasion-primary-input required>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-primary" data-occasion-secondary-label>{{ $selectedOccasionMeta['form_secondary_label'] ?? 'Nama tokoh utama 2' }}</label>
+                                <input class="field" name="groom_name" value="{{ old('groom_name', $event->groom_name) }}" placeholder="{{ $selectedOccasionMeta['form_secondary_label'] ?? 'Nama tokoh utama 2' }}" data-occasion-secondary-input required>
+                            </div>
                         </div>
                         <div class="grid gap-4 md:grid-cols-2">
                             <select class="field" name="status">
@@ -319,7 +336,7 @@
                                     <span class="dashboard-chip">QRIS</span>
                                 </div>
                                 <div class="bg-white p-4">
-                                    <img src="{{ asset('qris.jpeg') }}" alt="QR pembayaran" class="mx-auto w-full max-w-sm rounded-[1.2rem] border border-outline-variant/18 object-cover shadow-[0_18px_44px_rgba(13,27,42,0.08)]">
+                                    <img src="{{ asset('qris.jpeg') }}" alt="QR pembayaran" class="mx-auto w-full max-w-[220px] rounded-[1.2rem] border border-outline-variant/18 object-cover shadow-[0_18px_44px_rgba(13,27,42,0.08)]">
                                 </div>
                             </div>
                         @endif
@@ -376,7 +393,7 @@
                                     <span class="dashboard-chip">Live asset</span>
                                 </div>
                                 <div class="p-4">
-                                    <img src="{{ asset('qris.jpeg') }}" alt="QR pembayaran siap tampil" class="mx-auto w-full max-w-xs rounded-[1.2rem] border border-outline-variant/18 bg-white object-cover shadow-[0_18px_44px_rgba(13,27,42,0.08)]">
+                                    <img src="{{ asset('qris.jpeg') }}" alt="QR pembayaran siap tampil" class="mx-auto w-full max-w-[220px] rounded-[1.2rem] border border-outline-variant/18 bg-white object-cover shadow-[0_18px_44px_rgba(13,27,42,0.08)]">
                                 </div>
                             </div>
                         @endif
@@ -384,7 +401,9 @@
 
                     <div class="mt-8">
                         <label class="label" for="album_photos">Album photos</label>
-                        <input class="field" id="album_photos" type="file" name="album_photos[]" accept=".jpg,.jpeg,.png,.webp" multiple>
+                        <input class="field" id="album_photos" type="file" name="album_photos[]" accept=".jpg,.jpeg,.png,.webp" multiple data-album-upload-input>
+                        <p class="mt-3 text-sm leading-7 text-on-surface-variant">Foto akan dipreview lebih dulu dan dikompres ringan di browser sebelum dikirim ke server agar upload lebih stabil.</p>
+                        <div class="mt-4 hidden grid gap-3 sm:grid-cols-2 xl:grid-cols-3" data-album-preview-list></div>
                         @if ($event->exists && $event->albums->count())
                             <div class="mt-4 grid grid-cols-2 gap-3">
                                 @foreach ($event->albums->flatMap->photos->take(4) as $photo)

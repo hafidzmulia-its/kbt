@@ -19,6 +19,7 @@ class InvitationAssistantRequest extends FormRequest
             'couple_name_display' => ['required', 'string', 'max:255'],
             'bride_name' => ['required', 'string', 'max:255'],
             'groom_name' => ['required', 'string', 'max:255'],
+            'occasion_type' => ['nullable', Rule::in(array_keys(config('nechcode.occasion_types', [])))],
             'language_variant' => ['nullable', Rule::in(array_keys(config('invitation_languages.variants', [])))],
             'gift_mode' => ['nullable', Rule::in(['no_gift', 'bank_transfer', 'guest_specific_qr', 'qris_gateway'])],
             'bundle_offer_enabled' => ['sometimes', 'boolean'],

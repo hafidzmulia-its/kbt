@@ -193,6 +193,7 @@ class EventController extends Controller
                     'custom_design' => $request->boolean('wants_custom_design_addon'),
                 ],
                 'experience' => [
+                    'occasion_type' => $request->input('occasion_type', $event?->settings_json['experience']['occasion_type'] ?? 'wedding'),
                     'language_variant' => $request->input('language_variant', 'id_formal'),
                     'bundle_offer_enabled' => $request->boolean('bundle_offer_enabled'),
                     'ai_style_brief' => $request->input('ai_style_brief'),

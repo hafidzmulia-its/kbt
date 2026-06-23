@@ -7,6 +7,16 @@
     $carbonLocale = $languagePack['carbon_locale'] ?? 'id';
     $templateView = 'invitation.templates.'.($event->template?->code ?? 'valley-of-blue');
     $hasMapCoordinates = $availableSchedules->contains(fn ($schedule) => filled($schedule->latitude) && filled($schedule->longitude));
+    $occasionCatalog = config('nechcode.occasion_types', []);
+    $occasion = $occasionCatalog[$event->settings_json['experience']['occasion_type'] ?? 'wedding']
+        ?? ($occasionCatalog['wedding'] ?? [
+            'label' => 'Wedding',
+            'public_label' => 'Undangan Acara',
+            'hero_title_primary' => 'Special',
+            'hero_title_secondary' => 'Invitation',
+            'participant_one_label' => 'Host',
+            'participant_two_label' => 'Co-host',
+        ]);
 
     if (! view()->exists($templateView)) {
         $templateView = 'invitation.templates.valley-of-blue';

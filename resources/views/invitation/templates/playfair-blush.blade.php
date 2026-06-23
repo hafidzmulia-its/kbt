@@ -504,6 +504,12 @@
         resize: vertical;
     }
 
+    .pb-wishes-shell {
+        display: grid;
+        gap: 16px;
+        align-items: start;
+    }
+
     .pb-rsvp-card {
         padding: 18px;
         margin-bottom: 14px;
@@ -635,6 +641,10 @@
         .pb-gallery-grid,
         .pb-gift-list {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .pb-wishes-shell {
+            grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
         }
     }
 </style>
@@ -776,8 +786,37 @@
             </section>
         @endif
 
+        @if ($event->is_comment_enabled)
+            <div class="pb-strip">09 · Wishes</div>
+            <section class="pb-wishes">
+                <p class="pb-section-label">{{ $labels['comments_label'] }}</p>
+                <h2 class="pb-wishes-title">{{ $labels['comments_title'] }}</h2>
+                <div class="pb-wishes-shell">
+                    <form method="POST" action="{{ $guest ? route('public.comment.personal', [$event, request()->route('guestToken')]) : route('public.comment.general', $event) }}" class="pb-comment-form">
+                        @csrf
+                        @unless($guest)
+                            <input name="name" placeholder="{{ $labels['comments_name_placeholder'] }}" required>
+                        @endunless
+                        <input type="hidden" name="website" value="">
+                        <textarea name="message" placeholder="{{ $labels['comments_message_placeholder'] }}" required></textarea>
+                        <button class="pb-btn-secondary" type="submit" style="width: 100%; margin-bottom: 16px;">{{ $labels['comments_submit'] }}</button>
+                    </form>
+                    <div class="pb-comment-list">
+                        @forelse ($comments as $comment)
+                            <article class="pb-wish-card">
+                                <div class="pb-wish-name">{{ $comment->name_snapshot }}</div>
+                                <div class="pb-wish-copy">{{ $comment->message }}</div>
+                            </article>
+                        @empty
+                            <p class="pb-empty">{{ $labels['comments_empty'] }}</p>
+                        @endforelse
+                    </div>
+                </div>
+            </section>
+        @endif
+
         @if ($event->is_rsvp_enabled)
-            <div class="pb-strip">08 · RSVP</div>
+            <div class="pb-strip">10 · RSVP</div>
             <section id="rsvp" class="pb-rsvp">
                 <div class="pb-rsvp-content">
                     <p class="pb-section-label" style="color: var(--pb-lilac);">{{ $labels['rsvp_label'] }}</p>
@@ -818,35 +857,8 @@
             </section>
         @endif
 
-        @if ($event->is_comment_enabled)
-            <div class="pb-strip">09 · Wishes</div>
-            <section class="pb-wishes">
-                <p class="pb-section-label">{{ $labels['comments_label'] }}</p>
-                <h2 class="pb-wishes-title">{{ $labels['comments_title'] }}</h2>
-                <form method="POST" action="{{ $guest ? route('public.comment.personal', [$event, request()->route('guestToken')]) : route('public.comment.general', $event) }}" class="pb-comment-form">
-                    @csrf
-                    @unless($guest)
-                        <input name="name" placeholder="{{ $labels['comments_name_placeholder'] }}" required>
-                    @endunless
-                    <input type="hidden" name="website" value="">
-                    <textarea name="message" placeholder="{{ $labels['comments_message_placeholder'] }}" required></textarea>
-                    <button class="pb-btn-secondary" type="submit" style="width: 100%; margin-bottom: 16px;">{{ $labels['comments_submit'] }}</button>
-                </form>
-                <div class="pb-comment-list">
-                    @forelse ($comments as $comment)
-                        <article class="pb-wish-card">
-                            <div class="pb-wish-name">{{ $comment->name_snapshot }}</div>
-                            <div class="pb-wish-copy">{{ $comment->message }}</div>
-                        </article>
-                    @empty
-                        <p class="pb-empty">{{ $labels['comments_empty'] }}</p>
-                    @endforelse
-                </div>
-            </section>
-        @endif
-
         @if ($event->is_gift_enabled)
-            <div class="pb-strip">10 · Gift</div>
+            <div class="pb-strip">11 · Gift</div>
             <section class="pb-gift">
                 <p class="pb-section-label">{{ $labels['gift_label'] }}</p>
                 <h2 class="pb-gift-title">{{ $labels['gift_title'] }}</h2>
@@ -869,7 +881,7 @@
                             <article class="pb-gift-card">
                                 <div class="w-full">
                                     <p class="pb-gift-bank">QRIS Preview</p>
-                                    <img src="{{ asset('qris.jpeg') }}" alt="QRIS pembayaran" style="margin-top:12px;width:100%;border-radius:22px;border:1px solid rgba(232,115,90,.18);">
+                                    <img src="{{ asset('qris.jpeg') }}" alt="QRIS pembayaran" style="display:block;margin:12px auto 0;width:100%;max-width:220px;border-radius:22px;border:1px solid rgba(232,115,90,.18);">
                                 </div>
                             </article>
                         </div>
@@ -884,7 +896,7 @@
         @endif
 
         @if ($event->musicAsset?->resolved_url)
-            <div class="pb-strip">11 · Music</div>
+            <div class="pb-strip">12 · Music</div>
             <section class="pb-gift" style="background: var(--pb-blush);">
                 <p class="pb-section-label">{{ $labels['music_label'] }}</p>
                 <h2 class="pb-gift-title">{{ $labels['music_title'] }}</h2>
@@ -899,7 +911,7 @@
         @endif
 
         @if ($guest && $invitation)
-            <div class="pb-strip">12 · Check-in QR</div>
+            <div class="pb-strip">13 · Check-in QR</div>
             <section class="pb-qr-section">
                 <p class="pb-section-label">{{ $labels['qr_label'] }}</p>
                 <h2 class="pb-qr-title">{{ $labels['qr_title'] }}</h2>

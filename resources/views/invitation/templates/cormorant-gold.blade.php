@@ -541,6 +541,12 @@
 
     .cg-comment-form textarea { min-height: 110px; resize: vertical; }
 
+    .cg-wishes-shell {
+        display: grid;
+        gap: 16px;
+        align-items: start;
+    }
+
     .cg-rsvp-card {
         padding: 18px;
         margin-bottom: 16px;
@@ -662,6 +668,10 @@
         .cg-gallery-grid,
         .cg-gift-list {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .cg-wishes-shell {
+            grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
         }
     }
 </style>
@@ -803,8 +813,90 @@
             </section>
         @endif
 
+        @if ($event->is_gift_enabled)
+            <div class="cg-strip">09 · Gift</div>
+            <section class="cg-gift">
+                <p class="cg-section-label">{{ $labels['gift_label'] }}</p>
+                <h2 class="cg-gift-title">{{ $labels['gift_title'] }}</h2>
+                @if (($event->giftSetting?->mode ?? 'no_gift') === 'no_gift')
+                    <p class="cg-gift-copy">{{ $event->giftSetting?->no_gift_message ?: ($event->content?->no_gift_message ?: $defaults['no_gift_message']) }}</p>
+                @else
+                    <p class="cg-gift-copy">{{ $event->giftSetting?->instructions ?: $defaults['gift_instructions'] }}</p>
+                    <div class="cg-gift-list" style="margin-top:24px;">
+                        <article class="cg-gift-card">
+                            <div>
+                                <p class="cg-gift-bank">{{ $event->giftSetting?->bank_name }}</p>
+                                <p class="cg-gift-account">{{ $event->giftSetting?->account_number }}</p>
+                                <p class="cg-card-copy">{{ $event->giftSetting?->account_holder }}</p>
+                            </div>
+                            <span class="cg-copy-note">Transfer</span>
+                        </article>
+                    </div>
+                    @if (file_exists(public_path('qris.jpeg')))
+                        <div class="cg-gift-list" style="margin-top:16px;">
+                            <article class="cg-gift-card">
+                                <div class="w-full">
+                                    <p class="cg-gift-bank">QRIS Preview</p>
+                                    <img src="{{ asset('qris.jpeg') }}" alt="QRIS pembayaran" style="display:block;margin:12px auto 0;width:100%;max-width:220px;border-radius:22px;border:1px solid rgba(184,151,90,.22);">
+                                </div>
+                            </article>
+                        </div>
+                    @endif
+                    @if ($guest)
+                        <div style="margin-top:24px;">
+                            <a href="{{ route('public.gift.show', [$event, request()->route('guestToken')]) }}" class="cg-btn-secondary">Konfirmasi sudah bayar</a>
+                        </div>
+                    @endif
+                @endif
+            </section>
+        @endif
+
+        @if ($event->musicAsset?->resolved_url)
+            <div class="cg-strip">10 · Music</div>
+            <section class="cg-gift" style="background: var(--cg-cream);">
+                <p class="cg-section-label">{{ $labels['music_label'] }}</p>
+                <h2 class="cg-gift-title">{{ $labels['music_title'] }}</h2>
+                <article class="cg-music-card">
+                    <p class="cg-card-title" style="font-size: 24px;">{{ $event->musicAsset->title }}</p>
+                    @if ($event->musicAsset->artist)
+                        <p class="cg-card-copy">{{ $event->musicAsset->artist }}</p>
+                    @endif
+                    <p class="cg-card-copy" style="margin-top:16px;">Musik akan berjalan otomatis ketika undangan dibuka. Untuk pengalaman desktop dan mobile yang tetap nyaman, tamu bisa mematikan suara dari tombol mute mengambang.</p>
+                </article>
+            </section>
+        @endif
+
+        @if ($event->is_comment_enabled)
+            <div class="cg-strip">11 · Wishes</div>
+            <section class="cg-wishes">
+                <p class="cg-section-label">{{ $labels['comments_label'] }}</p>
+                <h2 class="cg-wishes-title">{{ $labels['comments_title'] }}</h2>
+                <div class="cg-wishes-shell">
+                    <form method="POST" action="{{ $guest ? route('public.comment.personal', [$event, request()->route('guestToken')]) : route('public.comment.general', $event) }}" class="cg-comment-form">
+                        @csrf
+                        @unless($guest)
+                            <input name="name" placeholder="{{ $labels['comments_name_placeholder'] }}" required>
+                        @endunless
+                        <input type="hidden" name="website" value="">
+                        <textarea name="message" placeholder="{{ $labels['comments_message_placeholder'] }}" required></textarea>
+                        <button class="cg-btn-secondary" type="submit" style="width: 100%; margin-bottom: 16px;">{{ $labels['comments_submit'] }}</button>
+                    </form>
+                    <div class="cg-wishes-list">
+                        @forelse ($comments as $comment)
+                            <article class="cg-wish-card">
+                                <div class="cg-wish-name">{{ $comment->name_snapshot }}</div>
+                                <div class="cg-wish-copy">{{ $comment->message }}</div>
+                            </article>
+                        @empty
+                            <p class="cg-empty">{{ $labels['comments_empty'] }}</p>
+                        @endforelse
+                    </div>
+                </div>
+            </section>
+        @endif
+
         @if ($event->is_rsvp_enabled)
-            <div class="cg-strip">08 · RSVP</div>
+            <div class="cg-strip">12 · RSVP</div>
             <section id="rsvp" class="cg-rsvp">
                 <div class="cg-rsvp-content">
                     <p class="cg-section-label" style="color: var(--cg-gold-light);">{{ $labels['rsvp_label'] }}</p>
@@ -845,88 +937,8 @@
             </section>
         @endif
 
-        @if ($event->is_gift_enabled)
-            <div class="cg-strip">09 · Gift</div>
-            <section class="cg-gift">
-                <p class="cg-section-label">{{ $labels['gift_label'] }}</p>
-                <h2 class="cg-gift-title">{{ $labels['gift_title'] }}</h2>
-                @if (($event->giftSetting?->mode ?? 'no_gift') === 'no_gift')
-                    <p class="cg-gift-copy">{{ $event->giftSetting?->no_gift_message ?: ($event->content?->no_gift_message ?: $defaults['no_gift_message']) }}</p>
-                @else
-                    <p class="cg-gift-copy">{{ $event->giftSetting?->instructions ?: $defaults['gift_instructions'] }}</p>
-                    <div class="cg-gift-list" style="margin-top:24px;">
-                        <article class="cg-gift-card">
-                            <div>
-                                <p class="cg-gift-bank">{{ $event->giftSetting?->bank_name }}</p>
-                                <p class="cg-gift-account">{{ $event->giftSetting?->account_number }}</p>
-                                <p class="cg-card-copy">{{ $event->giftSetting?->account_holder }}</p>
-                            </div>
-                            <span class="cg-copy-note">Transfer</span>
-                        </article>
-                    </div>
-                    @if (file_exists(public_path('qris.jpeg')))
-                        <div class="cg-gift-list" style="margin-top:16px;">
-                            <article class="cg-gift-card">
-                                <div class="w-full">
-                                    <p class="cg-gift-bank">QRIS Preview</p>
-                                    <img src="{{ asset('qris.jpeg') }}" alt="QRIS pembayaran" style="margin-top:12px;width:100%;border-radius:22px;border:1px solid rgba(184,151,90,.22);">
-                                </div>
-                            </article>
-                        </div>
-                    @endif
-                    @if ($guest)
-                        <div style="margin-top:24px;">
-                            <a href="{{ route('public.gift.show', [$event, request()->route('guestToken')]) }}" class="cg-btn-secondary">Konfirmasi sudah bayar</a>
-                        </div>
-                    @endif
-                @endif
-            </section>
-        @endif
-
-        @if ($event->musicAsset?->resolved_url)
-            <div class="cg-strip">10 · Music</div>
-            <section class="cg-gift" style="background: var(--cg-cream);">
-                <p class="cg-section-label">{{ $labels['music_label'] }}</p>
-                <h2 class="cg-gift-title">{{ $labels['music_title'] }}</h2>
-                <article class="cg-music-card">
-                    <p class="cg-card-title" style="font-size: 24px;">{{ $event->musicAsset->title }}</p>
-                    @if ($event->musicAsset->artist)
-                        <p class="cg-card-copy">{{ $event->musicAsset->artist }}</p>
-                    @endif
-                    <p class="cg-card-copy" style="margin-top:16px;">Musik akan berjalan otomatis ketika undangan dibuka. Untuk pengalaman desktop dan mobile yang tetap nyaman, tamu bisa mematikan suara dari tombol mute mengambang.</p>
-                </article>
-            </section>
-        @endif
-
-        @if ($event->is_comment_enabled)
-            <div class="cg-strip">11 · Wishes</div>
-            <section class="cg-wishes">
-                <p class="cg-section-label">{{ $labels['comments_label'] }}</p>
-                <h2 class="cg-wishes-title">{{ $labels['comments_title'] }}</h2>
-                <form method="POST" action="{{ $guest ? route('public.comment.personal', [$event, request()->route('guestToken')]) : route('public.comment.general', $event) }}" class="cg-comment-form">
-                    @csrf
-                    @unless($guest)
-                        <input name="name" placeholder="{{ $labels['comments_name_placeholder'] }}" required>
-                    @endunless
-                    <input type="hidden" name="website" value="">
-                    <textarea name="message" placeholder="{{ $labels['comments_message_placeholder'] }}" required></textarea>
-                    <button class="cg-btn-secondary" type="submit" style="width: 100%; margin-bottom: 16px;">{{ $labels['comments_submit'] }}</button>
-                </form>
-                <div class="cg-wishes-list">
-                    @forelse ($comments as $comment)
-                        <article class="cg-wish-card">
-                            <div class="cg-wish-name">{{ $comment->name_snapshot }}</div>
-                            <div class="cg-wish-copy">{{ $comment->message }}</div>
-                        </article>
-                    @empty
-                        <p class="cg-empty">{{ $labels['comments_empty'] }}</p>
-                    @endforelse
-                </div>
-            </section>
-        @endif
-
         @if ($guest && $invitation)
-            <div class="cg-strip">12 · Check-in QR</div>
+            <div class="cg-strip">13 · Check-in QR</div>
             <section class="cg-qr-section">
                 <p class="cg-section-label">{{ $labels['qr_label'] }}</p>
                 <h2 class="cg-qr-title">{{ $labels['qr_title'] }}</h2>
@@ -937,7 +949,7 @@
             </section>
         @endif
 
-        <div class="cg-strip">13 · Closing</div>
+        <div class="cg-strip">14 · Closing</div>
         <section class="cg-closing">
             <div class="cg-closing-content">
                 <p class="cg-closing-thanks">{{ $event->content?->closing_text ?: $defaults['closing_text'] }}</p>

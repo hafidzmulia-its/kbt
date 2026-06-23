@@ -693,9 +693,9 @@
         <div class="ge-hero-content">
             <p class="ge-kicker">{{ $labels['hero_kicker'] }}</p>
             <h1 class="ge-title">
-                Wedding
+                {{ $occasion['hero_title_primary'] ?? 'Wedding' }}
                 <br>
-                <span>Celebration</span>
+                <span>{{ $occasion['hero_title_secondary'] ?? 'Celebration' }}</span>
             </h1>
             <div class="ge-divider"></div>
             <p class="ge-script">{{ $event->couple_name_display }}</p>
@@ -820,7 +820,7 @@
     <section class="ge-section">
         <div class="ge-container">
             <div class="ge-section-header">
-                <p class="ge-section-label">Wedding Overview</p>
+                <p class="ge-section-label">{{ $occasion['public_label'] ?? 'Event Overview' }}</p>
                 <h2 class="ge-section-title">Everything in One Invitation</h2>
                 <div class="ge-section-divider"></div>
             </div>
@@ -873,126 +873,107 @@
                 <div class="ge-section-divider"></div>
             </div>
 
-            <div class="ge-form-grid">
-                <div class="ge-form-card">
-                    @if ($event->is_rsvp_enabled)
-                        <form method="POST" action="{{ $guest ? route('public.rsvp.personal', [$event, request()->route('guestToken')]) : route('public.rsvp.general', $event) }}">
+            @if ($event->is_comment_enabled)
+                <div class="ge-form-grid">
+                    <div class="ge-form-card">
+                        <form method="POST" action="{{ $guest ? route('public.comment.personal', [$event, request()->route('guestToken')]) : route('public.comment.general', $event) }}">
                             @csrf
                             @unless($guest)
                                 <div style="margin-bottom: 1.25rem;">
-                                    <label class="ge-form-label">{{ $labels['rsvp_name_placeholder'] }}</label>
-                                    <input class="ge-field" name="name" placeholder="{{ $labels['rsvp_name_placeholder'] }}" required>
-                                </div>
-                                <div style="margin-bottom: 1.25rem;">
-                                    <label class="ge-form-label">{{ $labels['rsvp_phone_placeholder'] }}</label>
-                                    <input class="ge-field" name="phone" placeholder="{{ $labels['rsvp_phone_placeholder'] }}">
+                                    <label class="ge-form-label">{{ $labels['comments_name_placeholder'] }}</label>
+                                    <input class="ge-field" name="name" placeholder="{{ $labels['comments_name_placeholder'] }}" required>
                                 </div>
                             @endunless
-
-                            @if ($availableSchedules->isEmpty())
-                                <div class="ge-feature-pill" style="margin-bottom: 1.25rem;">RSVP belum dapat diproses karena sesi acara belum dipetakan untuk link ini.</div>
-                            @elseif ($availableSchedules->count() === 1)
-                                <input type="hidden" name="event_schedule_id" value="{{ $availableSchedules->first()->id }}">
-                                <div class="ge-feature-pill" style="margin-bottom: 1.25rem;">
-                                    Sesi terpilih: {{ $availableSchedules->first()->label }} · {{ \Illuminate\Support\Carbon::parse($availableSchedules->first()->date)->locale($carbonLocale)->translatedFormat('d F Y') }}
-                                </div>
-                            @else
-                                <div style="margin-bottom: 1.25rem;">
-                                    <label class="ge-form-label">Sesi acara</label>
-                                    <select class="ge-select" name="event_schedule_id" required>
-                                        <option value="">Pilih sesi acara</option>
-                                        @foreach ($availableSchedules as $schedule)
-                                            <option value="{{ $schedule->id }}">{{ $schedule->label }} · {{ \Illuminate\Support\Carbon::parse($schedule->date)->locale($carbonLocale)->translatedFormat('d F Y') }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
-
+                            <input type="hidden" name="website" value="">
                             <div style="margin-bottom: 1.25rem;">
-                                <label class="ge-form-label">Status RSVP</label>
-                                <select class="ge-select" name="status" required>
-                                    <option value="hadir">{{ $labels['rsvp_status_labels']['hadir'] }}</option>
-                                    <option value="tidak_hadir">{{ $labels['rsvp_status_labels']['tidak_hadir'] }}</option>
-                                    <option value="ragu">{{ $labels['rsvp_status_labels']['ragu'] }}</option>
-                                </select>
+                                <label class="ge-form-label">{{ $labels['comments_message_placeholder'] }}</label>
+                                <textarea class="ge-textarea" name="message" placeholder="{{ $labels['comments_message_placeholder'] }}" required></textarea>
                             </div>
-
-                            <div style="margin-bottom: 1.25rem;">
-                                <label class="ge-form-label">Jumlah tamu</label>
-                                <input class="ge-field" name="pax_count" type="number" min="1" max="{{ $guest?->max_pax ?? 10 }}" value="1" required>
-                            </div>
-
-                            <div style="margin-bottom: 1.25rem;">
-                                <label class="ge-form-label">{{ $labels['rsvp_message_placeholder'] }}</label>
-                                <textarea class="ge-textarea" name="message" placeholder="{{ $labels['rsvp_message_placeholder'] }}"></textarea>
-                            </div>
-
-                            <button class="ge-primary-btn" style="width:100%;" type="submit" @disabled($availableSchedules->isEmpty())>{{ $labels['rsvp_submit'] }}</button>
+                            <button class="ge-primary-btn" style="width:100%;" type="submit">{{ $labels['comments_submit'] }}</button>
                         </form>
+                    </div>
 
-                        @if ($event->is_comment_enabled)
-                            <div style="height: 1px; background: var(--ge-accent-soft); margin: 2rem 0;"></div>
-
-                            <form method="POST" action="{{ $guest ? route('public.comment.personal', [$event, request()->route('guestToken')]) : route('public.comment.general', $event) }}">
-                                @csrf
-                                @unless($guest)
-                                    <div style="margin-bottom: 1.25rem;">
-                                        <label class="ge-form-label">{{ $labels['comments_name_placeholder'] }}</label>
-                                        <input class="ge-field" name="name" placeholder="{{ $labels['comments_name_placeholder'] }}" required>
+                    <div class="ge-list-card">
+                        <p class="ge-panel-note">{{ $comments->count() }} Wishes Received</p>
+                        <div class="ge-list-scroll">
+                            @forelse ($comments as $comment)
+                                <article class="ge-wish-card">
+                                    <div class="ge-wish-head">
+                                        <div class="ge-wish-user">
+                                            <div class="ge-wish-avatar">{{ strtoupper(mb_substr($comment->name_snapshot, 0, 1)) }}</div>
+                                            <span class="ge-wish-name">{{ $comment->name_snapshot }}</span>
+                                        </div>
+                                        <span class="ge-wish-time">{{ optional($comment->submitted_at)->diffForHumans() ?? 'Terkirim' }}</span>
                                     </div>
-                                @endunless
-                                <input type="hidden" name="website" value="">
-                                <div style="margin-bottom: 1.25rem;">
-                                    <label class="ge-form-label">{{ $labels['comments_message_placeholder'] }}</label>
-                                    <textarea class="ge-textarea" name="message" placeholder="{{ $labels['comments_message_placeholder'] }}" required></textarea>
-                                </div>
-                                <button class="ge-outline-btn" style="width:100%;" type="submit">{{ $labels['comments_submit'] }}</button>
-                            </form>
-                        @endif
-                    @else
-                        <h3 class="ge-surface-title" style="font-size: 2rem;">Guestbook</h3>
-                        @if ($event->is_comment_enabled)
-                            <form method="POST" action="{{ $guest ? route('public.comment.personal', [$event, request()->route('guestToken')]) : route('public.comment.general', $event) }}">
-                                @csrf
-                                @unless($guest)
-                                    <div style="margin-bottom: 1.25rem;">
-                                        <label class="ge-form-label">{{ $labels['comments_name_placeholder'] }}</label>
-                                        <input class="ge-field" name="name" placeholder="{{ $labels['comments_name_placeholder'] }}" required>
-                                    </div>
-                                @endunless
-                                <input type="hidden" name="website" value="">
-                                <div style="margin-bottom: 1.25rem;">
-                                    <label class="ge-form-label">{{ $labels['comments_message_placeholder'] }}</label>
-                                    <textarea class="ge-textarea" name="message" placeholder="{{ $labels['comments_message_placeholder'] }}" required></textarea>
-                                </div>
-                                <button class="ge-primary-btn" style="width:100%;" type="submit">{{ $labels['comments_submit'] }}</button>
-                            </form>
-                        @else
-                            <p class="ge-surface-copy">Komentar tidak aktif untuk event ini.</p>
-                        @endif
-                    @endif
-                </div>
-
-                <div class="ge-list-card">
-                    <p class="ge-panel-note">{{ $comments->count() }} Wishes Received</p>
-                    <div class="ge-list-scroll">
-                        @forelse ($comments as $comment)
-                            <article class="ge-wish-card">
-                                <div class="ge-wish-head">
-                                    <div class="ge-wish-user">
-                                        <div class="ge-wish-avatar">{{ strtoupper(mb_substr($comment->name_snapshot, 0, 1)) }}</div>
-                                        <span class="ge-wish-name">{{ $comment->name_snapshot }}</span>
-                                    </div>
-                                    <span class="ge-wish-time">{{ optional($comment->submitted_at)->diffForHumans() ?? 'Terkirim' }}</span>
-                                </div>
-                                <p class="ge-wish-copy">{{ $comment->message }}</p>
-                            </article>
-                        @empty
-                            <p class="ge-surface-copy">Belum ada ucapan yang tampil untuk event ini.</p>
-                        @endforelse
+                                    <p class="ge-wish-copy">{{ $comment->message }}</p>
+                                </article>
+                            @empty
+                                <p class="ge-surface-copy">Belum ada ucapan yang tampil untuk event ini.</p>
+                            @endforelse
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
+
+            @if ($event->is_rsvp_enabled)
+                <div class="ge-form-card" style="max-width: 48rem; margin: 2rem auto 0;">
+                    <p class="ge-panel-note">{{ $labels['rsvp_label'] }}</p>
+                    <h3 class="ge-surface-title" style="font-size: 2rem; margin-bottom: 1.5rem;">{{ $labels['rsvp_title'] }}</h3>
+                    <form method="POST" action="{{ $guest ? route('public.rsvp.personal', [$event, request()->route('guestToken')]) : route('public.rsvp.general', $event) }}">
+                        @csrf
+                        @unless($guest)
+                            <div style="margin-bottom: 1.25rem;">
+                                <label class="ge-form-label">{{ $labels['rsvp_name_placeholder'] }}</label>
+                                <input class="ge-field" name="name" placeholder="{{ $labels['rsvp_name_placeholder'] }}" required>
+                            </div>
+                            <div style="margin-bottom: 1.25rem;">
+                                <label class="ge-form-label">{{ $labels['rsvp_phone_placeholder'] }}</label>
+                                <input class="ge-field" name="phone" placeholder="{{ $labels['rsvp_phone_placeholder'] }}">
+                            </div>
+                        @endunless
+
+                        @if ($availableSchedules->isEmpty())
+                            <div class="ge-feature-pill" style="margin-bottom: 1.25rem;">RSVP belum dapat diproses karena sesi acara belum dipetakan untuk link ini.</div>
+                        @elseif ($availableSchedules->count() === 1)
+                            <input type="hidden" name="event_schedule_id" value="{{ $availableSchedules->first()->id }}">
+                            <div class="ge-feature-pill" style="margin-bottom: 1.25rem;">
+                                Sesi terpilih: {{ $availableSchedules->first()->label }} · {{ \Illuminate\Support\Carbon::parse($availableSchedules->first()->date)->locale($carbonLocale)->translatedFormat('d F Y') }}
+                            </div>
+                        @else
+                            <div style="margin-bottom: 1.25rem;">
+                                <label class="ge-form-label">Sesi acara</label>
+                                <select class="ge-select" name="event_schedule_id" required>
+                                    <option value="">Pilih sesi acara</option>
+                                    @foreach ($availableSchedules as $schedule)
+                                        <option value="{{ $schedule->id }}">{{ $schedule->label }} · {{ \Illuminate\Support\Carbon::parse($schedule->date)->locale($carbonLocale)->translatedFormat('d F Y') }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+
+                        <div style="margin-bottom: 1.25rem;">
+                            <label class="ge-form-label">Status RSVP</label>
+                            <select class="ge-select" name="status" required>
+                                <option value="hadir">{{ $labels['rsvp_status_labels']['hadir'] }}</option>
+                                <option value="tidak_hadir">{{ $labels['rsvp_status_labels']['tidak_hadir'] }}</option>
+                                <option value="ragu">{{ $labels['rsvp_status_labels']['ragu'] }}</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 1.25rem;">
+                            <label class="ge-form-label">Jumlah tamu</label>
+                            <input class="ge-field" name="pax_count" type="number" min="1" max="{{ $guest?->max_pax ?? 10 }}" value="1" required>
+                        </div>
+
+                        <div style="margin-bottom: 1.25rem;">
+                            <label class="ge-form-label">{{ $labels['rsvp_message_placeholder'] }}</label>
+                            <textarea class="ge-textarea" name="message" placeholder="{{ $labels['rsvp_message_placeholder'] }}"></textarea>
+                        </div>
+
+                        <button class="ge-primary-btn" style="width:100%;" type="submit" @disabled($availableSchedules->isEmpty())>{{ $labels['rsvp_submit'] }}</button>
+                    </form>
+                </div>
+            @endif
         </div>
     </section>
 
@@ -1026,6 +1007,9 @@
                                 <div class="ge-feature-pill">{{ $event->giftSetting?->bank_name }} · {{ $event->giftSetting?->account_number }}</div>
                                 <div class="ge-feature-pill">{{ $event->giftSetting?->account_holder }}</div>
                             </div>
+                            @if (file_exists(public_path('qris.jpeg')))
+                                <img src="{{ asset('qris.jpeg') }}" alt="QRIS pembayaran" style="display:block;margin:1.25rem auto 0;width:100%;max-width:220px;border-radius:1.5rem;border:1px solid var(--ge-accent-soft);">
+                            @endif
                             @if ($guest)
                                 <div style="margin-top: 1.25rem;">
                                     <a href="{{ route('public.gift.show', [$event, request()->route('guestToken')]) }}" class="ge-outline-btn">{{ $labels['gift_confirm'] }}</a>
