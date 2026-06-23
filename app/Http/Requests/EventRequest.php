@@ -44,6 +44,13 @@ class EventRequest extends FormRequest
             'groom_bio' => ['nullable', 'string'],
             'no_gift_message' => ['nullable', 'string'],
             'schedules' => ['required', 'array', 'min:1'],
+            'schedules.*.id' => [
+                'nullable',
+                'integer',
+                Rule::exists('event_schedules', 'id')->where(
+                    fn ($query) => $query->where('event_id', $eventId ?? 0)
+                ),
+            ],
             'schedules.*.label' => ['required', 'string', 'max:50'],
             'schedules.*.date' => ['required', 'date'],
             'schedules.*.start_time' => ['nullable', 'date_format:H:i'],
@@ -52,6 +59,8 @@ class EventRequest extends FormRequest
             'schedules.*.venue_name' => ['required', 'string', 'max:255'],
             'schedules.*.address' => ['nullable', 'string'],
             'schedules.*.maps_url' => ['nullable', 'url'],
+            'schedules.*.latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'schedules.*.longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'album_photos.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'gift_mode' => ['nullable', Rule::in(['no_gift', 'bank_transfer', 'guest_specific_qr', 'qris_gateway'])],
             'bank_name' => ['nullable', 'string', 'max:255'],
@@ -97,6 +106,11 @@ class EventRequest extends FormRequest
                     $schedule[$field] = preg_match('/^\d{2}:\d{2}:\d{2}$/', $value) === 1
                         ? substr($value, 0, 5)
                         : $value;
+                }
+
+                foreach (['latitude', 'longitude'] as $field) {
+                    $value = $schedule[$field] ?? null;
+                    $schedule[$field] = $value === '' ? null : $value;
                 }
 
                 return $schedule;

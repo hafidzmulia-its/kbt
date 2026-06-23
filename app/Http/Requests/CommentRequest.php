@@ -13,8 +13,10 @@ class CommentRequest extends FormRequest
 
     public function rules(): array
     {
+        $isPersonalRoute = $this->route('guestToken') !== null;
+
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [$isPersonalRoute ? 'nullable' : 'required', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:1000'],
             'website' => ['nullable', 'size:0'],
         ];

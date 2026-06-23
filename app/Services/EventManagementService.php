@@ -6,6 +6,8 @@ use App\Models\Event;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class EventManagementService
@@ -56,14 +58,7 @@ class EventManagementService
         array $albumPhotos,
     ): void {
         $event->content()->updateOrCreate(['event_id' => $event->id], $contentData);
-
-        $event->schedules()->delete();
-        foreach ($schedules as $index => $schedule) {
-            $event->schedules()->create([
-                ...$schedule,
-                'sort_order' => $index,
-            ]);
-        }
+        $this->syncSchedules($event, $schedules);
 
         $event->giftSetting()->updateOrCreate(['event_id' => $event->id], $giftData);
 
@@ -84,6 +79,43 @@ class EventManagementService
                 'caption' => null,
                 'sort_order' => $existingCount + $index,
             ]);
+        }
+    }
+
+    private function syncSchedules(Event $event, array $schedules): void
+    {
+        /** @var Collection<int, \App\Models\EventSchedule> $existingSchedules */
+        $existingSchedules = $event->schedules()->get()->keyBy('id');
+        $submittedIds = collect($schedules)
+            ->pluck('id')
+            ->filter()
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        $existingSchedules
+            ->keys()
+            ->diff($submittedIds)
+            ->each(fn ($scheduleId) => $existingSchedules[$scheduleId]?->delete());
+
+        foreach ($schedules as $index => $schedule) {
+            $scheduleId = isset($schedule['id']) && $schedule['id'] !== ''
+                ? (int) $schedule['id']
+                : null;
+
+            $payload = [
+                ...Arr::except($schedule, ['id']),
+                'sort_order' => $index,
+            ];
+
+            $existingSchedule = $scheduleId ? $existingSchedules->get($scheduleId) : null;
+
+            if ($existingSchedule) {
+                $existingSchedule->update($payload);
+
+                continue;
+            }
+
+            $event->schedules()->create($payload);
         }
     }
 

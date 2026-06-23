@@ -1,27 +1,49 @@
 @extends('layouts.app', ['title' => 'Fonnte Integration'])
 
 @section('content')
-    <section class="dashboard-hero">
+    <section class="dashboard-stage">
         <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div class="max-w-4xl">
-                <p class="section-kicker">Fonnte Integration</p>
-                <h1 class="mt-3 text-5xl text-primary md:text-6xl">Hubungkan device WhatsApp client ke sistem broadcast.</h1>
-                <p class="mt-5 max-w-3xl text-base leading-8 text-on-surface-variant">
+                <p class="section-kicker !text-[#9fe8ff]">Fonnte Integration</p>
+                <h1 class="mt-3 text-5xl text-white md:text-6xl">Hubungkan device WhatsApp client ke sistem broadcast.</h1>
+                <p class="mt-5 max-w-3xl text-base leading-8 text-white/76">
                     Panel ini dipakai client sendiri untuk menyimpan token, memilih device, melakukan refresh status, dan test send sebelum campaign undangan dijalankan.
                 </p>
             </div>
             <form method="POST" action="{{ route('dashboard.fonnte.refresh') }}">
                 @csrf
-                <button class="btn-secondary" type="submit">Refresh status</button>
+                <button class="brand-action brand-action-ghost" type="submit">Refresh status</button>
             </form>
         </div>
     </section>
 
     <section class="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
         <div class="space-y-6">
+            <div class="surface-panel">
+                <p class="section-kicker">Cara pakai</p>
+                <h2 class="mt-3 text-[2.1rem] text-primary">Fonnte sudah aktif di sistem ini.</h2>
+                <div class="mt-6 grid gap-4 md:grid-cols-3">
+                    <div class="workflow-next-card">
+                        <p class="dashboard-chip">Step 01</p>
+                        <p class="mt-4 text-lg font-semibold text-primary">Simpan token</p>
+                        <p class="mt-2 section-copy">Masukkan account token untuk membaca device list, lalu device token untuk pengiriman pesan.</p>
+                    </div>
+                    <div class="workflow-next-card">
+                        <p class="dashboard-chip">Step 02</p>
+                        <p class="mt-4 text-lg font-semibold text-primary">Pilih device</p>
+                        <p class="mt-2 section-copy">Refresh, pilih device yang benar, lalu pastikan nomor dan statusnya tampil normal.</p>
+                    </div>
+                    <div class="workflow-next-card">
+                        <p class="dashboard-chip">Step 03</p>
+                        <p class="mt-4 text-lg font-semibold text-primary">Tes kirim</p>
+                        <p class="mt-2 section-copy">Kirim satu pesan uji. Setelah itu baru jalankan broadcast per event dari panel campaign.</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="panel">
                 <p class="section-kicker">Device Summary</p>
-                <h2 class="mt-3 text-4xl text-primary">Status integrasi yang sedang aktif.</h2>
+                <h2 class="mt-3 text-[2.1rem] text-primary">Status integrasi yang sedang aktif.</h2>
                 <div class="mt-6 dashboard-stat-grid">
                     <div class="metric-card">
                         <p class="text-sm uppercase tracking-[0.18em] text-on-surface-variant">Device status</p>
@@ -51,7 +73,7 @@
 
             <div class="panel">
                 <p class="section-kicker">Token Setup</p>
-                <h2 class="mt-3 text-4xl text-primary">Simpan account token dan device token.</h2>
+                <h2 class="mt-3 text-[2.1rem] text-primary">Simpan account token dan device token.</h2>
                 <p class="mt-3 section-copy">Account token bersifat opsional namun direkomendasikan untuk memuat daftar device. Device token tetap dibutuhkan untuk pengiriman pesan.</p>
                 <form method="POST" action="{{ route('dashboard.fonnte.update') }}" class="mt-6 space-y-4">
                     @csrf
@@ -83,7 +105,7 @@
         <div class="space-y-6">
             <div class="panel">
                 <p class="section-kicker">Account Devices</p>
-                <h2 class="mt-3 text-4xl text-primary">Pilih device langsung dari akun Fonnte.</h2>
+                <h2 class="mt-3 text-[2.1rem] text-primary">Pilih device langsung dari akun Fonnte.</h2>
                 <p class="mt-3 section-copy">Jika account token valid, daftar device akan muncul di bawah ini dan bisa dipilih tanpa menyalin token satu per satu.</p>
                 <div class="mt-6 space-y-4">
                     @forelse ($devices as $device)
@@ -109,7 +131,7 @@
 
             <div class="panel">
                 <p class="section-kicker">Test Send</p>
-                <h2 class="mt-3 text-4xl text-primary">Kirim satu pesan uji sebelum bulk campaign.</h2>
+                <h2 class="mt-3 text-[2.1rem] text-primary">Kirim satu pesan uji sebelum bulk campaign.</h2>
                 <form method="POST" action="{{ route('dashboard.fonnte.test-send') }}" class="mt-6 space-y-4">
                     @csrf
                     <input class="field" name="phone" placeholder="081234567890" required>

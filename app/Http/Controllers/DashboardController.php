@@ -29,7 +29,10 @@ class DashboardController extends Controller
                 'events' => $eventIds->count(),
                 'rsvps' => Rsvp::query()->whereIn('event_id', $eventIds)->count(),
                 'attendance' => AttendanceCheckin::query()->whereIn('event_id', $eventIds)->count(),
-                'gift_pending' => GiftContribution::query()->whereIn('event_id', $eventIds)->where('status', 'proof_uploaded')->count(),
+                'gift_pending' => GiftContribution::query()
+                    ->whereIn('event_id', $eventIds)
+                    ->whereIn('status', ['proof_uploaded', 'confirmation_submitted'])
+                    ->count(),
                 'broadcast_sent' => BroadcastLog::query()->whereHas('campaign', fn ($query) => $query->whereIn('event_id', $eventIds))->where('status', 'sent')->count(),
                 'comments' => Comment::query()->whereIn('event_id', $eventIds)->where('status', 'pending')->count(),
             ],

@@ -54,8 +54,12 @@
             <img src="{{ asset('brand/img/asset_line.png') }}" alt="" class="block h-auto w-full opacity-20">
         </div>
 
-        <p class="mt-12 text-center font-body text-[clamp(1.2rem,1.2vw,1.5rem)] font-normal text-white/92">
-            © {{ now()->year }} {{ $brand['name'] }} | All Rights Reserved
+        <p class="mt-12 text-center font-body text-[clamp(1rem,1vw,1.2rem)] font-normal text-white/92">
+            &copy; {{ now()->year }} Invitely by
+            <a href="https://nechcode.id" target="_blank" rel="noreferrer" class="font-semibold text-white underline decoration-white/30 underline-offset-4 transition hover:text-[#9fe8ff] hover:decoration-[#9fe8ff]">
+                NechCode
+            </a>
+            | All Rights Reserved
         </p>
     </div>
 </footer>

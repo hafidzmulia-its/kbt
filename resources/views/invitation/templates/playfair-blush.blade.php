@@ -605,6 +605,38 @@
         color: rgba(255,255,255,.24);
         letter-spacing: .1em;
     }
+
+    @media (min-width: 960px) {
+        :root {
+            --pb-frame: 1080px;
+        }
+
+        .pb-template {
+            padding: 40px 0 72px;
+        }
+
+        .pb-hero {
+            min-height: 840px;
+            padding: 64px;
+        }
+
+        .pb-quote,
+        .pb-profile,
+        .pb-story,
+        .pb-rsvp,
+        .pb-wishes,
+        .pb-gift,
+        .pb-closing {
+            padding-left: 56px;
+            padding-right: 56px;
+        }
+
+        .pb-acara-list,
+        .pb-gallery-grid,
+        .pb-gift-list {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
 </style>
 
 <div class="pb-template">
@@ -701,6 +733,11 @@
                         @if ($schedule->maps_url)
                             <div style="margin-top:20px;">
                                 <a href="{{ $schedule->maps_url }}" target="_blank" rel="noreferrer" class="pb-btn-secondary">{{ $labels['map_button'] }}</a>
+                            </div>
+                        @endif
+                        @if (filled($schedule->latitude) && filled($schedule->longitude))
+                            <div class="invitation-map-card">
+                                <div class="invitation-map-frame" data-invitation-map data-lat="{{ $schedule->latitude }}" data-lng="{{ $schedule->longitude }}"></div>
                             </div>
                         @endif
                     </article>
@@ -827,9 +864,19 @@
                             <span class="pb-pill">Transfer</span>
                         </article>
                     </div>
+                    @if (file_exists(public_path('qris.jpeg')))
+                        <div class="pb-gift-list" style="margin-top:16px;">
+                            <article class="pb-gift-card">
+                                <div class="w-full">
+                                    <p class="pb-gift-bank">QRIS Preview</p>
+                                    <img src="{{ asset('qris.jpeg') }}" alt="QRIS pembayaran" style="margin-top:12px;width:100%;border-radius:22px;border:1px solid rgba(232,115,90,.18);">
+                                </div>
+                            </article>
+                        </div>
+                    @endif
                     @if ($guest)
                         <div style="margin-top:24px;">
-                            <a href="{{ route('public.gift.show', [$event, request()->route('guestToken')]) }}" class="pb-btn-secondary">{{ $labels['gift_confirm'] }}</a>
+                            <a href="{{ route('public.gift.show', [$event, request()->route('guestToken')]) }}" class="pb-btn-secondary">Konfirmasi sudah bayar</a>
                         </div>
                     @endif
                 @endif
@@ -846,9 +893,7 @@
                     @if ($event->musicAsset->artist)
                         <p class="pb-card-copy">{{ $event->musicAsset->artist }}</p>
                     @endif
-                    <audio controls preload="none">
-                        <source src="{{ $event->musicAsset->resolved_url }}">
-                    </audio>
+                    <p class="pb-card-copy" style="margin-top:16px;">Musik diputar otomatis saat halaman dibuka. Jika tamu ingin menonaktifkan audio, gunakan tombol mute yang mengambang di sisi kanan bawah.</p>
                 </article>
             </section>
         @endif

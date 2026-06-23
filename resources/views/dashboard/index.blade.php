@@ -61,7 +61,7 @@
     <section class="mt-6 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         <div class="surface-panel">
             <p class="section-kicker">Langkah Utama</p>
-            <h2 class="mt-3 text-4xl text-primary">Tiga hal yang paling mungkin Anda butuhkan sekarang.</h2>
+            <h2 class="mt-3 text-[2.1rem] text-primary">Tiga hal yang paling mungkin Anda butuhkan sekarang.</h2>
             <div class="mt-8 grid gap-4">
                 @foreach ($priorityActions as $item)
                     <div class="dashboard-quick-card">
@@ -80,7 +80,7 @@
 
         <div class="surface-panel">
             <p class="section-kicker">Ringkasan Cepat</p>
-            <h2 class="mt-3 text-4xl text-primary">Apa yang sudah berjalan di akun Anda.</h2>
+            <h2 class="mt-3 text-[2.1rem] text-primary">Apa yang sudah berjalan di akun Anda.</h2>
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
                 <div class="module-card">
                     <p class="text-sm font-semibold text-primary">Event aktif</p>
@@ -110,7 +110,7 @@
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
                 <p class="section-kicker">Event Anda</p>
-                <h2 class="mt-3 text-4xl text-primary">Pilih event yang ingin Anda lanjutkan.</h2>
+                <h2 class="mt-3 text-[2.1rem] text-primary">Pilih event yang ingin Anda lanjutkan.</h2>
             </div>
             <a href="{{ route('dashboard.events.index') }}" class="btn-secondary">Kelola daftar event</a>
         </div>

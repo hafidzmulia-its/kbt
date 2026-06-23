@@ -38,6 +38,12 @@
         'Album, backsound, guestbook, dan tampilan elegan yang siap dibagikan.',
         'Route publik yang aman tanpa membuka raw numeric ID.',
     ];
+    $portfolioSlides = [
+        ['image' => asset('template-previews/valley-of-blue.svg'), 'title' => 'Valley of Blue', 'copy' => 'Serene blue watercolor dengan struktur premium mobile-first.'],
+        ['image' => asset('template-previews/playfair-blush.svg'), 'title' => 'Playfair Blush', 'copy' => 'Mood romantis editorial untuk invitation yang lebih playful.'],
+        ['image' => asset('template-previews/cormorant-gold.svg'), 'title' => 'Cormorant Gold', 'copy' => 'Nuansa formal hangat dengan komposisi yang lebih klasik.'],
+        ['image' => asset('template-previews/graduation-elegance.svg'), 'title' => 'Graduation Elegance', 'copy' => 'Template showcase yang tetap dipertahankan apa adanya.'],
+    ];
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -56,7 +62,7 @@
 </head>
 <body class="bg-white selection:bg-secondary/20 selection:text-primary">
     <div class="relative overflow-hidden bg-white">
-        <section class="relative isolate min-h-[100svh] overflow-hidden bg-[#020202] text-white">
+        <section class="relative isolate min-h-[90svh] overflow-hidden bg-[#020202] text-white">
             <div class="animate-intro-fade-out pointer-events-none absolute inset-0 z-40 flex items-center justify-center bg-[#020202]">
                 <div class="flex items-center gap-4">
                     <img src="{{ asset('brand/logo-aseli.png') }}" alt="" class="h-16 w-16 object-contain">
@@ -76,36 +82,36 @@
             <div class="relative">
                 @include('partials.site-header', ['brand' => $brand, 'isDark' => true])
 
-                <div class="relative z-10 mx-auto flex min-h-[calc(100svh-96px)] w-full max-w-[1540px] flex-col px-5 pb-0 pt-4 sm:px-8 lg:px-14">
-                    <div class="relative flex flex-1 items-center justify-center overflow-hidden pb-10 pt-4 md:pb-14">
+                <div class="relative z-10 mx-auto flex min-h-[calc(90svh-96px)] w-full max-w-[1480px] flex-col px-5 pb-0 pt-2 sm:px-8 lg:px-14">
+                    <div class="relative flex flex-1 items-center justify-center overflow-hidden pb-8 pt-2 md:pb-10">
                         <div class="animate-hero-copy-in absolute inset-x-0 top-0 z-20 mx-auto w-full max-w-[1300px] px-2">
                             <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-[0.92fr_1.08fr] lg:gap-4">
                                 <div class="text-center lg:text-left">
-                                    <p class="text-[clamp(4.1rem,10vw,7.8rem)] font-light uppercase leading-[0.9] tracking-[0.01em] text-[#a8ecff] [text-shadow:0_5px_10px_rgba(0,0,0,0.35)]">
+                                    <p class="text-[clamp(3.3rem,8.1vw,6.2rem)] font-light uppercase leading-[0.9] tracking-[0.01em] text-[#a8ecff] [text-shadow:0_5px_10px_rgba(0,0,0,0.35)]">
                                         DIGITAL
                                     </p>
-                                    <p class="mt-3 text-[clamp(3.5rem,7.4vw,5.8rem)] font-light uppercase leading-[0.9] tracking-[0.01em] text-white [text-shadow:0_5px_10px_rgba(0,0,0,0.35)]">
+                                    <p class="mt-2 text-[clamp(2.9rem,6.4vw,4.8rem)] font-light uppercase leading-[0.9] tracking-[0.01em] text-white [text-shadow:0_5px_10px_rgba(0,0,0,0.35)]">
                                         WEDDING
                                     </p>
                                 </div>
 
-                                <div class="pt-2 text-center lg:pt-24 lg:text-right">
-                                    <p class="text-[clamp(3.7rem,8.8vw,6.8rem)] font-light uppercase leading-[0.9] tracking-[0.01em] text-[#a8ecff] [text-shadow:0_5px_10px_rgba(0,0,0,0.35)]">
+                                <div class="pt-2 text-center lg:pt-16 lg:text-right">
+                                    <p class="text-[clamp(3rem,7.3vw,5.6rem)] font-light uppercase leading-[0.9] tracking-[0.01em] text-[#a8ecff] [text-shadow:0_5px_10px_rgba(0,0,0,0.35)]">
                                         INVITATION
                                     </p>
-                                    <p class="mt-3 text-[clamp(3rem,6.2vw,4.8rem)] font-light uppercase leading-[0.88] tracking-[0.01em] text-white [text-shadow:0_5px_10px_rgba(0,0,0,0.35)]">
+                                    <p class="mt-2 text-[clamp(2.4rem,5vw,3.8rem)] font-light uppercase leading-[0.88] tracking-[0.01em] text-white [text-shadow:0_5px_10px_rgba(0,0,0,0.35)]">
                                         SYSTEM
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="animate-hero-copy-in relative z-20 mx-auto mt-[20rem] flex w-full max-w-[980px] flex-col items-center text-center sm:mt-[22rem] lg:mt-[26rem]">
+                        <div class="animate-hero-copy-in relative z-20 mx-auto mt-[13rem] flex w-full max-w-[900px] flex-col items-center text-center sm:mt-[15rem] lg:mt-[17rem]">
                             <p class="text-sm font-semibold uppercase tracking-[0.22em] text-[#a8ecff]">Invitely by NechCode</p>
-                            <p class="mt-6 max-w-[44rem] text-[clamp(1rem,1.5vw,1.3rem)] leading-[1.8] text-white/78">
+                            <p class="mt-4 max-w-[42rem] text-[clamp(0.92rem,1.2vw,1.12rem)] leading-[1.75] text-white/80">
                                 Platform undangan digital yang berfokus pada pengalaman tamu: personalisasi undangan, RSVP, peta acara, album, ucapan, gift confirmation, dan QR attendance dalam satu halaman yang elegan.
                             </p>
-                            <div class="mt-8 flex flex-wrap justify-center gap-3">
+                            <div class="mt-6 flex flex-wrap justify-center gap-3">
                                 @guest
                                     <a href="{{ route('register') }}" class="brand-action brand-action-solid">Mulai Sekarang</a>
                                     <a href="{{ route('login') }}" class="brand-action brand-action-ghost">Login Client</a>
@@ -117,7 +123,7 @@
                         </div>
 
                         <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center px-4 sm:px-8">
-                            <div class="animate-service-asset-rise relative h-[56vw] w-full max-w-[1120px] min-h-[320px] sm:h-[48vw] md:h-[40vw] lg:h-[34vw] xl:h-[32vw]">
+                            <div class="animate-service-asset-rise relative h-[50vw] w-full max-w-[980px] min-h-[260px] sm:h-[42vw] md:h-[35vw] lg:h-[28vw] xl:h-[26vw]">
                             <div class="hero-envelope absolute inset-x-[6%] bottom-[2%] top-[14%]">
                                 <div class="hero-envelope-letter">
                                     <span class="hero-envelope-line" style="top: 26%;"></span>
@@ -129,7 +135,7 @@
                             </div>
                         </div>
 
-                        <a href="#services" class="hero-scroll-hint animate-hero-copy-in absolute bottom-10 left-1/2 z-20 -translate-x-1/2 md:bottom-14">
+                        <a href="#portfolio" class="hero-scroll-hint animate-hero-copy-in absolute bottom-6 left-1/2 z-20 -translate-x-1/2 md:bottom-10">
                             <span>Scroll</span>
                             <span class="h-3 w-3 rotate-45 border-b-2 border-r-2 border-white transition-colors"></span>
                         </a>
@@ -141,6 +147,48 @@
         </section>
 
         <main class="bg-white text-on-surface">
+            <section id="portfolio" class="bg-white py-14 md:py-18">
+                <div class="shell">
+                    <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                        <div class="max-w-3xl">
+                            <p class="section-kicker">Portfolio highlights</p>
+                            <h2 class="section-heading-title !mt-3 !max-w-[16ch]">Lihat arah visual template sebelum masuk ke detail produk.</h2>
+                        </div>
+                        <p class="max-w-xl text-[0.95rem] leading-7 text-on-surface-variant">
+                            Dua jalur preview ini berjalan terus untuk menunjukkan range template yang sudah bisa dipilih langsung dari wizard event.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="portfolio-marquee">
+                    <div class="portfolio-marquee-track">
+                        @foreach (array_merge($portfolioSlides, $portfolioSlides) as $slide)
+                            <article class="portfolio-marquee-card">
+                                <img src="{{ $slide['image'] }}" alt="{{ $slide['title'] }} preview" loading="lazy">
+                                <div class="portfolio-marquee-meta">
+                                    <p class="portfolio-marquee-title">{{ $slide['title'] }}</p>
+                                    <p class="portfolio-marquee-copy">{{ $slide['copy'] }}</p>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="portfolio-marquee mt-4">
+                    <div class="portfolio-marquee-track reverse">
+                        @foreach (array_merge(array_reverse($portfolioSlides), array_reverse($portfolioSlides)) as $slide)
+                            <article class="portfolio-marquee-card">
+                                <img src="{{ $slide['image'] }}" alt="{{ $slide['title'] }} preview" loading="lazy">
+                                <div class="portfolio-marquee-meta">
+                                    <p class="portfolio-marquee-title">{{ $slide['title'] }}</p>
+                                    <p class="portfolio-marquee-copy">{{ $slide['copy'] }}</p>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
+
             <section id="about" class="bg-white py-20 md:py-24 lg:py-28">
                 <div class="shell">
                     <div class="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(260px,0.38fr)_minmax(0,1fr)] lg:items-start lg:gap-10 xl:gap-14">
@@ -362,7 +410,7 @@
                         </p>
                         <div class="mt-8 flex flex-wrap gap-3">
                             @guest
-                                <a href="{{ route('register') }}" class="brand-action brand-action-primary">Buat akun demo</a>
+                                <a href="{{ route('register') }}" class="brand-action brand-action-primary">Buat akun</a>
                                 <a href="{{ route('login') }}" class="brand-action brand-action-surface">Login client</a>
                             @else
                                 <a href="{{ route('dashboard') }}" class="brand-action brand-action-primary">Masuk ke dashboard</a>

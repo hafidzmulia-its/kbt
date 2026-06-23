@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Concerns\InteractsWithEventContext;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CommentModerationRequest;
 use App\Models\Comment;
 use App\Models\Event;
 use App\Services\AuditLogService;
@@ -28,15 +29,15 @@ class CommentModerationController extends Controller
         ]);
     }
 
-    public function update(Event $event, Comment $comment): RedirectResponse
+    public function update(CommentModerationRequest $request, Event $event, Comment $comment): RedirectResponse
     {
         $this->authorizeEventUpdate($event);
         $this->ensureBelongsToEvent($comment, $event);
 
-        $status = request('status', 'approved');
+        $status = $request->string('status')->toString();
         $comment->update(['status' => $status]);
 
-        $this->auditLogService->log('user', request()->user()->id, $event, 'comment.moderated', Comment::class, $comment->id, [
+        $this->auditLogService->log('user', $request->user()->id, $event, 'comment.moderated', Comment::class, $comment->id, [
             'status' => $status,
         ]);
 

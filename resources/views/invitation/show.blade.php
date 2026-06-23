@@ -6,6 +6,7 @@
     $defaults = $languagePack['defaults'];
     $carbonLocale = $languagePack['carbon_locale'] ?? 'id';
     $templateView = 'invitation.templates.'.($event->template?->code ?? 'valley-of-blue');
+    $hasMapCoordinates = $availableSchedules->contains(fn ($schedule) => filled($schedule->latitude) && filled($schedule->longitude));
 
     if (! view()->exists($templateView)) {
         $templateView = 'invitation.templates.valley-of-blue';
@@ -28,6 +29,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Manrope:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+    @if ($hasMapCoordinates)
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    @endif
     <style>
         html, body {
             margin: 0;
@@ -40,6 +45,16 @@
     @endif
 </head>
 <body>
+    @if ($event->musicAsset?->resolved_url)
+        <audio data-invitation-audio autoplay loop playsinline preload="auto">
+            <source src="{{ $event->musicAsset->resolved_url }}">
+        </audio>
+        <button type="button" class="audio-floating-toggle" data-audio-toggle aria-label="Mute musik invitation">
+            <span class="material-symbols-outlined text-[1.1rem]" data-audio-icon>volume_up</span>
+            <span class="text-sm font-semibold" data-audio-label>Mute musik</span>
+        </button>
+    @endif
+
     @if (session('status') || $errors->any())
         <div style="position: relative; z-index: 30; max-width: 960px; margin: 0 auto; padding: 16px 16px 0;">
             @if (session('status'))

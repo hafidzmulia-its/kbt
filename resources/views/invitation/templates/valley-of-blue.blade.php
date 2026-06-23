@@ -107,6 +107,11 @@
                                             <a href="{{ $schedule->maps_url }}" class="btn-secondary" target="_blank" rel="noreferrer">{{ $labels['map_button'] }}</a>
                                         @endif
                                     </div>
+                                    @if (filled($schedule->latitude) && filled($schedule->longitude))
+                                        <div class="invitation-map-card">
+                                            <div class="invitation-map-frame" data-invitation-map data-lat="{{ $schedule->latitude }}" data-lng="{{ $schedule->longitude }}"></div>
+                                        </div>
+                                    @endif
                                 </div>
                             @empty
                                 <div class="invitation-soft-card">
@@ -174,9 +179,9 @@
                         <div class="invitation-card">
                             <p class="invitation-kicker">{{ $labels['music_label'] }}</p>
                             <h2 class="mt-3 text-4xl text-primary">{{ $labels['music_title'] }}</h2>
-                            <audio class="mt-5 w-full" controls preload="none">
-                                <source src="{{ $event->musicAsset->resolved_url }}">
-                            </audio>
+                            <p class="mt-5 text-sm leading-7 text-on-surface-variant">
+                                {{ $event->musicAsset->title }}{{ $event->musicAsset->artist ? ' · '.$event->musicAsset->artist : '' }}. Musik diputar otomatis saat halaman dibuka, dan tamu tetap bisa mute dari tombol mengambang.
+                            </p>
                         </div>
                     @endif
 
@@ -193,8 +198,14 @@
                                     <p class="mt-2 text-2xl font-semibold text-primary">{{ $event->giftSetting?->account_holder }}</p>
                                     <p class="mt-2 text-lg text-on-surface">{{ $event->giftSetting?->account_number }}</p>
                                 </div>
+                                @if (file_exists(public_path('qris.jpeg')))
+                                    <div class="mt-5 invitation-soft-card">
+                                        <p class="text-xs uppercase tracking-[0.18em] text-on-surface-variant">QRIS Preview</p>
+                                        <img src="{{ asset('qris.jpeg') }}" alt="QRIS pembayaran" class="mt-4 w-full rounded-[1.2rem] border border-outline-variant/18 object-cover">
+                                    </div>
+                                @endif
                                 @if ($guest)
-                                    <a href="{{ route('public.gift.show', [$event, request()->route('guestToken')]) }}" class="btn-primary mt-5">{{ $labels['gift_confirm'] }}</a>
+                                    <a href="{{ route('public.gift.show', [$event, request()->route('guestToken')]) }}" class="btn-primary mt-5">Konfirmasi sudah bayar</a>
                                 @endif
                             @endif
                         </div>

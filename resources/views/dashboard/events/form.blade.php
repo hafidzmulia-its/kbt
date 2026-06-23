@@ -2,6 +2,7 @@
 
 @php
     $schedules = old('schedules', $event->schedules->count() ? $event->schedules->map(fn ($schedule) => [
+        'id' => $schedule->id,
         'label' => $schedule->label,
         'date' => optional($schedule->date)->format('Y-m-d'),
         'start_time' => $schedule->start_time ? substr((string) $schedule->start_time, 0, 5) : '',
@@ -10,7 +11,10 @@
         'venue_name' => $schedule->venue_name,
         'address' => $schedule->address,
         'maps_url' => $schedule->maps_url,
+        'latitude' => $schedule->latitude,
+        'longitude' => $schedule->longitude,
     ])->toArray() : [[
+        'id' => null,
         'label' => 'akad',
         'date' => now()->format('Y-m-d'),
         'start_time' => '09:00',
@@ -19,6 +23,8 @@
         'venue_name' => '',
         'address' => '',
         'maps_url' => '',
+        'latitude' => '-6.208800',
+        'longitude' => '106.845600',
     ]]);
     $addons = old('addons', $event->settings_json['addons'] ?? []);
     $pricing = config('nechcode.pricing');
@@ -33,6 +39,11 @@
 @endphp
 
 @section('content')
+    @push('head')
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    @endpush
+
     <style>
         .template-option input:checked + .template-option-card {
             border-color: #1D5A8D;
@@ -158,7 +169,8 @@
 
                     <div class="mt-6 grid gap-4">
                         @foreach ($schedules as $index => $schedule)
-                            <div class="module-card">
+                            <div class="module-card" data-map-picker-wrapper>
+                                <input type="hidden" name="schedules[{{ $index }}][id]" value="{{ $schedule['id'] ?? '' }}">
                                 <div class="mb-4 flex items-center justify-between">
                                     <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Sesi {{ $index + 1 }}</p>
                                     <span class="dashboard-chip">Acara</span>
@@ -171,7 +183,18 @@
                                     <input class="field lg:col-span-2" name="schedules[{{ $index }}][venue_name]" value="{{ $schedule['venue_name'] }}" placeholder="Nama venue" required>
                                     <input class="field lg:col-span-2" name="schedules[{{ $index }}][timezone]" value="{{ $schedule['timezone'] }}" placeholder="Timezone">
                                     <textarea class="field lg:col-span-2 min-h-28" name="schedules[{{ $index }}][address]" placeholder="Alamat lengkap venue">{{ $schedule['address'] }}</textarea>
-                                    <input class="field lg:col-span-2" name="schedules[{{ $index }}][maps_url]" value="{{ $schedule['maps_url'] }}" placeholder="Google Maps URL">
+                                    <input class="field lg:col-span-2" name="schedules[{{ $index }}][maps_url]" value="{{ $schedule['maps_url'] }}" placeholder="Google Maps URL" data-map-url>
+                                    <div class="grid gap-4 lg:col-span-2 md:grid-cols-2">
+                                        <input class="field" name="schedules[{{ $index }}][latitude]" value="{{ $schedule['latitude'] }}" placeholder="Latitude" data-map-latitude>
+                                        <input class="field" name="schedules[{{ $index }}][longitude]" value="{{ $schedule['longitude'] }}" placeholder="Longitude" data-map-longitude>
+                                    </div>
+                                    <div class="map-picker-card lg:col-span-4">
+                                        <div class="map-picker-frame" data-map-picker></div>
+                                        <div class="flex flex-wrap gap-3 border-t border-outline-variant/18 px-4 py-3 text-sm text-on-surface-variant">
+                                            <span>Klik peta atau geser marker untuk menandai lokasi venue.</span>
+                                            <span class="dashboard-chip">Leaflet + OpenStreetMap</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -284,6 +307,9 @@
                             <input class="field" name="bank_name" value="{{ old('bank_name', $event->giftSetting?->bank_name) }}" placeholder="Nama bank">
                             <input class="field" name="account_number" value="{{ old('account_number', $event->giftSetting?->account_number) }}" placeholder="Nomor rekening">
                             <input class="field" name="account_holder" value="{{ old('account_holder', $event->giftSetting?->account_holder) }}" placeholder="Atas nama">
+                        </div>
+                        <div class="rounded-[1.2rem] border border-[#1D5A8D]/12 bg-[#F8FBFE] px-4 py-4 text-sm leading-7 text-on-surface-variant">
+                            QRIS preview publik otomatis memakai file <code>public/qris.jpeg</code> jika tersedia. Jadi user tidak perlu upload ulang per event.
                         </div>
                         <textarea class="field min-h-24" name="gift_instructions" placeholder="Instruksi gifting">{{ old('gift_instructions', $event->giftSetting?->instructions) }}</textarea>
                         <textarea class="field min-h-24" name="no_gift_message" placeholder="Copy no-gift">{{ old('no_gift_message', $event->content?->no_gift_message) }}</textarea>

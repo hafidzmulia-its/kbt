@@ -112,6 +112,23 @@ class WeddingInvitationFlowsTest extends TestCase
         ]);
     }
 
+    public function test_personal_comment_submit_uses_guest_identity_without_manual_name(): void
+    {
+        [$event, $guest, $token] = $this->createPersonalInvitation();
+
+        $this->post(route('public.comment.personal', [$event, 'guestToken' => $token]), [
+            'message' => '<b>Selamat ya</b> semoga lancar.',
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('comments', [
+            'event_id' => $event->id,
+            'guest_id' => $guest->id,
+            'name_snapshot' => $guest->name,
+            'message' => 'Selamat ya semoga lancar.',
+            'status' => 'pending',
+        ]);
+    }
+
     public function test_general_invitation_does_not_leak_guest_data(): void
     {
         [$event, $guest] = $this->createPersonalInvitation();
@@ -645,6 +662,61 @@ class WeddingInvitationFlowsTest extends TestCase
         $this->assertDatabaseHas('orders', [
             'event_id' => $event->id,
             'package_name' => 'Wedding + Gift Experience Bundle',
+        ]);
+    }
+
+    public function test_updating_event_preserves_existing_schedule_ids_used_by_rsvp(): void
+    {
+        [$event, $guest, $token, $invitation] = $this->createPersonalInvitation();
+        $schedule = $event->schedules()->firstOrFail();
+
+        $this->post(route('public.rsvp.personal', [$event, 'guestToken' => $token]), [
+            'status' => 'hadir',
+            'pax_count' => 2,
+            'event_schedule_id' => $schedule->id,
+            'message' => 'Tetap hadir',
+        ])->assertRedirect();
+
+        $this->actingAs($event->user)
+            ->put(route('dashboard.events.update', $event), [
+                'title' => 'Wedding Event Revisi',
+                'slug' => $event->slug,
+                'couple_name_display' => 'Alya & Bima',
+                'bride_name' => 'Alya',
+                'groom_name' => 'Bima',
+                'status' => 'published',
+                'template_id' => $event->template_id,
+                'language_variant' => 'id_formal',
+                'gift_mode' => 'no_gift',
+                'schedules' => [[
+                    'id' => $schedule->id,
+                    'label' => 'resepsi utama',
+                    'date' => optional($schedule->date)->format('Y-m-d'),
+                    'start_time' => '10:30',
+                    'end_time' => '12:30',
+                    'timezone' => 'Asia/Jakarta',
+                    'venue_name' => 'Gedung Bahagia Revisi',
+                    'address' => 'Jl. Bahagia No. 2',
+                    'maps_url' => 'https://maps.example.com/revisi',
+                    'latitude' => '-6.208800',
+                    'longitude' => '106.845600',
+                ]],
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('event_schedules', [
+            'id' => $schedule->id,
+            'event_id' => $event->id,
+            'label' => 'resepsi utama',
+            'venue_name' => 'Gedung Bahagia Revisi',
+        ]);
+
+        $this->assertDatabaseHas('rsvps', [
+            'event_id' => $event->id,
+            'guest_id' => $guest->id,
+            'guest_invitation_id' => $invitation->id,
+            'event_schedule_id' => $schedule->id,
+            'status' => 'hadir',
         ]);
     }
 

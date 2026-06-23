@@ -1,18 +1,18 @@
 @extends('layouts.app', ['title' => 'Events'])
 
 @section('content')
-    <section class="dashboard-hero">
+    <section class="dashboard-stage">
         <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div class="max-w-4xl">
-                <p class="section-kicker">Event Registry</p>
-                <h1 class="mt-3 text-5xl text-primary md:text-6xl">Kelola seluruh invitation workspace dalam satu daftar rapi.</h1>
-                <p class="mt-5 max-w-3xl text-base leading-8 text-on-surface-variant">
+                <p class="section-kicker !text-[#9fe8ff]">Event Registry</p>
+                <h1 class="mt-3 text-5xl text-white md:text-6xl">Kelola seluruh invitation workspace dalam satu daftar rapi.</h1>
+                <p class="mt-5 max-w-3xl text-base leading-8 text-white/76">
                     Setiap event sekarang memakai sistem wizard, preview draft, personal invitation, dan publication flow yang sama. Halaman ini jadi titik kontrol utama untuk client.
                 </p>
             </div>
             <div class="flex flex-wrap gap-3">
-                <a href="{{ route('dashboard.events.create') }}" class="btn-primary">Buat event baru</a>
-                <a href="{{ route('dashboard') }}" class="btn-secondary">Kembali ke overview</a>
+                <a href="{{ route('dashboard.events.create') }}" class="brand-action brand-action-solid">Buat event baru</a>
+                <a href="{{ route('dashboard') }}" class="brand-action brand-action-ghost">Kembali ke overview</a>
             </div>
         </div>
     </section>
@@ -21,7 +21,7 @@
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
                 <p class="section-kicker">Event List</p>
-                <h2 class="mt-3 text-4xl text-primary">Semua event yang sudah masuk ke sistem.</h2>
+                <h2 class="mt-3 text-[2.1rem] text-primary">Semua event yang sudah masuk ke sistem.</h2>
             </div>
             <p class="section-copy max-w-xl">Pilih workspace untuk operasional, wizard untuk revisi konten, preview draft untuk review internal, dan public link saat event siap dipublikasikan.</p>
         </div>

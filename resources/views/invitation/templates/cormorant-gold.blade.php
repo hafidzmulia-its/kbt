@@ -633,6 +633,37 @@
             padding-top: 40px;
         }
     }
+
+    @media (min-width: 960px) {
+        :root {
+            --cg-frame: 1080px;
+        }
+
+        .cg-template {
+            padding: 40px 0 72px;
+        }
+
+        .cg-hero {
+            min-height: 840px;
+            padding: 64px;
+        }
+
+        .cg-quote,
+        .cg-couple,
+        .cg-story,
+        .cg-rsvp,
+        .cg-gift,
+        .cg-wishes {
+            padding-left: 56px;
+            padding-right: 56px;
+        }
+
+        .cg-acara-list,
+        .cg-gallery-grid,
+        .cg-gift-list {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
 </style>
 
 <div class="cg-template">
@@ -727,6 +758,11 @@
                         @if ($schedule->maps_url)
                             <div style="margin-top:20px;">
                                 <a href="{{ $schedule->maps_url }}" target="_blank" rel="noreferrer" class="cg-btn-secondary">{{ $labels['map_button'] }}</a>
+                            </div>
+                        @endif
+                        @if (filled($schedule->latitude) && filled($schedule->longitude))
+                            <div class="invitation-map-card">
+                                <div class="invitation-map-frame" data-invitation-map data-lat="{{ $schedule->latitude }}" data-lng="{{ $schedule->longitude }}"></div>
                             </div>
                         @endif
                     </article>
@@ -828,9 +864,19 @@
                             <span class="cg-copy-note">Transfer</span>
                         </article>
                     </div>
+                    @if (file_exists(public_path('qris.jpeg')))
+                        <div class="cg-gift-list" style="margin-top:16px;">
+                            <article class="cg-gift-card">
+                                <div class="w-full">
+                                    <p class="cg-gift-bank">QRIS Preview</p>
+                                    <img src="{{ asset('qris.jpeg') }}" alt="QRIS pembayaran" style="margin-top:12px;width:100%;border-radius:22px;border:1px solid rgba(184,151,90,.22);">
+                                </div>
+                            </article>
+                        </div>
+                    @endif
                     @if ($guest)
                         <div style="margin-top:24px;">
-                            <a href="{{ route('public.gift.show', [$event, request()->route('guestToken')]) }}" class="cg-btn-secondary">{{ $labels['gift_confirm'] }}</a>
+                            <a href="{{ route('public.gift.show', [$event, request()->route('guestToken')]) }}" class="cg-btn-secondary">Konfirmasi sudah bayar</a>
                         </div>
                     @endif
                 @endif
@@ -847,9 +893,7 @@
                     @if ($event->musicAsset->artist)
                         <p class="cg-card-copy">{{ $event->musicAsset->artist }}</p>
                     @endif
-                    <audio controls preload="none">
-                        <source src="{{ $event->musicAsset->resolved_url }}">
-                    </audio>
+                    <p class="cg-card-copy" style="margin-top:16px;">Musik akan berjalan otomatis ketika undangan dibuka. Untuk pengalaman desktop dan mobile yang tetap nyaman, tamu bisa mematikan suara dari tombol mute mengambang.</p>
                 </article>
             </section>
         @endif

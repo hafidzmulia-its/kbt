@@ -41,6 +41,12 @@ class FonnteIntegration extends Model
 
     public function hasUsableDeviceToken(): bool
     {
-        return $this->is_enabled && filled($this->device_token);
+        if (! $this->is_enabled || ! filled($this->device_token)) {
+            return false;
+        }
+
+        $status = strtolower(trim((string) $this->device_status));
+
+        return in_array($status, ['connect', 'connected', 'online', 'active', 'ready'], true);
     }
 }

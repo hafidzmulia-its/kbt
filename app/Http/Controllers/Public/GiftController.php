@@ -50,18 +50,29 @@ class GiftController extends Controller
         abort_unless($invitation && $invitation->event_id === $event->id, 404);
 
         $gift = $this->giftService->intentFor($event, $invitation->guest, $invitation);
-        $path = Storage::disk('local')->putFile('gift-proofs', $request->file('proof'));
-        abort_unless(is_string($path) && $path !== '', 500, 'Gagal menyimpan bukti transfer.');
+        $path = null;
+
+        if ($request->hasFile('proof')) {
+            $path = Storage::disk('local')->putFile('gift-proofs', $request->file('proof'));
+            abort_unless(is_string($path) && $path !== '', 500, 'Gagal menyimpan bukti transfer.');
+        }
 
         $gift->update([
             'amount' => $request->integer('amount'),
             'notes' => $request->input('notes'),
             'proof_file_path' => $path,
-            'status' => 'proof_uploaded',
+            'status' => $path ? 'proof_uploaded' : 'confirmation_submitted',
         ]);
 
-        $this->auditLogService->log('guest', null, $event, 'gift.proof_uploaded', get_class($gift), $gift->id);
+        $this->auditLogService->log(
+            'guest',
+            null,
+            $event,
+            $path ? 'gift.proof_uploaded' : 'gift.confirmed_without_proof',
+            get_class($gift),
+            $gift->id
+        );
 
-        return back()->with('status', 'Bukti transfer berhasil diunggah.');
+        return back()->with('status', $path ? 'Bukti transfer berhasil diunggah.' : 'Konfirmasi pembayaran berhasil dikirim.');
     }
 }

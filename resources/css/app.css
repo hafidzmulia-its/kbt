@@ -69,6 +69,7 @@
 }
 
 html {
+    font-size: 88%;
     scroll-behavior: smooth;
 }
 
@@ -279,7 +280,7 @@ body.page-ready .animate-intro-fade-out {
 
 @layer components {
     .shell {
-        @apply mx-auto w-full max-w-[1360px] px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12;
+        @apply mx-auto w-full max-w-[1240px] px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12;
     }
 
     .brand-shell {
@@ -291,7 +292,7 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .brand-action {
-        @apply inline-flex min-h-[3.4rem] items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition duration-200;
+        @apply inline-flex min-h-[3.2rem] min-w-[44px] items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition duration-200;
         letter-spacing: 0.01em;
     }
 
@@ -300,6 +301,11 @@ body.page-ready .animate-intro-fade-out {
         background: #ffffff;
         color: #051724;
         box-shadow: 0 12px 28px rgba(7, 27, 42, 0.16);
+    }
+
+    a.brand-action-solid,
+    button.brand-action-solid {
+        color: #051724 !important;
     }
 
     .brand-action-solid:hover {
@@ -315,6 +321,11 @@ body.page-ready .animate-intro-fade-out {
         backdrop-filter: blur(12px);
     }
 
+    a.brand-action-ghost,
+    button.brand-action-ghost {
+        color: rgba(255, 255, 255, 0.96) !important;
+    }
+
     .brand-action-ghost:hover {
         border-color: rgba(159, 232, 255, 0.64);
         background: rgba(255, 255, 255, 0.14);
@@ -325,7 +336,7 @@ body.page-ready .animate-intro-fade-out {
     .brand-action-primary {
         border: 1px solid transparent;
         background: linear-gradient(135deg, var(--primary), var(--primary-deep));
-        color: #ffffff;
+        color: #ffffff !important;
         box-shadow: 0 14px 28px rgba(29, 90, 141, 0.18);
     }
 
@@ -353,6 +364,10 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .site-nav-link:hover {
+        color: #9fe8ff;
+    }
+
+    .site-nav-link.is-current {
         color: #9fe8ff;
     }
 
@@ -406,7 +421,7 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .section-heading-title {
-        @apply mt-6 font-sans text-[clamp(2.15rem,4vw,4rem)] font-normal uppercase leading-[1.12] tracking-[-0.04em] text-[#101010];
+        @apply mt-5 font-sans text-[clamp(1.9rem,3.3vw,3.35rem)] font-normal uppercase leading-[1.08] tracking-[-0.04em] text-[#101010];
     }
 
     .section-heading-copy {
@@ -414,8 +429,14 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .btn-primary {
-        @apply inline-flex cursor-pointer items-center justify-center rounded-full px-5 py-3 text-sm font-semibold text-white transition duration-200;
-        background: linear-gradient(135deg, var(--primary), var(--primary-deep));
+        @apply inline-flex cursor-pointer items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition duration-200;
+        background: linear-gradient(135deg, #071b2a, #0d2840);
+        color: #ffffff !important;
+    }
+
+    a.btn-primary,
+    button.btn-primary {
+        color: #ffffff !important;
     }
 
     .btn-primary:hover {
@@ -428,6 +449,11 @@ body.page-ready .animate-intro-fade-out {
         border-color: rgba(193, 199, 208, 0.8);
         background: rgba(255, 255, 255, 0.88);
         color: var(--primary);
+    }
+
+    a.btn-secondary,
+    button.btn-secondary {
+        color: var(--primary) !important;
     }
 
     .btn-secondary:hover {
@@ -474,7 +500,7 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .dashboard-hero {
-        @apply relative overflow-hidden rounded-[2rem] border p-7 md:p-8;
+        @apply relative overflow-hidden rounded-[2rem] border p-6 md:p-7;
         border-color: rgba(193, 199, 208, 0.22);
         background: linear-gradient(135deg, rgba(29, 90, 141, 0.08), rgba(88, 230, 255, 0.18), rgba(255, 255, 255, 0.88));
         box-shadow: var(--shadow-soft);
@@ -516,7 +542,7 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .section-copy {
-        @apply text-sm leading-7;
+        @apply text-[0.94rem] leading-7;
         color: var(--on-surface-variant);
     }
 
@@ -788,7 +814,7 @@ body.page-ready .animate-intro-fade-out {
 
     .highlight-detail-card {
         @apply relative block overflow-hidden border transition duration-500 hover:-translate-y-1;
-        min-height: 21rem;
+        min-height: 17rem;
         border-color: #e6e6e6;
         background: linear-gradient(180deg, #ffffff 0%, #eef7ff 100%);
         box-shadow: 0 10px 24px rgba(14, 31, 46, 0.08);
@@ -811,11 +837,11 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .highlight-detail-title {
-        @apply mt-4 font-sans text-[1.75rem] font-semibold uppercase leading-[0.98] tracking-[-0.04em] text-[#101010];
+        @apply mt-4 font-sans text-[1.45rem] font-semibold uppercase leading-[1.02] tracking-[-0.04em] text-[#101010];
     }
 
     .highlight-detail-copy {
-        @apply mt-4 font-body text-[1rem] leading-[1.55] text-[#454545];
+        @apply mt-4 font-body text-[0.94rem] leading-[1.65] text-[#454545];
     }
 
     .highlight-detail-tags {
@@ -830,7 +856,7 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .feature-flow-card {
-        @apply flex min-h-[18rem] flex-col bg-[linear-gradient(105deg,#1D5A8D_0%,#061019_72%,#010509_100%)] px-7 py-7 text-left md:px-8;
+        @apply flex min-h-[16rem] flex-col bg-[linear-gradient(105deg,#1D5A8D_0%,#061019_72%,#010509_100%)] px-6 py-6 text-left md:px-7;
     }
 
     .feature-flow-number {
@@ -838,11 +864,11 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .feature-flow-title {
-        @apply mt-6 font-sans text-[clamp(1rem,1.45vw,1.35rem)] font-medium uppercase leading-[1.08] tracking-[-0.03em] text-white;
+        @apply mt-5 font-sans text-[clamp(0.9rem,1.2vw,1.1rem)] font-medium uppercase leading-[1.14] tracking-[-0.03em] text-white;
     }
 
     .feature-flow-copy {
-        @apply mt-4 max-w-[24ch] font-body text-[0.92rem] leading-[1.65] text-white/86;
+        @apply mt-3 max-w-[25ch] font-body text-[0.86rem] leading-[1.72] text-white/86;
     }
 
     .invitation-shell {
@@ -926,9 +952,9 @@ body.page-ready .animate-intro-fade-out {
 
     .hero-envelope {
         position: relative;
-        width: min(78vw, 980px);
+        width: min(68vw, 760px);
         aspect-ratio: 1.42;
-        border-radius: 2.2rem;
+        border-radius: 1.8rem;
         border: 1px solid rgba(168, 236, 255, 0.14);
         background:
             radial-gradient(circle at top right, rgba(88, 230, 255, 0.12), transparent 28%),
@@ -964,7 +990,7 @@ body.page-ready .animate-intro-fade-out {
 
     .hero-envelope-letter {
         position: absolute;
-        inset: 14% 16% 26% 16%;
+        inset: 16% 18% 28% 18%;
         border-radius: 1.8rem;
         border: 1px solid rgba(255, 255, 255, 0.12);
         background:
@@ -976,10 +1002,10 @@ body.page-ready .animate-intro-fade-out {
     .hero-envelope-seal {
         position: absolute;
         left: 50%;
-        top: 49%;
+        top: 53%;
         transform: translate(-50%, -50%);
-        width: 5.5rem;
-        height: 5.5rem;
+        width: 4.6rem;
+        height: 4.6rem;
         border-radius: 9999px;
         border: 1px solid rgba(255, 255, 255, 0.14);
         background: radial-gradient(circle at 30% 30%, rgba(168, 236, 255, 0.45), rgba(29, 90, 141, 0.88));
@@ -997,7 +1023,7 @@ body.page-ready .animate-intro-fade-out {
 
     .pricing-showcase-card {
         @apply relative overflow-hidden rounded-[3rem] px-8 py-8 shadow-[0_18px_44px_rgba(25,39,52,0.08)] transition-transform duration-500 ease-out hover:-translate-y-1 md:px-10 md:py-10;
-        min-height: 40rem;
+        min-height: 35rem;
     }
 
     .pricing-showcase-card.dark {
@@ -1016,7 +1042,7 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .pricing-showcase-heading {
-        @apply text-[clamp(1.5rem,2vw,2.2rem)] font-semibold leading-[0.98] tracking-[-0.04em];
+        @apply text-[clamp(1.3rem,1.7vw,1.9rem)] font-semibold leading-[1] tracking-[-0.04em];
     }
 
     .pricing-showcase-heading.gradient {
@@ -1034,7 +1060,7 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .pricing-showcase-price {
-        @apply mt-6 font-sans text-[clamp(2rem,3vw,3.35rem)] font-semibold leading-[0.96] tracking-[-0.05em];
+        @apply mt-6 font-sans text-[clamp(1.8rem,2.6vw,2.8rem)] font-semibold leading-[0.96] tracking-[-0.05em];
     }
 
     .pricing-showcase-divider {
@@ -1042,7 +1068,7 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .pricing-showcase-copy {
-        @apply mt-6 font-body text-[0.98rem] leading-[1.7];
+        @apply mt-5 font-body text-[0.92rem] leading-[1.7];
     }
 
     .pricing-showcase-list {
@@ -1050,17 +1076,27 @@ body.page-ready .animate-intro-fade-out {
     }
 
     .pricing-showcase-button {
-        @apply mx-auto mt-10 inline-flex min-h-[4rem] w-full max-w-[19.75rem] items-center justify-center rounded-full px-8 text-center text-[1.02rem] font-semibold transition duration-300 hover:scale-[1.015];
+        @apply mx-auto mt-8 inline-flex min-h-[3.65rem] w-full max-w-[19.75rem] items-center justify-center rounded-full px-8 text-center text-[0.98rem] font-semibold transition duration-300 hover:scale-[1.015];
     }
 
     .pricing-showcase-button.dark {
         background: #ffffff;
-        color: #051724;
+        color: #051724 !important;
+    }
+
+    a.pricing-showcase-button.dark,
+    button.pricing-showcase-button.dark {
+        color: #051724 !important;
     }
 
     .pricing-showcase-button.light {
         background: #051724;
-        color: #ffffff;
+        color: #ffffff !important;
+    }
+
+    a.pricing-showcase-button.light,
+    button.pricing-showcase-button.light {
+        color: #ffffff !important;
     }
 
     .pricing-showcase-button:hover {
@@ -1079,5 +1115,184 @@ body.page-ready .animate-intro-fade-out {
 
     .pricing-showcase-subnote {
         @apply mt-3 text-center text-xs;
+    }
+
+    .portfolio-marquee {
+        position: relative;
+        overflow: hidden;
+        border-top: 1px solid rgba(29, 90, 141, 0.14);
+        border-bottom: 1px solid rgba(29, 90, 141, 0.14);
+    }
+
+    .portfolio-marquee-track {
+        display: flex;
+        width: max-content;
+        gap: 1rem;
+        padding: 1rem 0;
+        animation: marquee-left 26s linear infinite;
+    }
+
+    .portfolio-marquee-track.reverse {
+        animation-name: marquee-right;
+    }
+
+    .portfolio-marquee-card {
+        width: 18rem;
+        flex-shrink: 0;
+        overflow: hidden;
+        border-radius: 1.6rem;
+        border: 1px solid rgba(193, 199, 208, 0.28);
+        background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+        box-shadow: 0 16px 36px rgba(14, 31, 46, 0.08);
+    }
+
+    .portfolio-marquee-card img {
+        aspect-ratio: 16 / 10;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .portfolio-marquee-meta {
+        padding: 1rem 1rem 1.1rem;
+    }
+
+    .portfolio-marquee-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--primary-deep);
+    }
+
+    .portfolio-marquee-copy {
+        margin-top: 0.3rem;
+        font-size: 0.84rem;
+        line-height: 1.65;
+        color: var(--on-surface-variant);
+    }
+
+    .guest-filter-grid {
+        display: grid;
+        gap: 0.9rem;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .guest-bulk-grid {
+        display: grid;
+        gap: 0.9rem;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .map-picker-card {
+        overflow: hidden;
+        border-radius: 1.25rem;
+        border: 1px solid rgba(193, 199, 208, 0.28);
+        background: #f7fbff;
+    }
+
+    .map-picker-frame,
+    .invitation-map-frame {
+        min-height: 16rem;
+        width: 100%;
+    }
+
+    .audio-floating-toggle {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        z-index: 40;
+        display: inline-flex;
+        min-height: 44px;
+        min-width: 44px;
+        align-items: center;
+        gap: 0.55rem;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(7, 27, 42, 0.88);
+        padding: 0.8rem 1rem;
+        color: #ffffff;
+        box-shadow: 0 18px 32px rgba(7, 27, 42, 0.24);
+        backdrop-filter: blur(14px);
+    }
+
+    .audio-floating-toggle:hover {
+        color: #9fe8ff;
+    }
+
+    .invitation-map-card {
+        margin-top: 1rem;
+        overflow: hidden;
+        border-radius: 1.2rem;
+        border: 1px solid rgba(193, 199, 208, 0.18);
+    }
+
+    .guest-directory-card summary {
+        cursor: pointer;
+    }
+
+    .guest-directory-card summary::-webkit-details-marker {
+        display: none;
+    }
+
+    @keyframes marquee-left {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    @keyframes marquee-right {
+        from {
+            transform: translateX(-50%);
+        }
+
+        to {
+            transform: translateX(0);
+        }
+    }
+
+    @media (min-width: 768px) {
+        .guest-filter-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .guest-bulk-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .portfolio-marquee-card {
+            width: 21rem;
+        }
+    }
+
+    @media (min-width: 1280px) {
+        .guest-filter-grid {
+            grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 0.82fr)) minmax(0, 1.02fr) minmax(0, 1.16fr) auto;
+        }
+
+        .guest-bulk-grid {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr) auto;
+        }
+    }
+
+    @media (max-width: 767px) {
+        html {
+            font-size: 84%;
+        }
+
+        .brand-shell {
+            min-height: 82px;
+        }
+
+        .pricing-showcase-card {
+            min-height: auto;
+        }
+
+        .audio-floating-toggle {
+            right: 0.75rem;
+            bottom: 0.75rem;
+            padding: 0.72rem 0.9rem;
+        }
     }
 }

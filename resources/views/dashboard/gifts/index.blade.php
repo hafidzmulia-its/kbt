@@ -29,8 +29,8 @@
                     <p class="mt-1 section-copy">{{ $setting?->account_holder ?? '-' }}</p>
                 </div>
                 <div class="dashboard-table-card">
-                    <p class="text-sm uppercase tracking-[0.18em] text-on-surface-variant">Proof upload</p>
-                    <p class="mt-2 text-lg font-semibold text-primary">{{ $setting?->is_proof_upload_enabled ? 'enabled' : 'disabled' }}</p>
+                    <p class="text-sm uppercase tracking-[0.18em] text-on-surface-variant">Confirmation flow</p>
+                    <p class="mt-2 text-lg font-semibold text-primary">{{ $setting?->is_proof_upload_enabled ? 'proof optional + confirmation' : 'confirmation only' }}</p>
                 </div>
             </div>
         </div>

@@ -5,18 +5,18 @@
 @endphp
 
 @section('content')
-    <section class="dashboard-hero">
+    <section class="dashboard-stage">
         <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div class="max-w-4xl">
-                <p class="section-kicker">Guest Operations</p>
-                <h1 class="mt-3 text-5xl text-primary md:text-6xl">Kelola tamu, grup, import batch, dan lifecycle undangan dalam satu modul.</h1>
-                <p class="mt-5 max-w-3xl text-base leading-8 text-on-surface-variant">
+                <p class="section-kicker !text-[#9fe8ff]">Guest Operations</p>
+                <h1 class="mt-3 text-5xl text-white md:text-6xl">Kelola tamu, grup, import batch, dan lifecycle undangan dalam satu modul.</h1>
+                <p class="mt-5 max-w-3xl text-base leading-8 text-white/76">
                     Ini adalah lapisan yang paling penting untuk mengejar pengalaman Wedew, tetapi tetap dibuat lebih tenang dan lebih sedikit membingungkan. Tamu, grup, RSVP, personal link, dan archive sekarang tinggal dikelola dari satu tempat.
                 </p>
             </div>
             <div class="flex flex-wrap gap-3">
-                <a href="{{ route('dashboard.events.workspace', $event) }}" class="btn-secondary">Kembali ke workspace</a>
-                <a href="{{ route('dashboard.guests.export', array_merge(['event' => $event], $filters)) }}" class="btn-primary">Export CSV</a>
+                <a href="{{ route('dashboard.events.workspace', $event) }}" class="brand-action brand-action-ghost">Kembali ke workspace</a>
+                <a href="{{ route('dashboard.guests.export', array_merge(['event' => $event], $filters)) }}" class="brand-action brand-action-solid">Export CSV</a>
             </div>
         </div>
     </section>
@@ -57,37 +57,16 @@
 
             <div class="surface-panel">
                 <p class="section-kicker">Manual Entry</p>
-                <h2 class="mt-3 text-4xl text-primary">Tambah tamu satu per satu.</h2>
+                <h2 class="mt-3 text-[2.1rem] text-primary">Tambah tamu satu per satu.</h2>
+                <p class="mt-4 section-copy">Form ini sengaja dipangkas. Cukup isi nama dan nomor WhatsApp, sementara konfigurasi lain memakai nilai default yang aman.</p>
                 <form method="POST" action="{{ route('dashboard.guests.store', $event) }}" class="mt-6 grid gap-4">
                     @csrf
                     <input class="field" name="name" placeholder="Nama tamu">
-                    <div class="grid gap-4 md:grid-cols-2">
-                        <input class="field" name="phone" placeholder="WhatsApp">
-                        <select class="field" name="guest_group_id">
-                            <option value="">Tanpa grup</option>
-                            @foreach ($groups as $group)
-                                <option value="{{ $group->id }}">{{ $group->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="grid gap-4 md:grid-cols-2">
-                        <input class="field" name="max_pax" type="number" min="1" value="1" placeholder="Max pax">
-                        <select class="field" name="status">
-                            <option value="active">active</option>
-                            <option value="inactive">inactive</option>
-                        </select>
-                    </div>
-                    <div class="grid gap-4 md:grid-cols-2">
-                        <label class="module-card flex items-center gap-3">
-                            <input type="checkbox" name="is_vip" value="1">
-                            <span class="text-sm font-semibold text-on-surface">VIP</span>
-                        </label>
-                        <label class="module-card flex items-center gap-3">
-                            <input type="checkbox" name="needs_physical_invitation" value="1">
-                            <span class="text-sm font-semibold text-on-surface">Perlu undangan fisik</span>
-                        </label>
-                    </div>
-                    <textarea class="field min-h-24" name="address_note" placeholder="Catatan alamat, hubungan, atau instruksi"></textarea>
+                    <input class="field" name="phone" placeholder="Nomor WhatsApp">
+                    <input type="hidden" name="max_pax" value="1">
+                    <input type="hidden" name="status" value="active">
+                    <input type="hidden" name="guest_group_id" value="">
+                    <input type="hidden" name="address_note" value="">
                     <button class="btn-primary" type="submit">Simpan tamu</button>
                 </form>
             </div>
@@ -181,12 +160,12 @@
             <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                 <div>
                     <p class="section-kicker">Live Directory</p>
-                    <h2 class="mt-3 text-4xl text-primary">Filter tamu, jalankan bulk action, lalu rapikan lifecycle.</h2>
+                <h2 class="mt-3 text-[2.1rem] text-primary">Filter tamu, jalankan bulk action, lalu rapikan lifecycle.</h2>
                 </div>
                 <p class="section-copy max-w-xl">Default view menampilkan tamu aktif. Arsip tidak dihapus permanen supaya bisa dipulihkan kapan saja.</p>
             </div>
 
-            <form method="GET" action="{{ route('dashboard.guests.index', $event) }}" class="mt-6 grid gap-4 lg:grid-cols-[1.2fr_0.7fr_0.8fr_0.7fr_0.72fr_0.95fr_auto]">
+            <form method="GET" action="{{ route('dashboard.guests.index', $event) }}" class="guest-filter-grid mt-6">
                 <input class="field" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="Cari nama, phone, atau group">
                 <select class="field" name="status">
                     <option value="">Semua status</option>
@@ -218,7 +197,7 @@
 
             <form id="guest-bulk-form" method="POST" action="{{ route('dashboard.guests.bulk', $event) }}" class="mt-6 rounded-[1.45rem] border border-outline-variant/18 bg-[#f7fbff] p-4">
                 @csrf
-                <div class="grid gap-3 lg:grid-cols-[1fr_0.9fr_auto]">
+                <div class="guest-bulk-grid">
                     <select class="field" name="action">
                         <option value="assign_group">Assign group</option>
                         <option value="clear_group">Clear group</option>
@@ -248,7 +227,7 @@
                         $latestRsvp = $guest->rsvps->sortByDesc('submitted_at')->first();
                         $gift = $guest->giftContributions->sortByDesc('updated_at')->first();
                     @endphp
-                    <details class="module-card">
+                    <details class="module-card guest-directory-card">
                         <summary class="flex list-none flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
                             <div class="flex items-start gap-4">
                                 <input
